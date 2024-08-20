@@ -125,8 +125,8 @@ export function InitialScreen() {
                       </div>
                     </div>
                     <p className="text-muted-foreground">
-                      "I've been using this platform for all my home services\n needs and I'm consistently impressed by
-                      the quality of\n the providers and the ease of booking. Highly\n recommended!"
+                      I have been using this platform for all my home services\n needs and I am consistently impressed by
+                      the quality of\n the providers and the ease of booking. Highly\n recommended!
                     </p>
                   </div>
                   <div className="grid gap-2 rounded-lg bg-background p-4">
@@ -141,8 +141,8 @@ export function InitialScreen() {
                       </div>
                     </div>
                     <p className="text-muted-foreground">
-                      "I've been using this platform for all my home services\n needs and I'm consistently impressed by
-                      the quality of\n the providers and the ease of booking. Highly\n recommended!"
+                      I have been using this platform for all my home services\n needs and I'm consistently impressed by
+                      the quality of\n the providers and the ease of booking. Highly\n recommended!
                     </p>
                   </div>
                 </div>

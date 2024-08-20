@@ -11,7 +11,7 @@ interface DetailsServiceProviderProps {
     email: string;
     whatsapp: string;
     description: string;
-    servicePhotos: string[]; // Array of photo URLs
+    servicePhotos: string[];
     details: {
       available: boolean;
       priceRange: string;
@@ -25,7 +25,6 @@ export function DetailsServiceProvider({
   onClose
 }: DetailsServiceProviderProps) {
 
-  // Valores padrão para evitar erros
   const defaultProvider = {
     imgSrc: "https://via.placeholder.com/80",
     name: "Nome do Prestador",
@@ -165,8 +164,6 @@ export function DetailsServiceProvider({
     </Card>
   );
 }
-
-// Add appropriate imports for icons
 
 function BriefcaseIcon(props) {
   return (
