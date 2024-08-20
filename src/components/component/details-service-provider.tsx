@@ -49,11 +49,11 @@ export function DetailsServiceProvider({
   const provider = dataServiceProvider || defaultProvider;
   const servicePhotos = Array.isArray(provider.servicePhotos) && provider.servicePhotos.length > 0 
     ? provider.servicePhotos 
-    : ["./placeholder.svg"];
+    : ["./placeholder.svg", "./placeholder.svg", "./placeholder.svg"];
 
   return (
     <Card className="w-full max-w-6xl mx-auto">
-      <div className="flex items-center justify-between gap-6 p-6 bg-muted rounded-t-lg">
+      <div className="flex items-start justify-between gap-6 p-6 bg-muted rounded-t-lg">
         <div className="flex items-center gap-6">
           <img
             src={provider.imgSrc}
@@ -61,9 +61,9 @@ export function DetailsServiceProvider({
             width={80}
             height={80}
             className="rounded-full"
-            style={{ aspectRatio: "80/80", objectFit: "cover" }}
+            style={{ aspectRatio: "1/1", objectFit: "cover" }}
           />
-          <div className="grid gap-1">
+          <div className="grid gap-2">
             <h2 className="text-xl font-bold">{provider.name}</h2>
             <div className="text-muted-foreground">
               <span className="font-medium">Location:</span> {provider.location}
@@ -73,25 +73,25 @@ export function DetailsServiceProvider({
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-end text-muted-foreground">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col text-muted-foreground">
+          <div className="flex items-center gap-2 mb-2">
             <PhoneIcon className="w-5 h-5" />
-            <span className="ml-2">{defaultProvider.phone}</span>
+            <span className="truncate">{defaultProvider.phone}</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mb-2">
             <MailOpenIcon className="w-5 h-5" />
-            <span className="ml-2">{defaultProvider.email}</span>
+            <span className="truncate">{defaultProvider.email}</span>
           </div>
           <div className="flex items-center gap-2">
             <WhatsappIcon className="w-5 h-5" />
-            <span className="ml-2">{defaultProvider.whatsapp}</span>
+            <span className="truncate">{defaultProvider.whatsapp}</span>
           </div>
         </div>
       </div>
       <CardContent className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Service Details Column */}
-          <div className="grid gap-4 lg:col-span-2">
+          <div className="lg:col-span-2">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Service Details */}
               <div className="grid gap-4">
@@ -113,7 +113,7 @@ export function DetailsServiceProvider({
                     <span className="font-medium">Available:</span> Yes
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">Price Range:</span> 1200
+                    <span className="font-medium">Price Range:</span> {defaultProvider.details.priceRange}
                   </div>
                 </div>
               </div>
@@ -122,29 +122,29 @@ export function DetailsServiceProvider({
                 <div className="grid gap-2 text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <span className="font-medium">Disponível:</span>
-                    <span>Sim</span>
+                    <span>{defaultProvider.details.available ? "Sim" : "Não"}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="font-medium">Faixa de Preço:</span>
-                    <span>1200</span>
+                    <span>{defaultProvider.details.priceRange}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">Disponível:</span>
-                    <span>Sim</span>
+                    <span className="font-medium">Faixa de Preço:</span>
+                    <span>{defaultProvider.details.priceRange}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">Disponível:</span>
-                    <span>Sim</span>
+                    <span className="font-medium">Faixa de Preço:</span>
+                    <span>{defaultProvider.details.priceRange}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">Disponível:</span>
-                    <span>Sim</span>
+                    <span className="font-medium">Faixa de Preço:</span>
+                    <span>{defaultProvider.details.priceRange}</span>
                   </div>
                 </div>
               </div>
             </div>
-            <Separator />
-            <div className="grid gap-2">
+            <Separator className='mt-4'/>
+            <div className="grid gap-2 mt-4">
               <h3 className="text-lg font-semibold">About</h3>
               <p className="text-muted-foreground">{provider.description}</p>
             </div>
