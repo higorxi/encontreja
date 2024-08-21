@@ -4,31 +4,31 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import Cards from 'react-credit-cards-2'; // Importa o componente de cartões
+import Cards from 'react-credit-cards-2'; 
 
-export function ModalFlatServiceProvider({ onClose, plan }) {
+export function ModalFlatServiceProvider({ onClose, plan }: any) {
   const [zipcode, setZipcode] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
-  const [step, setStep] = useState(1); // Passo atual
-  const [paymentMethod, setPaymentMethod] = useState('credit-card'); // Método de pagamento selecionado
-  const [timer, setTimer] = useState(0); // Tempo do timer (em segundos)
-  const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(true); // Botão desativado por padrão
+  const [step, setStep] = useState(1); 
+  const [paymentMethod, setPaymentMethod] = useState('credit-card'); 
+  const [timer, setTimer] = useState(0); 
+  const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(true); 
   const [cardState, setCardState] = useState({
     number: '',
     expiry: '',
     cvc: '',
     name: '',
     focus: '',
-  }); // Estado do cartão
+  }); 
 
   useEffect(() => {
-    let interval;
+    let interval: string | number | NodeJS.Timeout | undefined;
     if (paymentMethod === 'pix' && timer > 0) {
       interval = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 0) {
-            setConfirmButtonDisabled(false); // Habilita o botão quando o timer chega a 0
+            setConfirmButtonDisabled(false); 
             clearInterval(interval);
             return 0;
           }
@@ -61,16 +61,16 @@ export function ModalFlatServiceProvider({ onClose, plan }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    setStep(2); // Atualiza o passo para o próximo
+    setStep(2); 
   };
 
-  const handlePaymentMethodChange = (value) => {
+  const handlePaymentMethodChange = (value: any) => {
     setPaymentMethod(value);
     if (value === 'pix') {
-      setTimer(60); // Inicia o timer para Pix
-      setConfirmButtonDisabled(true); // Desativa o botão enquanto o timer conta
+      setTimer(60); 
+      setConfirmButtonDisabled(true); 
     }
   };
 
@@ -78,12 +78,12 @@ export function ModalFlatServiceProvider({ onClose, plan }) {
     setStep(3); // Avança para o passo 3
   };
 
-  const handleCardInputChange = (e) => {
+  const handleCardInputChange = (e: any) => {
     const { name, value } = e.target;
     setCardState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCardInputFocus = (e) => {
+  const handleCardInputFocus = (e: any) => {
     setCardState((prev) => ({ ...prev, focus: e.target.name }));
   };
 
@@ -201,104 +201,119 @@ export function ModalFlatServiceProvider({ onClose, plan }) {
               </div>
               <div className="text-center">
                 <p className="text-lg">Copie e cole o código abaixo para pagar:</p>
-                <div className="bg-gray-100 p-4 rounded-md text-gray-600">
-                  <p>0000 0000 0000 0000</p>
+                <div className="bg-gray-100 p-4 rounded-md text-lg">
+                  1234 5678 9012 3456
                 </div>
-                <p className="mt-4">Tempo restante: {timer}s</p>
               </div>
-            </div>
-            <div className="grid gap-4">
-              <Button
-                type="button"
-                className="w-full"
-                onClick={handleConfirm}
-                disabled={confirmButtonDisabled}
-              >
-                Confirmar Pagamento
-              </Button>
+              <div className="flex gap-4 mt-6">
+                <Button type="button" onClick={() => setStep(1)} variant="outline">
+                  Voltar
+                </Button>
+                <Button
+                  type="button"
+                  disabled={confirmButtonDisabled}
+                  onClick={handleConfirm}
+                >
+                  Confirmar
+                </Button>
+                {timer > 0 && (
+                  <div className="text-center mt-4">
+                    <p className="text-red-600">Tempo restante: {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
         {step === 2 && paymentMethod === 'credit-card' && (
           <div className="grid gap-6">
             <h2 className="text-2xl font-semibold">Credit Card Payment</h2>
-            <div className="flex items-center justify-center">
-              <Cards
-                cvc={cardState.cvc}
-                expiry={cardState.expiry}
-                focused={cardState.focus}
-                name={cardState.name}
-                number={cardState.number}
-              />
-            </div>
-            <form onSubmit={handleConfirm}>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="number">Card Number</Label>
-                  <Input
-                    id="number"
-                    name="number"
-                    placeholder="1234 5678 9012 3456"
-                    value={cardState.number}
-                    onChange={handleCardInputChange}
-                    onFocus={handleCardInputFocus}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="expiry">Expiry Date</Label>
-                  <Input
-                    id="expiry"
-                    name="expiry"
-                    placeholder="MM/YY"
-                    value={cardState.expiry}
-                    onChange={handleCardInputChange}
-                    onFocus={handleCardInputFocus}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="cvc">CVC</Label>
-                  <Input
-                    id="cvc"
-                    name="cvc"
-                    placeholder="123"
-                    value={cardState.cvc}
-                    onChange={handleCardInputChange}
-                    onFocus={handleCardInputFocus}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Cardholder Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    placeholder="John Doe"
-                    value={cardState.name}
-                    onChange={handleCardInputChange}
-                    onFocus={handleCardInputFocus}
-                  />
-                </div>
+            <Cards
+              number={cardState.number}
+              name={cardState.name}
+              expiry={cardState.expiry}
+              cvc={cardState.cvc}
+              focused={cardState.focus}
+            />
+            <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="card-number">Card Number</Label>
+                <Input
+                  id="card-number"
+                  name="number"
+                  value={cardState.number}
+                  onChange={handleCardInputChange}
+                  onFocus={handleCardInputFocus}
+                  placeholder="1234 5678 9012 3456"
+                />
               </div>
-              <Button variant='outline' className="w-full mt-4">
-                Voltar
-              </Button>
-              <Button  className="w-full mt-4">
-                Confirmar Pagamento
-              </Button>
-            </form>
+              <div className="grid gap-2">
+                <Label htmlFor="card-name">Name on Card</Label>
+                <Input
+                  id="card-name"
+                  name="name"
+                  value={cardState.name}
+                  onChange={handleCardInputChange}
+                  onFocus={handleCardInputFocus}
+                  placeholder="John Doe"
+                />
+              </div>
+              <div className="flex justify-between space-x-4">
+              <div className="grid gap-2">
+                <Label htmlFor="card-expiry">Expiry Date</Label>
+                <Input
+                  id="card-expiry"
+                  name="expiry"
+                  value={cardState.expiry}
+                  onChange={handleCardInputChange}
+                  onFocus={handleCardInputFocus}
+                  placeholder="MM/YY"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="card-cvc">CVC</Label>
+                <Input
+                  id="card-cvc"
+                  name="cvc"
+                  value={cardState.cvc}
+                  onChange={handleCardInputChange}
+                  onFocus={handleCardInputFocus}
+                  placeholder="123"
+                />
+              </div>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="installments">Select Installments</Label>
+                <select
+                  id="installments"
+                  className="p-2 border rounded-md"
+                  onChange={(e) => console.log('Selected Installment:', e.target.value)}
+                >
+                  <option value="1">1x - $99.00</option>
+                  <option value="2">2x - $49.50</option>
+                  <option value="3">3x - $33.00</option>
+                  <option value="3">4x - $15.00</option>
+                  <option value="3">5x - $7.00</option>
+                  <option value="3">6x - $3.60</option>
+                  <option value="3">7x - $1.50</option>
+                  <option value="3">8x - $0.75</option>
+                </select>
+              </div>
+              
+              <div className="flex justify-between space-x-4">
+                    <Button type="button" variant="outline" onClick={onClose}>
+                      Voltar
+                    </Button>
+                    <Button onClick={handleConfirm}>Confirmar</Button>
+                  </div>
+            </div>
           </div>
         )}
         {step === 3 && (
           <div className="grid gap-6">
-            <h2 className="text-2xl font-semibold">Payment Success</h2>
-            <p className="text-lg">
-              Your payment was successful! A confirmation email has been sent to you, and your support
-              ticket has been created.
-            </p>
-            <div className="text-center">
-              <Button onClick={onClose} className="mt-4">
-                Close
-              </Button>
-            </div>
+            <h2 className="text-2xl font-semibold">Confirmation</h2>
+            <p>Your payment has been successfully processed. Thank you!</p>
+            <Button onClick={onClose}>Close</Button>
           </div>
         )}
       </DialogContent>
