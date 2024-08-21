@@ -5,12 +5,24 @@ import { Button } from "@/components/ui/button";
 import { ModalLogout } from "./modal-logout";
 import { ModalConfig } from "./modal-config";
 import { ModalProfile } from "./modal-profile";
+import { ModalServiceRegister } from "./modal-service-register";
+import { ModalLogin } from "./modal-login";
 
-export function HeaderAlternative({ isLoggedIn = true }) {
+export function HeaderAlternative({ isLoggedIn = true, isAuthenticated = false }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handlePostServiceClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleMenuToggle = () => setMenuOpen(!isMenuOpen);
 
@@ -37,7 +49,7 @@ export function HeaderAlternative({ isLoggedIn = true }) {
             Contato
           </Link>
         </div>
-        <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium">
+        <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium" onClick={handlePostServiceClick}>
           <PlusIcon className="h-4 w-4" />
           <span className="hidden md:inline">Postar Serviço</span>
         </Button>
@@ -77,6 +89,15 @@ export function HeaderAlternative({ isLoggedIn = true }) {
             )}
           </div>
         )}
+        {isModalOpen && (
+        <>
+          {isAuthenticated ? (
+            <ModalServiceRegister onClose={closeModal}/>
+          ) : (
+            <ModalLogin onClose={closeModal}/>
+          )}
+        </>
+      )}
       </div>
 
       {isProfileModalOpen && (

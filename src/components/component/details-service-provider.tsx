@@ -37,9 +37,9 @@ export function DetailsServiceProvider({
     whatsapp: "(11) 99999-9999",
     description: "Descrição do serviço prestado.",
     servicePhotos: [
-      "./placeholder.svg",
-      "./placeholder.svg",
-      "./placeholder.svg"
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg"
     ],
     details: {
       available: true,
@@ -50,7 +50,7 @@ export function DetailsServiceProvider({
   const provider = dataServiceProvider || defaultProvider;
   const servicePhotos = Array.isArray(provider.servicePhotos) && provider.servicePhotos.length > 0 
     ? provider.servicePhotos 
-    : ["./placeholder.svg", "./placeholder.svg", "./placeholder.svg"];
+    : ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"];
 
   return (
     <Card className="w-full max-w-6xl mx-auto">
@@ -77,15 +77,15 @@ export function DetailsServiceProvider({
         <div className="flex flex-col text-muted-foreground">
           <div className="flex items-center gap-2 mb-2">
             <PhoneIcon className="w-5 h-5" />
-            <span className="truncate">{defaultProvider.phone}</span>
+            <span className="truncate">{provider.phone}</span>
           </div>
           <div className="flex items-center gap-2 mb-2">
             <MailOpenIcon className="w-5 h-5" />
-            <span className="truncate">{defaultProvider.email}</span>
+            <span className="truncate">{provider.email}</span>
           </div>
           <div className="flex items-center gap-2">
             <WhatsappIcon className="w-5 h-5" />
-            <span className="truncate">{defaultProvider.whatsapp}</span>
+            <span className="truncate">{provider.whatsapp}</span>
           </div>
         </div>
       </div>
@@ -129,18 +129,6 @@ export function DetailsServiceProvider({
                     <span className="font-medium">Faixa de Preço:</span>
                     <span>{defaultProvider.details.priceRange}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Faixa de Preço:</span>
-                    <span>{defaultProvider.details.priceRange}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Faixa de Preço:</span>
-                    <span>{defaultProvider.details.priceRange}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Faixa de Preço:</span>
-                    <span>{defaultProvider.details.priceRange}</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -156,6 +144,8 @@ export function DetailsServiceProvider({
                 key={index}
                 src={photo}
                 alt={`Service Photo ${index + 1}`}
+                width={150}  // provide width
+                height={150} // provide height
                 className="w-full h-auto rounded-lg object-cover"
                 style={{ height: "150px", objectFit: "cover" }}
               />
@@ -166,6 +156,7 @@ export function DetailsServiceProvider({
     </Card>
   );
 }
+
 
 function BriefcaseIcon(props: any) {
   return (

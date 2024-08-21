@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ModalFlatServiceProvider } from "./modal-flat-service-provider";
 
 export function Price() {
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -8,6 +9,10 @@ export function Price() {
   const openModal = (plan: any) => {
     setSelectedPlan(plan);
     console.log(`Abrindo modal para o plano: ${plan}`);
+  };
+
+  const closeModal = () => {
+    setSelectedPlan(null);
   };
 
   return (
@@ -123,17 +128,9 @@ export function Price() {
           <Button className="bg-gray-800 text-white hover:bg-gray-700">Subscribe</Button>
         </div>
       </div>
-      {/* Modal Component */}
+
       {selectedPlan && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h2 className="text-xl font-bold mb-4">Plano Selecionado: {selectedPlan}</h2>
-            <p>Detalhes do plano {selectedPlan} aqui...</p>
-            <Button onClick={() => setSelectedPlan(null)} className="mt-4 bg-red-500 text-white hover:bg-red-400">
-              Fechar
-            </Button>
-          </div>
-        </div>
+        <ModalFlatServiceProvider onClose={closeModal} plan={selectedPlan}/>
       )}
     </section>
   );

@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"

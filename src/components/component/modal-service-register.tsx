@@ -7,11 +7,11 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useState } from "react";
 import { AiOutlineDelete, AiOutlineReload } from "react-icons/ai";
+import Image from "next/image";
 
 export function ModalServiceRegister({ onClose }: any) {
   const [images, setImages] = useState([null, null, null]);
   const [selectedServices, setSelectedServices] = useState([]);
-  const [selectedPaymentMethods, setSelectedPaymentMethods] = useState([]);
   const [physicalSpace, setPhysicalSpace] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState({
     card: false,
@@ -95,7 +95,7 @@ export function ModalServiceRegister({ onClose }: any) {
                   >
                     {image ? (
                       <>
-                        <img
+                        <Image
                           src={image}
                           alt={`Imagem do Serviço ${index + 1}`}
                           className="w-full h-full object-cover rounded-lg"
@@ -213,7 +213,7 @@ export function ModalServiceRegister({ onClose }: any) {
                 </div>
                 <div className="flex-1 min-w-[250px]">
                   <Label htmlFor="whatsapp">WhatsApp</Label>
-                  <Input id="whatsapp" type="tel" placeholder="+1 (555) 555-5555" />
+                  <Input id="whatsapp" type="tel" placeholder="(11) 99999-9999" />
                 </div>
               </div>
               <div className="flex flex-col gap-4">
