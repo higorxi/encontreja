@@ -19,7 +19,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
     expiry: '',
     cvc: '',
     name: '',
-    focus: '',
+    focus: undefined,
   }); 
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,8 +10,8 @@ import { AiOutlineDelete, AiOutlineReload } from "react-icons/ai";
 import Image from "next/image";
 
 export function ModalServiceRegister({ onClose }: any) {
-  const [images, setImages] = useState([null, null, null]);
-  const [selectedServices, setSelectedServices] = useState([]);
+  const [images, setImages] = useState<(string | ArrayBuffer | null)[]>([null, null, null]);
+  const [selectedServices, setSelectedServices] = useState<string>('');
   const [physicalSpace, setPhysicalSpace] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState({
     card: false,
@@ -19,38 +19,43 @@ export function ModalServiceRegister({ onClose }: any) {
     cash: false,
   });
 
-  const handleImageChange = (e: any, index: any) => {
+
+  const handleImageChange = (e: any, index: number) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImages(prevImages => {
-          const updatedImages = [...prevImages];
-          updatedImages[index] = reader.result;
-          return updatedImages;
-        });
+        if (typeof reader.result === 'string') {
+          setImages(prevImages => {
+            const updatedImages = [...prevImages];
+            updatedImages[index] = reader.result;
+            return updatedImages;
+          });
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleDrop = (e: any, index: any) => {
+  const handleDrop = (e: any, index: number) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImages(prevImages => {
-          const updatedImages = [...prevImages];
-          updatedImages[index] = reader.result;
-          return updatedImages;
-        });
+        if (typeof reader.result === 'string') {
+          setImages(prevImages => {
+            const updatedImages = [...prevImages];
+            updatedImages[index] = reader.result;
+            return updatedImages;
+          });
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleImageRemove = (index: any) => {
+  const handleImageRemove = (index: number) => {
     setImages(prevImages => {
       const updatedImages = [...prevImages];
       updatedImages[index] = null;
@@ -58,8 +63,14 @@ export function ModalServiceRegister({ onClose }: any) {
     });
   };
 
-  const handleSelectChange = (e: any, setter: any) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+  const handleSelectChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    setter: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option: HTMLOptionElement) => option.value
+    );
     setter(selectedOptions);
   };
 
@@ -67,7 +78,7 @@ export function ModalServiceRegister({ onClose }: any) {
     setPhysicalSpace(prev => !prev);
   };
 
-  const handlePaymentMethodChange = (method: any) => {
+  const handlePaymentMethodChange = (method: keyof typeof paymentMethods) => {
     setPaymentMethods(prev => ({ ...prev, [method]: !prev[method] }));
   };
 
@@ -76,12 +87,11 @@ export function ModalServiceRegister({ onClose }: any) {
       <DialogContent className="sm:max-w-[1300px] sm:max-h-[600px] flex flex-col">
         <div className="flex justify-between items-center p-4 border-b">
           <div>
-          <DialogTitle>Registrar Seu Serviço</DialogTitle>
-          <DialogDescription>Preencha o formulário abaixo para registrar seu serviço.</DialogDescription>
+            <DialogTitle>Registrar Seu Serviço</DialogTitle>
+            <DialogDescription>Preencha o formulário abaixo para registrar seu serviço.</DialogDescription>
           </div>          
         </div>
         <div className="flex-1 overflow-auto p-6">
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Coluna da esquerda */}
             <div className="space-y-4">
@@ -96,7 +106,7 @@ export function ModalServiceRegister({ onClose }: any) {
                     {image ? (
                       <>
                         <Image
-                          src={image}
+                          src={image as string}
                           alt={`Imagem do Serviço ${index + 1}`}
                           className="w-full h-full object-cover rounded-lg"
                         />
@@ -158,9 +168,8 @@ export function ModalServiceRegister({ onClose }: any) {
                 <div className="flex-1 min-w-[250px]">
                   <Label htmlFor="service">Serviço</Label>
                   <Select
-                    id="service"
-                    multiple
-                    onChange={(e) => handleSelectChange(e, setSelectedServices)}
+                    value={selectedServices}
+                    onValueChange={setSelectedServices}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione os serviços" />
@@ -218,32 +227,27 @@ export function ModalServiceRegister({ onClose }: any) {
               </div>
               <div className="flex flex-col gap-4">
                 <div className="flex-1 min-w-[250px]">
-                  <Label htmlFor="price-range-start">Faixa de Preço</Label>
-                  <div className="flex gap-2">
-                    <Input id="price-range-start" type="number" placeholder="Início" min={0} />
-                    <span>-</span>
-                    <Input id="price-range-end" type="number" placeholder="Fim" min={0} />
-                  </div>
+                  <Label htmlFor="physical-space">Espaço Físico</Label>
+                  <Switch
+                    id="physical-space"
+                    checked={physicalSpace}
+                    onCheckedChange={handlePhysicalSpaceChange}
+                  />
                 </div>
                 <div className="flex-1 min-w-[250px]">
-                  <Label htmlFor="physical-space">Espaço Físico</Label>
-                  <div className="flex items-center">
-                    <Switch
-                      id="physical-space"
-                      checked={physicalSpace}
-                      onCheckedChange={handlePhysicalSpaceChange}
-                    />
-                    <Label htmlFor="physical-space" className="ml-2">Disponível</Label>
-                  </div>
+                  <Label htmlFor="address">Endereço</Label>
+                  <Input id="address" type="text" placeholder="Endereço do serviço" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="p-4 border-t flex justify-between">
-          <Button type="button" variant="outline" onClick={onClose}>Fechar</Button>
-          <Button type="submit">Registrar Serviço</Button>
-        </div>
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={() => onClose()}>
+            Fechar
+          </Button>
+          <Button type="submit">Salvar</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

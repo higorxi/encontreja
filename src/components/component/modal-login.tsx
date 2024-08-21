@@ -4,7 +4,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 
-export function ModalLogin({onClose}) {
+export function ModalLogin({onClose}: any) {
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
