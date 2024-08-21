@@ -3,6 +3,7 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
+import Image from 'next/image';
 import serviceProviders from "@/lib/providers";
 import { DetailsServiceProvider } from "./details-service-provider";
 import usePageTitle from "@/Hooks/usePageTittle";
@@ -16,6 +17,7 @@ export function Advertisements() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [hasMore, setHasMore] = useState(true);
   usePageTitle('Serviços - EncontreJA')
+  
   const filteredProviders = serviceProviders.filter(provider => {
     const locationMatch = locationFilter ? provider.location.toLowerCase().includes(locationFilter) : true;
     const typeMatch = typeFilter ? provider.type === typeFilter : true;
@@ -34,7 +36,7 @@ export function Advertisements() {
     setVisibleCount(newVisibleCount);
   };
 
-  const openModal = (provider) => {
+  const openModal = (provider: any) => {
     setSelectedProvider(provider);
     setIsModalOpen(true);
   };
@@ -44,7 +46,7 @@ export function Advertisements() {
     setSelectedProvider(null);
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (event: any) => {
     if (event.target.classList.contains('modal-overlay')) {
       closeModal();
     }
@@ -98,7 +100,7 @@ export function Advertisements() {
             onClick={() => openModal(provider)}
           >
             <div className="aspect-square">
-              <img
+              <Image
                 src={provider.imgSrc}
                 alt="Service Provider"
                 width={400}

@@ -81,10 +81,9 @@ export function Footer() {
   )
 }
 
-// The icon components are unchanged
 
 
-function FacebookIcon(props) {
+function FacebookIcon(props: any) {
   return (
     <svg
       {...props}
@@ -104,7 +103,7 @@ function FacebookIcon(props) {
 }
 
 
-function InstagramIcon(props) {
+function InstagramIcon(props: any) {
   return (
     <svg
       {...props}
@@ -126,7 +125,7 @@ function InstagramIcon(props) {
 }
 
 
-function LinkedinIcon(props) {
+function LinkedinIcon(props: any) {
   return (
     <svg
       {...props}
@@ -148,7 +147,7 @@ function LinkedinIcon(props) {
 }
 
 
-function MailIcon(props) {
+function MailIcon(props: any) {
   return (
     <svg
       {...props}
@@ -169,7 +168,7 @@ function MailIcon(props) {
 }
 
 
-function MapPinIcon(props) {
+function MapPinIcon(props: any) {
   return (
     <svg
       {...props}
@@ -190,7 +189,7 @@ function MapPinIcon(props) {
 }
 
 
-function MountainIcon(props) {
+function MountainIcon(props: any) {
   return (
     <svg
       {...props}
@@ -210,7 +209,7 @@ function MountainIcon(props) {
 }
 
 
-function PhoneIcon(props) {
+function PhoneIcon(props: any) {
   return (
     <svg
       {...props}
@@ -230,7 +229,7 @@ function PhoneIcon(props) {
 }
 
 
-function TwitterIcon(props) {
+function TwitterIcon(props: any) {
   return (
     <svg
       {...props}

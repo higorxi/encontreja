@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import Image from "next/image";
 
 export function InitialScreen() {
   return (
@@ -29,7 +30,7 @@ export function InitialScreen() {
                 </div>
               </div>
               <div className="relative">
-                <img
+                <Image
                   src="/placeholder.svg"
                   width="550"
                   height="550"
@@ -155,7 +156,7 @@ export function InitialScreen() {
   );
 }
 
-function BrushIcon(props) {
+function BrushIcon(props: any) {
   return (
     <svg
       {...props}
@@ -175,7 +176,7 @@ function BrushIcon(props) {
   );
 }
 
-function CheckIcon(props) {
+function CheckIcon(props: any) {
   return (
     <svg
       {...props}
@@ -194,7 +195,7 @@ function CheckIcon(props) {
   );
 }
 
-function WrenchIcon(props) {
+function WrenchIcon(props: any) {
   return (
     <svg
       {...props}
@@ -213,7 +214,7 @@ function WrenchIcon(props) {
   );
 }
 
-function LaptopIcon(props) {
+function LaptopIcon(props: any) {
   return (
     <svg
       {...props}

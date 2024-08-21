@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 interface DetailsServiceProviderProps {
   dataServiceProvider?: {
@@ -9,6 +10,7 @@ interface DetailsServiceProviderProps {
     rating: number;
     phone: string;
     email: string;
+    type: string;
     whatsapp: string;
     description: string;
     servicePhotos: string[];
@@ -54,7 +56,7 @@ export function DetailsServiceProvider({
     <Card className="w-full max-w-6xl mx-auto">
       <div className="flex items-start justify-between gap-6 p-6 bg-muted rounded-t-lg">
         <div className="flex items-center gap-6">
-          <img
+          <Image
             src={provider.imgSrc}
             alt="Profile Picture"
             width={80}
@@ -150,7 +152,7 @@ export function DetailsServiceProvider({
           </div>
           <div className="flex flex-col gap-4">
             {servicePhotos.map((photo, index) => (
-              <img
+              <Image
                 key={index}
                 src={photo}
                 alt={`Service Photo ${index + 1}`}
@@ -165,7 +167,7 @@ export function DetailsServiceProvider({
   );
 }
 
-function BriefcaseIcon(props) {
+function BriefcaseIcon(props: any) {
   return (
     <svg
       {...props}
@@ -185,7 +187,7 @@ function BriefcaseIcon(props) {
   );
 }
 
-function ClockIcon(props) {
+function ClockIcon(props: any) {
   return (
     <svg
       {...props}
@@ -205,7 +207,7 @@ function ClockIcon(props) {
   );
 }
 
-function HomeIcon(props) {
+function HomeIcon(props: any) {
   return (
     <svg
       {...props}
@@ -225,7 +227,7 @@ function HomeIcon(props) {
   );
 }
 
-function MailOpenIcon(props) {
+function MailOpenIcon(props: any) {
   return (
     <svg
       {...props}
@@ -245,7 +247,7 @@ function MailOpenIcon(props) {
   );
 }
 
-function PhoneIcon(props) {
+function PhoneIcon(props: any) {
   return (
     <svg
       {...props}
@@ -264,7 +266,7 @@ function PhoneIcon(props) {
   );
 }
 
-function WhatsappIcon(props) {
+function WhatsappIcon(props: any) {
   return (
     <svg
       {...props}
