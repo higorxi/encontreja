@@ -3,16 +3,20 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ModalFlatServiceProvider } from "./modal-flat-service-provider";
 
-export function Price() {
-  const [selectedPlan, setSelectedPlan] = useState(null);
+interface priceDetails {
+  planName: string,
+  planPrice: number
+}
 
-  const openModal = (plan: any) => {
-    setSelectedPlan(plan);
-    console.log(`Abrindo modal para o plano: ${plan}`);
+export function Price() {
+  const [selectedPlan, setSelectedPlan] = useState<priceDetails>();
+
+  const openModal = (planName: string, planPrice: number) => {
+    setSelectedPlan({ planName, planPrice });
   };
 
   const closeModal = () => {
-    setSelectedPlan(null);
+    setSelectedPlan(undefined);
   };
 
   return (
@@ -20,7 +24,7 @@ export function Price() {
       <div className="container grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-6 max-w-7xl mx-auto">
         <div
           className="bg-gray-200 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-105 cursor-pointer shadow-md hover:shadow-lg"
-          onClick={() => openModal('Basic')}
+          onClick={() => openModal('Basic', 9)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold text-gray-800">Basic</h3>
@@ -56,7 +60,7 @@ export function Price() {
         </div>
         <div
           className="bg-yellow-400 rounded-lg p-6 flex flex-col gap-4 text-white shadow-lg mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer relative"
-          onClick={() => openModal('Gold')}
+          onClick={() => openModal('Gold', 49)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold">Gold</h3>
@@ -93,7 +97,7 @@ export function Price() {
         </div>
         <div
           className="bg-gray-300 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-105 cursor-pointer shadow-md hover:shadow-lg"
-          onClick={() => openModal('Silver')}
+          onClick={() => openModal('Silver', 29)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold text-gray-800">Silver</h3>

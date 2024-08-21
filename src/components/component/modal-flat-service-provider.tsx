@@ -1,27 +1,32 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import Cards from 'react-credit-cards-2'; 
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
 export function ModalFlatServiceProvider({ onClose, plan }: any) {
   const [zipcode, setZipcode] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
-  const [step, setStep] = useState(1); 
-  const [paymentMethod, setPaymentMethod] = useState('credit-card'); 
-  const [timer, setTimer] = useState(0); 
-  const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(true); 
+  const [step, setStep] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState('credit-card');
+  const [timer, setTimer] = useState(0);
+  const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(true);
   const [cardState, setCardState] = useState({
     number: '',
     expiry: '',
     cvc: '',
     name: '',
     focus: undefined,
-  }); 
+  });
+  const [installments, setInstallments] = useState(1);
+
+  const handleInstallmentsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setInstallments(Number(e.target.value));
+  };
 
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined;
@@ -29,7 +34,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
       interval = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 0) {
-            setConfirmButtonDisabled(false); 
+            setConfirmButtonDisabled(false);
             clearInterval(interval);
             return 0;
           }
@@ -64,19 +69,23 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    setStep(2); 
+    setStep(2);
   };
 
   const handlePaymentMethodChange = (value: any) => {
     setPaymentMethod(value);
     if (value === 'pix') {
-      setTimer(60); 
-      setConfirmButtonDisabled(true); 
+      setTimer(60);
+      setConfirmButtonDisabled(true);
     }
   };
 
   const handleConfirm = () => {
-    setStep(3); 
+    setStep(3);
+  };
+
+  const backStep = () => {
+    setStep((prevStep) => prevStep - 1);
   };
 
   const handleCardInputChange = (e: any) => {
@@ -88,6 +97,8 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
     setCardState((prev) => ({ ...prev, focus: e.target.name }));
   };
 
+  const code = '12312312301920391203912093091293012031029301290312312312312312312312';
+
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
@@ -95,25 +106,25 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
           <div className="grid gap-6">
             <div className="grid gap-2">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-semibold">Checkout</h2>
+                <h2 className="text-2xl font-semibold">Checkout Assinatura</h2>
                 <div className="flex items-center gap-2">
                   <PackageIcon className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-muted-foreground">Plan: {plan}</span>
+                  <span className="text-muted-foreground">Plano: {plan.planName}</span>
                 </div>
               </div>
               <p className="text-muted-foreground">
-                Please provide your personal information to complete the checkout process.
+                Forneça suas informações pessoais para concluir o processo de finalização da assinatura.
               </p>
             </div>
             <form className="grid gap-4" onSubmit={handleSubmit}>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" placeholder="John Doe" />
+                  <Label htmlFor="name">Nome</Label>
+                  <Input id="name" placeholder="João Batista" />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="john@example.com" />
+                  <Input id="email" type="email" placeholder="joaobatista@email.com" />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
@@ -122,15 +133,15 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                   <Input id="cpf" placeholder="123.456.789-00" />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone">Telefone</Label>
                   <Input id="phone" placeholder="+55 (11) 12345-6789" />
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="address">Billing Address</Label>
+                <Label htmlFor="address">Endereço de Cobrança</Label>
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="zipcode">Zip Code</Label>
+                    <Label htmlFor="zipcode">CEP</Label>
                     <div className="relative">
                       <Input
                         id="zipcode"
@@ -149,23 +160,23 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                     </div>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="city">City</Label>
+                    <Label htmlFor="city">Cidade</Label>
                     <Input id="city" placeholder="São Paulo" value={city} readOnly />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="state">State</Label>
+                    <Label htmlFor="state">Estado</Label>
                     <Input id="state" placeholder="SP" value={state} readOnly />
                   </div>
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="payment">Payment Method</Label>
+                <Label htmlFor="payment">Método de Pagamento</Label>
                 <RadioGroup id="payment" value={paymentMethod} onValueChange={handlePaymentMethodChange}>
                   <div className="flex items-center gap-4">
                     <Label htmlFor="credit-card" className="flex items-center gap-2 cursor-pointer">
                       <RadioGroupItem id="credit-card" value="credit-card" />
                       <CreditCardIcon className="w-5 h-5" />
-                      Credit Card
+                      Cartão de Crédito
                     </Label>
                     <Label htmlFor="pix" className="flex items-center gap-2 cursor-pointer">
                       <RadioGroupItem id="pix" value="pix" />
@@ -178,7 +189,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
               <div className="grid gap-4">
                 <div className="flex items-center justify-between">
                   <div className="font-semibold">Total</div>
-                  <div className="text-2xl font-semibold">$99.00</div>
+                  <div className="text-2xl font-semibold">R${plan.planPrice}</div>
                 </div>
                 <Button type="submit" className="w-full">
                   Continuar
@@ -189,43 +200,73 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
         )}
         {step === 2 && paymentMethod === 'pix' && (
           <div className="grid gap-6">
-            <h2 className="text-2xl font-semibold">Pix Payment</h2>
+            <h2 className="text-2xl font-semibold text-center">Pagamento via Pix</h2>
             <div className="grid gap-4">
               <div className="flex items-center justify-center">
-                {/* Simulação de QR Code */}
                 <div className="w-40 h-40 bg-gray-200 rounded-md flex items-center justify-center text-gray-600">
                   QR Code
                 </div>
               </div>
-              <div className="text-center">
+              <div className="text-center mt-4">
                 <p className="text-lg">Copie e cole o código abaixo para pagar:</p>
-                <div className="bg-gray-100 p-4 rounded-md text-lg">
-                  1234 5678 9012 3456
+                <div className="relative bg-gray-100 p-4 rounded-md text-lg flex justify-between items-center">
+                  <span className="select-all">{code.length > 40 ? `${code.substring(0, 40)}...` : code}</span>
+                  <button
+                    className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
+                    onClick={() => navigator.clipboard.writeText(code)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-3M16 5l4 4m-4-4v4h4"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
-              <div className="flex gap-4 mt-6">
-                <Button type="button" onClick={() => setStep(1)} variant="outline">
+              {timer > 0 && (
+                <div className="text-center mt-4">
+                  <p className="text-red-600">
+                    Tempo restante: {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}
+                  </p>
+                </div>
+              )}
+              <div className="flex justify-between gap-4 mt-6">
+                <Button type="button" onClick={backStep} variant="outline">
                   Voltar
                 </Button>
                 <Button
                   type="button"
                   disabled={confirmButtonDisabled}
                   onClick={handleConfirm}
+                  className={`flex items-center gap-2 ${
+                    confirmButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                  } text-white px-4 py-2 rounded-md`}
                 >
-                  Confirmar
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d={`M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 002 0V7zm0 6a1 1 0 11-2 0 1 1 012 0z`}
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  {confirmButtonDisabled ? 'Desbloqueando...' : 'Continuar'}
                 </Button>
-                {timer > 0 && (
-                  <div className="text-center mt-4">
-                    <p className="text-red-600">Tempo restante: {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}</p>
-                  </div>
-                )}
               </div>
             </div>
           </div>
         )}
         {step === 2 && paymentMethod === 'credit-card' && (
           <div className="grid gap-6">
-            <h2 className="text-2xl font-semibold">Credit Card Payment</h2>
+            <h2 className="text-2xl font-semibold">Pagamento por cartão de crédito</h2>
             <Cards
               number={cardState.number}
               name={cardState.name}
@@ -235,7 +276,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
             />
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="card-number">Card Number</Label>
+                <Label htmlFor="card-number">Número do cartão</Label>
                 <Input
                   id="card-number"
                   name="number"
@@ -246,7 +287,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="card-name">Name on Card</Label>
+                <Label htmlFor="card-name">Nome do titular do cartão</Label>
                 <Input
                   id="card-name"
                   name="name"
@@ -257,68 +298,69 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                 />
               </div>
               <div className="flex justify-between space-x-4">
-              <div className="grid gap-2">
-                <Label htmlFor="card-expiry">Expiry Date</Label>
-                <Input
-                  id="card-expiry"
-                  name="expiry"
-                  value={cardState.expiry}
-                  onChange={handleCardInputChange}
-                  onFocus={handleCardInputFocus}
-                  placeholder="MM/YY"
-                />
+                <div className="grid gap-2">
+                  <Label htmlFor="card-expiry">Data de expiração</Label>
+                  <Input
+                    id="card-expiry"
+                    name="expiry"
+                    value={cardState.expiry}
+                    onChange={handleCardInputChange}
+                    onFocus={handleCardInputFocus}
+                    placeholder="MM/YY"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="card-cvc">CVV</Label>
+                  <Input
+                    id="card-cvc"
+                    name="cvc"
+                    value={cardState.cvc}
+                    onChange={handleCardInputChange}
+                    onFocus={handleCardInputFocus}
+                    placeholder="123"
+                  />
+                </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="card-cvc">CVC</Label>
-                <Input
-                  id="card-cvc"
-                  name="cvc"
-                  value={cardState.cvc}
-                  onChange={handleCardInputChange}
-                  onFocus={handleCardInputFocus}
-                  placeholder="123"
-                />
-              </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="installments">Select Installments</Label>
-                <select
-                  id="installments"
-                  className="p-2 border rounded-md"
-                  onChange={(e) => console.log('Selected Installment:', e.target.value)}
-                >
-                  <option value="1">1x - $99.00</option>
-                  <option value="2">2x - $49.50</option>
-                  <option value="3">3x - $33.00</option>
-                  <option value="3">4x - $15.00</option>
-                  <option value="3">5x - $7.00</option>
-                  <option value="3">6x - $3.60</option>
-                  <option value="3">7x - $1.50</option>
-                  <option value="3">8x - $0.75</option>
+                <Label htmlFor="installments">Selecione as parcelas</Label>
+                <select id="installments" className="p-2 border rounded-md" onChange={handleInstallmentsChange}>
+                  <option value="1">1x - R${(plan.planPrice / 1).toFixed(2)}</option>
+                  <option value="2">2x - R${(plan.planPrice / 2).toFixed(2)}</option>
+                  <option value="3">3x - R${(plan.planPrice / 3).toFixed(2)}</option>
+                  <option value="3">4x - R${(plan.planPrice / 4).toFixed(2)}</option>
+                  <option value="3">5x - R${(plan.planPrice / 5).toFixed(2)}</option>
+                  <option value="3">6x - R${(plan.planPrice / 6).toFixed(2)}</option>
                 </select>
               </div>
-              
+
+              <div className="flex items-center justify-between">
+                <div className="font-semibold">Total</div>
+                <div className="text-2xl font-semibold">{installments} x R${(plan.planPrice / installments).toFixed(2)} = {plan.planPrice}</div>
+              </div>
+
               <div className="flex justify-between space-x-4">
-                    <Button type="button" variant="outline" onClick={onClose}>
-                      Voltar
-                    </Button>
-                    <Button onClick={handleConfirm}>Confirmar</Button>
-                  </div>
+                <Button type="button" variant="outline" onClick={backStep}>
+                  Voltar
+                </Button>
+                <Button onClick={handleConfirm}>Confirmar</Button>
+              </div>
             </div>
           </div>
         )}
         {step === 3 && (
           <div className="grid gap-6">
             <h2 className="text-2xl font-semibold">Confirmation</h2>
-            <p>Your payment has been successfully processed. Thank you!</p>
-            <Button onClick={onClose}>Close</Button>
+            <p>
+            Seu pagamento foi processado com sucesso. Obrigado!</p>
+            <p>
+             Mais informações serão repassadas via email, caso necessite alterar alguma informação, entre em contato com o suporte: suporte@encontreja.com</p>
+            <Button onClick={onClose}>Fechar</Button>
           </div>
         )}
       </DialogContent>
     </Dialog>
   );
 }
-
 
 function CreditCardIcon(props: any) {
   return (
