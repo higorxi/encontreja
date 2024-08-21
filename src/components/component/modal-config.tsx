@@ -50,8 +50,8 @@ export function ModalConfig({ onClose }: { onClose: () => void }) {
             <Label htmlFor="language" className="font-medium">
               Language
             </Label>
-            <Select id="language" value={language} onValueChange={setLanguage} className="mt-2">
-              <SelectTrigger>
+            <Select value={language} onValueChange={setLanguage}>
+              <SelectTrigger className="mt-2">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>

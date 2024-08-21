@@ -207,12 +207,14 @@ export function ModalFlatServiceProvider({ onClose, plan }) {
                 <p className="mt-4">Tempo restante: {timer}s</p>
               </div>
             </div>
-            <div className="flex justify-end">
+            <div className="grid gap-4">
               <Button
-                disabled={confirmButtonDisabled}
+                type="button"
+                className="w-full"
                 onClick={handleConfirm}
+                disabled={confirmButtonDisabled}
               >
-                Confirmar
+                Confirmar Pagamento
               </Button>
             </div>
           </div>
@@ -220,70 +222,81 @@ export function ModalFlatServiceProvider({ onClose, plan }) {
         {step === 2 && paymentMethod === 'credit-card' && (
           <div className="grid gap-6">
             <h2 className="text-2xl font-semibold">Credit Card Payment</h2>
-            <div className="grid gap-4">
+            <div className="flex items-center justify-center">
               <Cards
                 cvc={cardState.cvc}
                 expiry={cardState.expiry}
                 focused={cardState.focus}
                 name={cardState.name}
                 number={cardState.number}
-                placeholders={{ name: 'Name', number: 'Card Number' }}
-                preview
-                className="w-full"
               />
-              <form className="grid gap-4">
+            </div>
+            <form onSubmit={handleConfirm}>
+              <div className="grid gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="number">Card Number</Label>
                   <Input
                     id="number"
                     name="number"
+                    placeholder="1234 5678 9012 3456"
                     value={cardState.number}
                     onChange={handleCardInputChange}
                     onFocus={handleCardInputFocus}
-                    placeholder="1234 5678 9123 4567"
                   />
                 </div>
-                <div className="flex gap-4">
-                  <div className="grid gap-2 flex-1">
-                    <Label htmlFor="expiry">Expiry Date</Label>
-                    <Input
-                      id="expiry"
-                      name="expiry"
-                      type="month"
-                      value={cardState.expiry}
-                      onChange={handleCardInputChange}
-                      onFocus={handleCardInputFocus}
-                      placeholder="MM/YY"
-                    />
-                  </div>
-                  <div className="grid gap-2 flex-1">
-                    <Label htmlFor="cvc">CVC</Label>
-                    <Input
-                      id="cvc"
-                      name="cvc"
-                      value={cardState.cvc}
-                      onChange={handleCardInputChange}
-                      onFocus={handleCardInputFocus}
-                      placeholder="123"
-                    />
-                  </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="expiry">Expiry Date</Label>
+                  <Input
+                    id="expiry"
+                    name="expiry"
+                    placeholder="MM/YY"
+                    value={cardState.expiry}
+                    onChange={handleCardInputChange}
+                    onFocus={handleCardInputFocus}
+                  />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="cvc">CVC</Label>
+                  <Input
+                    id="cvc"
+                    name="cvc"
+                    placeholder="123"
+                    value={cardState.cvc}
+                    onChange={handleCardInputChange}
+                    onFocus={handleCardInputFocus}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="name">Cardholder Name</Label>
                   <Input
                     id="name"
                     name="name"
+                    placeholder="John Doe"
                     value={cardState.name}
                     onChange={handleCardInputChange}
                     onFocus={handleCardInputFocus}
-                    placeholder="John Doe"
                   />
                 </div>
-              </form>
-            </div>
-            <div className="flex justify-end">
-              <Button onClick={handleConfirm}>
-                Confirmar
+              </div>
+              <Button variant='outline' className="w-full mt-4">
+                Voltar
+              </Button>
+              <Button  className="w-full mt-4">
+                Confirmar Pagamento
+              </Button>
+            </form>
+          </div>
+        )}
+        {step === 3 && (
+          <div className="grid gap-6">
+            <h2 className="text-2xl font-semibold">Payment Success</h2>
+            <p className="text-lg">
+              Your payment was successful! A confirmation email has been sent to you, and your support
+              ticket has been created.
+            </p>
+            <div className="text-center">
+              <Button onClick={onClose} className="mt-4">
+                Close
               </Button>
             </div>
           </div>
