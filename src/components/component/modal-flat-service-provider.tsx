@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Cards from 'react-credit-cards-2'; 
+import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
 export function ModalFlatServiceProvider({ onClose, plan }: any) {
   const [zipcode, setZipcode] = useState('');
