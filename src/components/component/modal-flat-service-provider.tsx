@@ -76,7 +76,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
   };
 
   const handleConfirm = () => {
-    setStep(3); // Avança para o passo 3
+    setStep(3); 
   };
 
   const handleCardInputChange = (e: any) => {
@@ -90,9 +90,6 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
 
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
-      <DialogTrigger asChild>
-        <Button>Checkout</Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         {step === 1 && (
           <div className="grid gap-6">
