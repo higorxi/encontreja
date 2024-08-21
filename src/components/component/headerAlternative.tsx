@@ -3,6 +3,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ModalLogout } from "./modal-logout";
+import { ModalConfig } from "./modal-config";
+import { ModalProfile } from "./modal-profile";
 
 export function HeaderAlternative({ isLoggedIn = true }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -19,7 +21,7 @@ export function HeaderAlternative({ isLoggedIn = true }) {
         <span className="text-lg font-semibold">Acme Inc</span>
       </Link>
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
           <Link
             href="/"
             className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
@@ -28,7 +30,7 @@ export function HeaderAlternative({ isLoggedIn = true }) {
             Home
           </Link>
           <Link
-            href="/servicos"
+            href="/"
             className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
             prefetch={false}
           >
@@ -37,7 +39,7 @@ export function HeaderAlternative({ isLoggedIn = true }) {
         </div>
         <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium">
           <PlusIcon className="h-4 w-4" />
-          Postar Serviço
+          <span className="hidden md:inline">Postar Serviço</span>
         </Button>
 
         {isLoggedIn && (
@@ -77,16 +79,11 @@ export function HeaderAlternative({ isLoggedIn = true }) {
         )}
       </div>
 
-      {/* Modais */}
       {isProfileModalOpen && (
-        <Modal title="Perfil" onClose={() => setProfileModalOpen(false)}>
-          <p>Conteúdo do Modal de Perfil</p>
-        </Modal>
+        <ModalProfile onClose={() => setProfileModalOpen(false)} />
       )}
       {isSettingsModalOpen && (
-        <Modal title="Configurações" onClose={() => setSettingsModalOpen(false)}>
-          <p>Conteúdo do Modal de Configurações</p>
-        </Modal>
+        <ModalConfig onClose={() => setSettingsModalOpen(false)} />
       )}
       {isLogoutModalOpen && (
         <ModalLogout onClose={() => setLogoutModalOpen(false)} />
@@ -213,32 +210,4 @@ function LogoutIcon(props: any) {
   );
 }
 
-function Modal({ title, onClose, children }: any) {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="relative bg-white rounded-lg shadow-lg p-6 w-96">
-        <button
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-          onClick={onClose}
-        >
-          <svg
-            className="w-6 h-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-        <h2 className="text-lg font-semibold mb-4">{title}</h2>
-        {children}
-      </div>
-    </div>
-  );
-}
+

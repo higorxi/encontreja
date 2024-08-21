@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 import serviceProviders from "@/lib/providers";
 import { DetailsServiceProvider } from "./details-service-provider";
 import usePageTitle from "@/Hooks/usePageTittle";
@@ -16,8 +16,8 @@ export function Advertisements() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
   const [hasMore, setHasMore] = useState(true);
-  usePageTitle('Serviços - EncontreJA')
-  
+  usePageTitle('Serviços - EncontreJA');
+
   const filteredProviders = serviceProviders.filter(provider => {
     const locationMatch = locationFilter ? provider.location.toLowerCase().includes(locationFilter) : true;
     const typeMatch = typeFilter ? provider.type === typeFilter : true;
@@ -28,9 +28,9 @@ export function Advertisements() {
 
   const loadMore = () => {
     const newVisibleCount = visibleCount + 6;
-    
+
     if (newVisibleCount >= filteredProviders.length) {
-      setHasMore(false); 
+      setHasMore(false);
     }
 
     setVisibleCount(newVisibleCount);
@@ -56,12 +56,12 @@ export function Advertisements() {
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 lg:mb-10">
         <div className="grid gap-2">
-          <h1 className="text-2xl sm:text-3xl font-bold">Encontre o provedor de serviços perfeito</h1>
-          <p className="text-muted-foreground">Browse our directory of trusted professionals in your area.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-center sm:text-left">Encontre o provedor de serviços perfeito</h1>
+          <p className="text-muted-foreground text-center sm:text-left">Browse our directory of trusted professionals in your area.</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4 sm:mt-0">
           <Select onValueChange={(value) => setLocationFilter(value)}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-40">
               <SelectValue placeholder="Localização" />
             </SelectTrigger>
             <SelectContent>
@@ -71,7 +71,7 @@ export function Advertisements() {
             </SelectContent>
           </Select>
           <Select onValueChange={(value) => setTypeFilter(value)}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-40">
               <SelectValue placeholder="Tipo de Serviço" />
             </SelectTrigger>
             <SelectContent>
@@ -81,7 +81,7 @@ export function Advertisements() {
             </SelectContent>
           </Select>
           <Select onValueChange={(value) => setRatingFilter(value)}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-40">
               <SelectValue placeholder="Avaliação" />
             </SelectTrigger>
             <SelectContent>
