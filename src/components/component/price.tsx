@@ -32,7 +32,7 @@ export function Price() {
       <div className="container grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-6 max-w-7xl mx-auto">
         <div
           className="bg-gray-200 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-105 cursor-pointer shadow-md hover:shadow-lg"
-          onClick={() => openModal('Basic', 9)}
+          onClick={() => openModal('Semanal', 4.99)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold text-gray-800">Plano Semanal</h3>
@@ -68,7 +68,7 @@ export function Price() {
         </div>
         <div
           className="bg-yellow-500 rounded-lg p-6 flex flex-col gap-4 text-white shadow-lg mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer relative"
-          onClick={() => openModal('Gold', 49)}
+          onClick={() => openModal('Mensal', 19.99)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold">Plano Mensal</h3>
@@ -105,7 +105,7 @@ export function Price() {
         </div>
         <div
           className="bg-gray-300 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-105 cursor-pointer shadow-md hover:shadow-lg"
-          onClick={() => openModal('Silver', 29)}
+          onClick={() => openModal('Anual', 199.99)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold text-gray-800">Plano Anual</h3>

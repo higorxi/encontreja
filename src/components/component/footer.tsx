@@ -13,7 +13,7 @@ export function Footer() {
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex items-center gap-2">
                 <PhoneIcon className="w-4 h-4" />
-                <span>+1 (555) 555-5555</span>
+                <span>+55 (62) 555-5555</span>
               </div>
               <div className="flex items-center gap-2">
                 <MailIcon className="w-4 h-4" />
@@ -27,32 +27,29 @@ export function Footer() {
           </div>
           <div className="grid grid-cols-2 gap-6 md:gap-12">
             <div className="grid gap-2">
-              <h4 className="text-lg font-medium">Comapania</h4>
+              <h4 className="text-lg font-medium">Companhia</h4>
               <Link href="#" className="hover:underline" prefetch={false}>
                 Sobre
               </Link>
-              <Link href="#" className="hover:underline" prefetch={false}>
+              <Link href="/#why" className="hover:underline" prefetch={false}>
                 Serviços
               </Link>
-              <Link href="#" className="hover:underline" prefetch={false}>
+              <Link href="/#price" className="hover:underline" prefetch={false}>
                 Preços
               </Link>
-              <Link href="#" className="hover:underline" prefetch={false}>
+              <Link href="/#contact" className="hover:underline" prefetch={false}>
                 Contate-nos
               </Link>
             </div>
             <div className="grid gap-2">
               <h4 className="text-lg font-medium">Recursos</h4>
-              <Link href="#" className="hover:underline" prefetch={false}>
-                Blog
-              </Link>
-              <Link href="#" className="hover:underline" prefetch={false}>
+              <Link href="/faq" className="hover:underline" prefetch={false}>
                 FAQ
               </Link>
-              <Link href="#" className="hover:underline" prefetch={false}>
-                Termos de Serviço
+              <Link href="/termos-de-uso" className="hover:underline" prefetch={false}>
+                Termos de Uso
               </Link>
-              <Link href="#" className="hover:underline" prefetch={false}>
+              <Link href="/politica-de-privacidade" className="hover:underline" prefetch={false}>
                 Política de Privacidade
               </Link>
             </div>
