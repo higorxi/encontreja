@@ -3,79 +3,81 @@ import Link from "next/link"
 export function Footer() {
   return (
     <footer className="bg-muted text-muted-foreground py-12 border-t">
-      <div className="container max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-        <div className="flex flex-col items-start gap-4">
-          <Link href="#" className="flex items-center gap-2" prefetch={false}>
-            <MountainIcon className="w-8 h-8" />
-            <span className="text-xl font-bold">Service Provider</span>
-          </Link>
-          <div className="flex flex-col gap-2 text-sm">
-            <div className="flex items-center gap-2">
-              <PhoneIcon className="w-4 h-4" />
-              <span>+1 (555) 555-5555</span>
+      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="flex flex-col items-start gap-4">
+            <Link href="#" className="flex items-center gap-2" prefetch={false}>
+              <MountainIcon className="w-8 h-8" />
+              <span className="text-xl font-bold">Service Provider</span>
+            </Link>
+            <div className="flex flex-col gap-2 text-sm">
+              <div className="flex items-center gap-2">
+                <PhoneIcon className="w-4 h-4" />
+                <span>+1 (555) 555-5555</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MailIcon className="w-4 h-4" />
+                <span>info@serviceprovider.com</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPinIcon className="w-4 h-4" />
+                <span>123 Main St, Anytown USA</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <MailIcon className="w-4 h-4" />
-              <span>info@serviceprovider.com</span>
+          </div>
+          <div className="grid grid-cols-2 gap-6 md:gap-12">
+            <div className="grid gap-2">
+              <h4 className="text-lg font-medium">Company</h4>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                About
+              </Link>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                Services
+              </Link>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                Pricing
+              </Link>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                Contact
+              </Link>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPinIcon className="w-4 h-4" />
-              <span>123 Main St, Anytown USA</span>
+            <div className="grid gap-2">
+              <h4 className="text-lg font-medium">Resources</h4>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                Blog
+              </Link>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                FAQ
+              </Link>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                Terms of Service
+              </Link>
+              <Link href="#" className="hover:underline" prefetch={false}>
+                Privacy Policy
+              </Link>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <h4 className="text-lg font-medium">Follow Us</h4>
+            <div className="flex gap-4">
+              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+                <TwitterIcon className="w-6 h-6" />
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+                <FacebookIcon className="w-6 h-6" />
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+                <InstagramIcon className="w-6 h-6" />
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+                <LinkedinIcon className="w-6 h-6" />
+              </Link>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="grid gap-2">
-            <h4 className="text-lg font-medium">Company</h4>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              About
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              Services
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              Pricing
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              Contact
-            </Link>
-          </div>
-          <div className="grid gap-2">
-            <h4 className="text-lg font-medium">Resources</h4>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              Blog
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              FAQ
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              Terms of Service
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              Privacy Policy
-            </Link>
-          </div>
+        <div className="mt-12 text-center text-sm">
+          <p>&copy; 2024 Service Provider. All rights reserved.</p>
         </div>
-        <div className="flex flex-col gap-4">
-          <h4 className="text-lg font-medium">Follow Us</h4>
-          <div className="flex gap-4">
-            <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-              <TwitterIcon className="w-6 h-6" />
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-              <FacebookIcon className="w-6 h-6" />
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-              <InstagramIcon className="w-6 h-6" />
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-              <LinkedinIcon className="w-6 h-6" />
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="container max-w-7xl mx-auto mt-12 text-center text-sm">
-        <p>&copy; 2024 Service Provider. All rights reserved.</p>
       </div>
     </footer>
   )

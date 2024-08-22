@@ -1,11 +1,10 @@
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export function ModalProfile({ onClose }: { onClose: () => void }) {
   return (
@@ -13,20 +12,20 @@ export function ModalProfile({ onClose }: { onClose: () => void }) {
       <DialogContent className="sm:max-w-[600px]">
         <Tabs defaultValue="account" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
-            <TabsTrigger value="delete">Delete</TabsTrigger>
+            <TabsTrigger value="account">Conta</TabsTrigger>
+            <TabsTrigger value="password">Senha</TabsTrigger>
+            <TabsTrigger value="delete">Excluir</TabsTrigger>
           </TabsList>
           <TabsContent value="account">
             <Card>
               <CardHeader>
-                <CardTitle>Account Information</CardTitle>
-                <CardDescription>Update your profile details here.</CardDescription>
+                <CardTitle>Informações da Conta</CardTitle>
+                <CardDescription>Atualize os detalhes do seu perfil aqui.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">Nome</Label>
                     <Input id="name" defaultValue="Jared Palmer" />
                   </div>
                   <div className="space-y-2">
@@ -35,65 +34,65 @@ export function ModalProfile({ onClose }: { onClose: () => void }) {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="bio">Bio</Label>
+                  <Label htmlFor="description">Sobre</Label>
                   <Textarea
-                    id="bio"
-                    className="min-h-[100px]"
-                    defaultValue="I am a software engineer and I love to code!"
-                  />
+                  id="bio"
+                  rows={3}
+                  placeholder="Fale mais sobre você..."
+                  className="w-full h-24 resize-none"
+                />
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="ml-auto" onClick={onClose}>Save Changes</Button>
+                <Button className="ml-auto" onClick={onClose}>Salvar Alterações</Button>
               </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="password">
             <Card>
               <CardHeader>
-                <CardTitle>Change Password</CardTitle>
-                <CardDescription>Update your password here. After saving, you will be logged out.</CardDescription>
+                <CardTitle>Alterar Senha</CardTitle>
+                <CardDescription>Atualize sua senha aqui. Após salvar, você será desconectado.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="current-password">Current Password</Label>
+                  <Label htmlFor="current-password">Senha Atual</Label>
                   <Input id="current-password" type="password" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="new-password">New Password</Label>
+                  <Label htmlFor="new-password">Nova Senha</Label>
                   <Input id="new-password" type="password" />
                   <div className="text-sm text-muted-foreground">
-                    Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase
-                    letter, and one number.
+                    A senha deve ter pelo menos 8 caracteres e conter pelo menos uma letra maiúscula, uma letra minúscula e um número.
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Confirm Password</Label>
+                  <Label htmlFor="confirm-password">Confirmar Senha</Label>
                   <Input id="confirm-password" type="password" />
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="ml-auto" onClick={onClose}>Change Password</Button>
+                <Button className="ml-auto" onClick={onClose}>Alterar Senha</Button>
               </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="delete">
             <Card>
               <CardHeader>
-                <CardTitle>Delete Account</CardTitle>
+                <CardTitle>Excluir Conta</CardTitle>
                 <CardDescription>
-                  This action cannot be undone. Your account and all your data will be permanently deleted.
+                  Esta ação não pode ser desfeita. Sua conta e todos os seus dados serão excluídos permanentemente.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="confirm-delete">Type &rdquo;DELETE&rdquo; to confirm</Label>
+                  <Label htmlFor="confirm-delete">Digite &rdquo;EXCLUIR&rdquo; para confirmar</Label>
                   <Input id="confirm-delete" />
                 </div>
               </CardContent>
               <CardFooter>
                 <Button variant="destructive" className="ml-auto" onClick={onClose}>
-                  Delete Account
+                  Excluir Conta
                 </Button>
               </CardFooter>
             </Card>
@@ -101,5 +100,5 @@ export function ModalProfile({ onClose }: { onClose: () => void }) {
         </Tabs>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

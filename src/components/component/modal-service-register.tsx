@@ -93,7 +93,7 @@ export function ModalServiceRegister({ onClose }: any) {
         </div>
         <div className="flex-1 overflow-auto p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Coluna da esquerda */}
+
             <div className="space-y-4">
               <div className="flex gap-4 w-full h-48">
                 {images.map((image, index) => (
@@ -162,7 +162,7 @@ export function ModalServiceRegister({ onClose }: any) {
                 />
               </div>
             </div>
-            {/* Coluna da direita */}
+
             <div className="space-y-4">
               <div className="flex flex-col gap-4">
                 <div className="flex-1 min-w-[250px]">

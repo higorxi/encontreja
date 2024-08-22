@@ -90,13 +90,12 @@ const serviceProviders = [
   },
   {
     name: "Ava Anderson",
-    location: "Atlanta, GA",
+    location: "Anápolis, GA",
     rating: 4.6,
     description: "Ava is an experienced pet groomer who provides high-quality grooming services for dogs and cats. She is known for her gentle touch, professional demeanor, and ability to handle pets with care and patience.",
     imgSrc: "/placeholder.svg",
     type: 'Pet Grooming'
   },
-  // Remover duplicatas se necessário
 ];
 
 export default serviceProviders;

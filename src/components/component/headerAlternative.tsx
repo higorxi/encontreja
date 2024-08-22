@@ -13,7 +13,6 @@ export function HeaderAlternative({ isLoggedIn = true, isAuthenticated = false }
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePostServiceClick = () => {
@@ -27,69 +26,172 @@ export function HeaderAlternative({ isLoggedIn = true, isAuthenticated = false }
   const handleMenuToggle = () => setMenuOpen(!isMenuOpen);
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-background shadow-sm">
-      <Link href="#" className="flex items-center gap-2" prefetch={false}>
-        <MountainIcon className="h-6 w-6" />
-        <span className="text-lg font-semibold">Acme Inc</span>
-      </Link>
-      <div className="flex items-center gap-4">
-        <div className="hidden md:flex items-center gap-4">
+    <header className="relative bg-background shadow-sm">
+      {/* Desktop View */}
+      <div className="hidden md:flex items-center justify-between px-4 py-3">
+        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+          <MountainIcon className="h-6 w-6" />
+          <span className="text-lg font-semibold">Acme Inc</span>
+        </Link>
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
+            <Link
+              href="/"
+              className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
+              prefetch={false}
+            >
+              Home
+            </Link>
+            <Link
+              href="/"
+              className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
+              prefetch={false}
+            >
+              Contato
+            </Link>
+          </div>
+          <Button className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium" onClick={handlePostServiceClick}>
+            <PlusIcon className="h-4 w-4" />
+            <span>Postar Serviço</span>
+          </Button>
+
+          {isLoggedIn && (
+            <div className="relative hidden md:flex">
+              <Button
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
+                onClick={handleMenuToggle}
+              >
+                <ProfileIcon className="h-4 w-4" />
+              </Button>
+              {isMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-20">
+                  <button
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    onClick={() => setProfileModalOpen(true)}
+                  >
+                    <UserIcon className="h-4 w-4" />
+                    Perfil
+                  </button>
+                  <button
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    onClick={() => setSettingsModalOpen(true)}
+                  >
+                    <SettingsIcon className="h-4 w-4" />
+                    Configurações
+                  </button>
+                  <button
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    onClick={() => setLogoutModalOpen(true)}
+                  >
+                    <LogoutIcon className="h-4 w-4" />
+                    Sair
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile View */}
+      <div className="md:hidden flex items-center justify-between px-4 py-3">
+        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+          <MountainIcon className="h-6 w-6" />
+          <span className="text-lg font-semibold">Acme Inc</span>
+        </Link>
+        <button
+          className="p-2"
+          onClick={handleMenuToggle}
+        >
+          <MenuIcon className="h-6 w-6" />
+        </button>
+      </div>
+
+      {/* Overlay */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-40 md:hidden"
+          onClick={handleMenuToggle}
+        />
+      )}
+
+      {/* Mobile Menu */}
+      <div
+        className={`fixed top-0 right-0 h-full w-64 bg-gray-800 text-white transition-transform transform ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        } md:hidden z-50`}
+      >
+        <div className="p-4">
+          <button
+            className="text-white"
+            onClick={handleMenuToggle}
+          >
+            <CloseIcon className="h-6 w-6" />
+          </button>
+        </div>
+        <nav className="flex flex-col items-start p-4 space-y-4">
           <Link
             href="/"
-            className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
-            prefetch={false}
+            className="text-white text-lg hover:text-gray-400"
+            onClick={handleMenuToggle}
           >
             Home
           </Link>
           <Link
             href="/"
-            className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
-            prefetch={false}
+            className="text-white text-lg hover:text-gray-400"
+            onClick={handleMenuToggle}
           >
             Contato
           </Link>
-        </div>
-        <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium" onClick={handlePostServiceClick}>
-          <PlusIcon className="h-4 w-4" />
-          <span className="hidden md:inline">Postar Serviço</span>
-        </Button>
+          <Button
+            className="px-4 py-2 text-white bg-black border border-white"
+            onClick={() => {
+              handleMenuToggle();
+              handlePostServiceClick();
+            }}
+          >
+            Postar Serviço
+          </Button>
+          {isLoggedIn && (
+            <>
+              <button
+                className="flex items-center gap-2 px-4 py-2 text-white text-lg hover:bg-gray-600 w-full text-left"
+                onClick={() => {
+                  handleMenuToggle();
+                  setProfileModalOpen(true);
+                }}
+              >
+                <UserIcon className="h-4 w-4" />
+                Perfil
+              </button>
+              <button
+                className="flex items-center gap-2 px-4 py-2 text-white text-lg hover:bg-gray-600 w-full text-left"
+                onClick={() => {
+                  handleMenuToggle();
+                  setSettingsModalOpen(true);
+                }}
+              >
+                <SettingsIcon className="h-4 w-4" />
+                Configurações
+              </button>
+              <button
+                className="flex items-center gap-2 px-4 py-2 text-white text-lg hover:bg-gray-600 w-full text-left"
+                onClick={() => {
+                  handleMenuToggle();
+                  setLogoutModalOpen(true);
+                }}
+              >
+                <LogoutIcon className="h-4 w-4" />
+                Sair
+              </button>
+            </>
+          )}
+        </nav>
+      </div>
 
-        {isLoggedIn && (
-          <div className="relative">
-            <Button
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
-              onClick={handleMenuToggle}
-            >
-              <ProfileIcon className="h-4 w-4" />
-            </Button>
-            {isMenuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-20">
-                <button
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  onClick={() => setProfileModalOpen(true)}
-                >
-                  <UserIcon className="h-4 w-4" />
-                  Perfil
-                </button>
-                <button
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  onClick={() => setSettingsModalOpen(true)}
-                >
-                  <SettingsIcon className="h-4 w-4" />
-                  Configurações
-                </button>
-                <button
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  onClick={() => setLogoutModalOpen(true)}
-                >
-                  <LogoutIcon className="h-4 w-4" />
-                  Sair
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-        {isModalOpen && (
+      {/* Modal */}
+      {isModalOpen && (
         <>
           {isAuthenticated ? (
             <ModalServiceRegister onClose={closeModal}/>
@@ -98,7 +200,6 @@ export function HeaderAlternative({ isLoggedIn = true, isAuthenticated = false }
           )}
         </>
       )}
-      </div>
 
       {isProfileModalOpen && (
         <ModalProfile onClose={() => setProfileModalOpen(false)} />
@@ -231,4 +332,40 @@ function LogoutIcon(props: any) {
   );
 }
 
+function MenuIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  );
+}
 
+function CloseIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
