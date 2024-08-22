@@ -9,7 +9,7 @@ export function TermsOfUser() {
         <h2 className="text-2xl font-bold">1. Introdução</h2>
         <div className="mt-4 space-y-4">
           <p>
-            Bem-vindo ao nosso site ou aplicativo (a "Plataforma"). Estes Termos de Uso (os "Termos") regem o seu acesso e uso da Plataforma. Ao acessar ou usar a Plataforma, você concorda em estar vinculado a estes Termos.
+            Bem-vindo ao nosso site ou aplicativo (a &rdquo;Plataforma&rdquo;). Estes Termos de Uso (os &rdquo;Termos&rdquo;) regem o seu acesso e uso da Plataforma. Ao acessar ou usar a Plataforma, você concorda em estar vinculado a estes Termos.
           </p>
           <p>
             Podemos modificar estes Termos de tempos em tempos. Se o fizermos, notificaremos você postando os Termos atualizados na Plataforma. O seu uso continuado da Plataforma após tais alterações constitui sua aceitação dos Termos revisados.
@@ -75,7 +75,7 @@ export function TermsOfUser() {
         <h2 className="text-2xl font-bold">6. Isenção de Garantias</h2>
         <div className="mt-4 space-y-4">
           <p>
-            A Plataforma é fornecida "como está" e "conforme disponível", sem garantias de qualquer tipo, expressas ou implícitas. Não garantimos que a Plataforma será ininterrupta ou livre de erros, que os defeitos serão corrigidos, ou que a Plataforma ou o servidor que a disponibiliza estão livres de vírus ou outros componentes prejudiciais.
+            A Plataforma é fornecida &rdquo;como está&rdquo; e &rdquo;conforme disponível&rdquo;, sem garantias de qualquer tipo, expressas ou implícitas. Não garantimos que a Plataforma será ininterrupta ou livre de erros, que os defeitos serão corrigidos, ou que a Plataforma ou o servidor que a disponibiliza estão livres de vírus ou outros componentes prejudiciais.
           </p>
           <p>
             Na medida máxima permitida por lei, renunciamos a todas as garantias, incluindo as garantias implícitas de comercialização, adequação a uma finalidade específica e não violação. Não seremos responsáveis por quaisquer danos indiretos, incidentais, especiais ou consequenciais decorrentes ou relacionados ao uso da Plataforma.
