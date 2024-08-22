@@ -1,22 +1,23 @@
-import Link from "next/link";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import Image from "next/image";
+import Link from 'next/link';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import Image from 'next/image';
 
 export function InitialScreen() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-32">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px] justify-center">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Connecting You to the Best Service Providers
+                    Encontre o serviço local ideal para você, de forma rápida e fácil!
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Discover a wide range of top-rated service providers in your area. Book appointments, read reviews,
-                    and get the services you need with ease.
+                    No EncontreJá, conectamos você aos melhores profissionais da sua região em minutos! Quer você
+                    precise de um eletricista, encanador, pintor, ou qualquer outro serviço, temos tudo o que você
+                    precisa, na palma da sua mão. 🚀
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -25,7 +26,7 @@ export function InitialScreen() {
                     className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
-                    Explore Services
+                    Explorar serviços
                   </Link>
                 </div>
               </div>
@@ -50,9 +51,11 @@ export function InitialScreen() {
                   <BrushIcon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-center">Beauty Services</h3>
+                  <h3 className="text-xl font-semibold text-center">Serviços de beleza</h3>
                   <p className="text-muted-foreground text-center">
-                    Pamper yourself with our top-rated hair, nail, and spa services.
+                    Cuide de você com os melhores profissionais de beleza da sua região. Encontre cabeleireiros,
+                    manicures, esteticistas e outros especialistas prontos para realçar sua beleza e bem-estar no
+                    conforto da sua casa ou em estúdios locais.
                   </p>
                 </div>
               </div>
@@ -61,9 +64,11 @@ export function InitialScreen() {
                   <WrenchIcon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-center">Home Repairs</h3>
+                  <h3 className="text-xl font-semibold text-center">Reparos domésticos</h3>
                   <p className="text-muted-foreground text-center">
-                    Get your home in top shape with our skilled handyman and repair services.
+                    Pequenos problemas podem se tornar grandes se não forem tratados a tempo. Encontre especialistas em
+                    reparos domésticos, desde consertos de móveis e eletrodomésticos até reparos gerais na estrutura da
+                    casa, garantindo que seu lar esteja sempre em perfeito estado.
                   </p>
                 </div>
               </div>
@@ -72,11 +77,17 @@ export function InitialScreen() {
                   <LaptopIcon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-center">Tech Support</h3>
+                  <h3 className="text-xl font-semibold text-center">Suporte técnico</h3>
                   <p className="text-muted-foreground text-center">
-                    Get expert help with your tech devices and software troubleshooting.
+                    Problemas com tecnologia? Conte com técnicos em informática e eletrônicos para solucionar falhas em
+                    seus dispositivos, configurar redes, instalar softwares e garantir que tudo funcione perfeitamente,
+                    seja em casa ou no escritório.
                   </p>
                 </div>
+              </div>
+              <div className="flex flex-col items-center gap-4"></div>
+              <div className="flex flex-col items-center gap-4">
+                <h3 className="text-xl font-semibold text-center"> E muito mais...</h3>
               </div>
             </div>
           </div>
@@ -86,33 +97,45 @@ export function InitialScreen() {
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 justify-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Reach and Advantages</h2>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Alcance e Vantagens</h2>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our platform connects you with over 10,000 service providers across 50 cities, ensuring you can find
-                  the right professional for your needs, no matter where you are.
+                  O EncontreJá não apenas facilita a busca por serviços locais, mas também oferece uma experiência
+                  confiável e eficiente, seja qual for a sua necessidade.
                 </p>
                 <ul className="grid gap-2 py-4">
                   <li className="flex items-center gap-2">
                     <CheckIcon className="h-4 w-4 text-primary" />
-                    Vetted and trusted service providers
+                    Disponível em Todo o Brasil
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckIcon className="h-4 w-4 text-primary" />
-                    Transparent pricing and booking process
+                    Rapidez e Facilidade
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckIcon className="h-4 w-4 text-primary" />
-                    Convenient scheduling and payment options
+                    Segurança e Confiança
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckIcon className="h-4 w-4 text-primary" />
-                    Reliable and responsive customer support
+                    Variedade de Serviços
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckIcon className="h-4 w-4 text-primary" />
+                    Economia de Tempo
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckIcon className="h-4 w-4 text-primary" />
+                    Expansão Contínua
                   </li>
                 </ul>
               </div>
               <div className="flex flex-col items-center space-y-4">
-                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Trusted by Thousands</div>
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center">What Our Customers Say</h2>
+                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Confiado por milhares
+                </p>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center">
+                  O que nossos clientes dizem
+                </h2>
                 <div className="grid gap-6">
                   <div className="grid gap-2 rounded-lg bg-background p-4">
                     <div className="flex items-center gap-2">
@@ -121,13 +144,13 @@ export function InitialScreen() {
                         <AvatarFallback>JD</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="text-sm font-semibold">John Doe</div>
-                        <div className="text-xs text-muted-foreground">Satisfied Customer</div>
+                        <div className="text-sm font-semibold">Lucas R.</div>
+                        <div className="text-xs text-muted-foreground">Cliente Satisfeito</div>
                       </div>
                     </div>
                     <p className="text-muted-foreground">
-                      I have been using this platform for all my home services\n needs and I am consistently impressed by
-                      the quality of\n the providers and the ease of booking. Highly\n recommended!
+                      Foi a primeira vez que usei o EncontreJá, e agora não quero outra coisa! Encontrei um encanador
+                      excelente que resolveu tudo rapidinho.
                     </p>
                   </div>
                   <div className="grid gap-2 rounded-lg bg-background p-4">
@@ -137,13 +160,13 @@ export function InitialScreen() {
                         <AvatarFallback>SM</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="text-sm font-semibold">Sarah Miller</div>
-                        <div className="text-xs text-muted-foreground">Satisfied Customer</div>
+                        <div className="text-sm font-semibold">Fernanda L. </div>
+                        <div className="text-xs text-muted-foreground">Cliente Satisfeito</div>
                       </div>
                     </div>
                     <p className="text-muted-foreground">
-                      I have been using this platform for all my home services\n needs and I am consistently impressed by
-                      the quality of\n the providers and the ease of booking. Highly\n recommended!
+                      O EncontreJá foi uma mão na roda quando precisei de uma faxineira de última hora. Consegui agendar
+                      tudo de forma rápida e prática. Super recomendo!
                     </p>
                   </div>
                 </div>
