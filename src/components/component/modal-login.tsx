@@ -115,9 +115,13 @@ export function ModalLogin({ onClose }: any) {
       email = inputValueLogin.toLowerCase();
       password = inputValuePassword;
       const data = { email, password}
-      await loginAuth(data);
-      toast.success('Login bem-sucedido!'); 
-      onClose(); 
+      const response = await loginAuth(data);
+      if(response){
+        toast.success('Login bem-sucedido!'); 
+        onClose(); 
+      } else {
+        throw new Error(''); 
+      }
     } catch (error) {
       toast.error('Erro ao fazer login.');
     } finally {

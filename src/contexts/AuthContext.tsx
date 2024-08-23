@@ -15,7 +15,7 @@ interface Credentials {
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  loginAuth: (credentials: Credentials) => Promise<void>;
+  loginAuth: (credentials: Credentials) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -47,8 +47,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
       setIsAuthenticated(true);
+      return true
     } catch (error) {
       console.error('Login failed', error);
+      return false
     }
   };
 
