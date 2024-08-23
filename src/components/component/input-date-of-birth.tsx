@@ -1,10 +1,9 @@
-import { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-
+import { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 
 interface InputDateOfBirthProps {
   showLabel?: boolean;
@@ -14,19 +13,21 @@ interface InputDateOfBirthProps {
 
 export function InputDateOfBirth({ showLabel = true, value, onChange }: InputDateOfBirthProps) {
   const [maskedValue, handleMaskedChange] = useMaskedInput(value);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [open, setOpen] = useState(false); // Controle de visibilidade do Popover
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleMaskedChange(e);
-    onChange(e); // Propaga a mudança para o componente pai
+    onChange(e);
   };
 
-  const handleDateSelect = (date: Date) => {
-    const formattedDate = formatDate(date);
-    setSelectedDate(date);
-    handleChange({ target: { value: formattedDate } } as React.ChangeEvent<HTMLInputElement>);
-    setOpen(false); // Fecha o Popover após a seleção
+  const handleDateSelect = (date: Date | undefined) => {
+    if (date) {
+      const formattedDate = formatDate(date);
+      setSelectedDate(date);
+      handleChange({ target: { value: formattedDate } } as React.ChangeEvent<HTMLInputElement>);
+      setOpen(false);
+    }
   };
 
   const formatDate = (date: Date) => {
@@ -54,17 +55,17 @@ export function InputDateOfBirth({ showLabel = true, value, onChange }: InputDat
             <Button
               variant="ghost"
               className="absolute inset-y-0 right-0 w-12 rounded-r-md"
-              onClick={() => setOpen(!open)} 
+              onClick={() => setOpen(!open)}
             >
-              <CalendarDaysIcon className="h-24 w-24" />
+              <CalendarDaysIcon className="h-6 w-6" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
               selected={selectedDate}
-              onSelect={handleDateSelect}
-              showOutsideDays={false} 
+              onSelect={handleDateSelect as (date: Date | undefined) => void}
+              showOutsideDays={false}
             />
           </PopoverContent>
         </Popover>
@@ -98,7 +99,7 @@ function CalendarDaysIcon(props: any) {
       <path d="M12 18h.01" />
       <path d="M16 18h.01" />
     </svg>
-  )
+  );
 }
 
 function useMaskedInput(initialValue: string) {
@@ -106,12 +107,10 @@ function useMaskedInput(initialValue: string) {
 
   const formatDate = (input: string) => {
     // Remove caracteres não numéricos
-    const cleanInput = input.replace(/\D/g, "");
+    const cleanInput = input.replace(/\D/g, '');
 
     // Aplica a máscara DD/MM/YYYY
-    const masked = cleanInput
-      .replace(/^(\d{2})(\d{0,2})/, "$1/$2")
-      .replace(/\/(\d{2})(\d{0,4})/, "/$1/$2");
+    const masked = cleanInput.replace(/^(\d{2})(\d{0,2})/, '$1/$2').replace(/\/(\d{2})(\d{0,4})/, '/$1/$2');
 
     return masked;
   };
