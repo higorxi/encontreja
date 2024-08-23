@@ -1,7 +1,9 @@
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function ModalLogout({ onClose }: { onClose: () => void }) {
+  const { logout } = useAuth();
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -16,8 +18,8 @@ export function ModalLogout({ onClose }: { onClose: () => void }) {
           <Button variant="outline" className="mr-2" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={() => {
-            // Handle logout logic here
+          <Button onClick={async () => {
+            await logout()
             onClose();
           }}>
             Confirm

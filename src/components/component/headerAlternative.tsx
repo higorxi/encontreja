@@ -7,8 +7,10 @@ import { ModalConfig } from "./modal-config";
 import { ModalProfile } from "./modal-profile";
 import { ModalServiceRegister } from "./modal-service-register";
 import { ModalLogin } from "./modal-login";
+import { useAuth } from "@/contexts/AuthContext";
 
-export function HeaderAlternative({ isLoggedIn = true, isAuthenticated = false }) {
+export function HeaderAlternative() {
+  const { isAuthenticated } = useAuth()
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
@@ -55,7 +57,7 @@ export function HeaderAlternative({ isLoggedIn = true, isAuthenticated = false }
             <span>Postar Serviço</span>
           </Button>
 
-          {isLoggedIn && (
+          {isAuthenticated && (
             <div className="relative hidden md:flex">
               <Button
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
@@ -153,7 +155,7 @@ export function HeaderAlternative({ isLoggedIn = true, isAuthenticated = false }
           >
             Postar Serviço
           </Button>
-          {isLoggedIn && (
+          {isAuthenticated && (
             <>
               <button
                 className="flex items-center gap-2 px-4 py-2 text-white text-lg hover:bg-gray-600 w-full text-left"

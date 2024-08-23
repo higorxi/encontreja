@@ -9,9 +9,9 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AiOutlineDelete, AiOutlineReload } from 'react-icons/ai';
 import Image from 'next/image';
 import { RecoveryPassword } from './recovery-password';
-import { login } from '@/service/authService';
 import { InputDateOfBirth } from './input-date-of-birth';
 import { toast } from 'react-toastify';
+import { useAuth } from '@/contexts/AuthContext';
 
 const formatCPF = (cpf: string) => {
   return cpf
@@ -28,6 +28,7 @@ const validateEmail = (email: string) => {
 };
 
 export function ModalLogin({ onClose }: any) {
+  const { loginAuth } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [inputValueLogin, setInputValueLogin] = useState('');
   const [inputValuePassword, setInputValuePassword] = useState('');
@@ -113,12 +114,11 @@ export function ModalLogin({ onClose }: any) {
       let email, password;
       email = inputValueLogin.toLowerCase();
       password = inputValuePassword;
-      const response = await login(email, password);
-      console.log('Login bem-sucedido:', response);
+      const data = { email, password}
+      await loginAuth(data);
       toast.success('Login bem-sucedido!'); 
       onClose(); 
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
       toast.error('Erro ao fazer login.');
     } finally {
       setLoading(false); 
@@ -339,3 +339,5 @@ export function ModalLogin({ onClose }: any) {
     </>
   );
 }
+
+

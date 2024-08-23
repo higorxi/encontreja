@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ModalLogin } from "./modal-login";
 import { ModalServiceRegister } from "./modal-service-register";
+import { useAuth } from "@/contexts/AuthContext";
 
-export function Header({ isAuthenticated = true }) {
+export function Header() {
+  const { isAuthenticated } = useAuth()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

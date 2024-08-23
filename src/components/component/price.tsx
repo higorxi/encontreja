@@ -2,21 +2,32 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ModalFlatServiceProvider } from './modal-flat-service-provider';
+import { ModalLogin } from './modal-login'; 
+import { useAuth } from '@/contexts/AuthContext';
 
-interface priceDetails {
+interface PriceDetails {
   planName: string;
   planPrice: number;
 }
 
 export function Price() {
-  const [selectedPlan, setSelectedPlan] = useState<priceDetails>();
+  const { isAuthenticated } = useAuth();
+  const [selectedPlan, setSelectedPlan] = useState<PriceDetails>();
+  const [showModal, setShowModal] = useState<'price' | 'login' | null>(null);
 
   const openModal = (planName: string, planPrice: number) => {
-    setSelectedPlan({ planName, planPrice });
+    console.log("isAuthenticated", isAuthenticated)
+    if (isAuthenticated) {
+      setSelectedPlan({ planName, planPrice });
+      setShowModal('price');
+    } else {
+      setShowModal('login');
+    }
   };
 
   const closeModal = () => {
     setSelectedPlan(undefined);
+    setShowModal(null);
   };
 
   return (
@@ -141,7 +152,12 @@ export function Price() {
         </div>
       </div>
 
-      {selectedPlan && <ModalFlatServiceProvider onClose={closeModal} plan={selectedPlan} />}
+      {showModal === 'price' && selectedPlan && (
+        <ModalFlatServiceProvider onClose={closeModal} plan={selectedPlan} />
+      )}
+      {showModal === 'login' && (
+        <ModalLogin onClose={closeModal} />
+      )}
     </section>
   );
 }
