@@ -59,6 +59,38 @@
   }
 }
 
+@keyframes dot-blink {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.dot-blink {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  animation: dot-blink 1.5s infinite ease-in-out;
+}
+
+.dot-blink:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot-blink:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.dot-blink:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.dot-blink:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
 
 @layer base {
   * {

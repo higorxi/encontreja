@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { RecoveryPassword } from './recovery-password';
 import { login } from '@/service/authService';
 import { InputDateOfBirth } from './input-date-of-birth';
+import { toast } from 'react-toastify';
 
 const formatCPF = (cpf: string) => {
   return cpf
@@ -42,6 +43,7 @@ export function ModalLogin({ onClose }: any) {
   const [specialty, setSpecialty] = useState('');
   const [cep, setCep] = useState('');
   const [openRecoveryPassword, setOpenRecoveryPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,18 +105,23 @@ export function ModalLogin({ onClose }: any) {
 
   const handleLogin = async () => {
     if (!isValidEmail) {
-      console.error('Email inválido');
+      toast.error('Email inválido');
       return;
     }
-    
+    setLoading(true)
     try {
       let email, password;
       email = inputValueLogin.toLowerCase();
       password = inputValuePassword;
       const response = await login(email, password);
       console.log('Login bem-sucedido:', response);
+      toast.success('Login bem-sucedido!'); 
+      onClose(); 
     } catch (error) {
       console.error('Erro ao fazer login:', error);
+      toast.error('Erro ao fazer login.');
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -136,6 +143,7 @@ export function ModalLogin({ onClose }: any) {
                     type="email"
                     placeholder="joaobatista@encontreja.com"
                     value={inputValueLogin}
+                    disabled={loading ? true: false}
                     onChange={(e) => {
                       setInputValueLogin(e.target.value);
                       setIsValidEmail(validateEmail(e.target.value));
@@ -147,6 +155,7 @@ export function ModalLogin({ onClose }: any) {
                   <Label htmlFor="password">Senha</Label>
                   <div className="relative">
                     <Input
+                      disabled={loading ? true: false}
                       id="password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="********"
@@ -163,8 +172,19 @@ export function ModalLogin({ onClose }: any) {
                     </Button>
                   </div>
                 </div>
-                <Button onClick={handleLogin} className="w-full">
-                  Login
+                <Button onClick={handleLogin} className="w-full" disabled={loading ? true: false}>
+                {loading ? (
+                    <div className="flex items-center justify-center">
+                      <span className="ml-2 flex items-center">
+                        <span className='mr-1'>Carregando</span>
+                        <span className="dot-blink"></span>
+                        <span className="dot-blink"></span>
+                        <span className="dot-blink"></span>
+                      </span>
+                    </div>
+                  ) : (
+                    'Login'
+                  )}
                 </Button>
                 <p className="text-center text-sm">
                   <a onClick={() => setOpenRecoveryPassword(true)} className="text-blue-500">
