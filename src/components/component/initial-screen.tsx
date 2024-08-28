@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Image from 'next/image';
+import avatar1 from '../../../public/avatar/avatar-1.svg';
+import avatar2 from '../../../public/avatar/avatar-2.svg';
 
 export function InitialScreen() {
   return (
@@ -93,55 +95,76 @@ export function InitialScreen() {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-LaranjaEscuro">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 justify-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Alcance e Vantagens</h2>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <h2
+                  className="text-3xl text-AmareloGastronômica font-bold tracking-tighter md:text-4xl/tight"
+                  style={{
+                    textShadow: `
+                  1px 1px 0 #000, 
+                  2px 2px 0 #000, 
+                  3px 3px 0 #000,
+                  4px 4px 0 #000
+                `,
+                  }}
+                >
+                  Alcance e Vantagens
+                </h2>
+                <p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   O EncontreJá não apenas facilita a busca por serviços locais, mas também oferece uma experiência
                   confiável e eficiente, seja qual for a sua necessidade.
                 </p>
-                <ul className="grid gap-2 py-4">
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-primary" />
-                    Disponível em Todo o Brasil
+                <ul className="grid gap-4 py-4">
+                  <li className="flex items-start gap-4">
+                    <CheckIcon className="h-6 w-6 text-primary" />
+                    <p className="text-base text-white">Disponível em Todo o Brasil</p>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-primary" />
-                    Rapidez e Facilidade
+                  <li className="flex items-start gap-4">
+                    <CheckIcon className="h-6 w-6 text-primary" />
+                    <p className="text-base text-white">Rapidez e Facilidade</p>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-primary" />
-                    Segurança e Confiança
+                  <li className="flex items-start gap-4">
+                    <CheckIcon className="h-6 w-6 text-primary" />
+                    <p className="text-base text-white">Segurança e Confiança</p>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-primary" />
-                    Variedade de Serviços
+                  <li className="flex items-start gap-4">
+                    <CheckIcon className="h-6 w-6 text-primary" />
+                    <p className="text-base text-white">Variedade de Serviços</p>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-primary" />
-                    Economia de Tempo
+                  <li className="flex items-start gap-4">
+                    <CheckIcon className="h-6 w-6 text-primary" />
+                    <p className="text-base text-white">Economia de Tempo</p>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-primary" />
-                    Expansão Contínua
+                  <li className="flex items-start gap-4">
+                    <CheckIcon className="h-6 w-6 text-primary" />
+                    <p className="text-base text-white">Expansão Contínua</p>
                   </li>
                 </ul>
               </div>
-              <div className="flex flex-col items-center space-y-4">
-                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <div className="flex flex-col items-center space-y-2">
+                <p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Confiado por milhares
                 </p>
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center">
+                <h2
+                  className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center text-AmareloGastronômica"
+                  style={{
+                    textShadow: `
+                    1px 1px 0 #000, 
+                    2px 2px 0 #000, 
+                    3px 3px 0 #000,
+                    4px 4px 0 #000
+                  `,
+                  }}
+                >
                   O que nossos clientes dizem
                 </h2>
                 <div className="grid gap-6">
                   <div className="grid gap-2 rounded-lg bg-background p-4">
                     <div className="flex items-center gap-2">
-                      <Avatar>
-                        <AvatarImage src="/placeholder-user.jpg" />
-                        <AvatarFallback>JD</AvatarFallback>
+                      <Avatar className="relative h-9 w-7">
+                        <Image src={avatar1} alt="Avatar" layout="fill" className="rounded-full object-cover" />
                       </Avatar>
                       <div>
                         <div className="text-sm font-semibold">Lucas R.</div>
@@ -155,9 +178,8 @@ export function InitialScreen() {
                   </div>
                   <div className="grid gap-2 rounded-lg bg-background p-4">
                     <div className="flex items-center gap-2">
-                      <Avatar>
-                        <AvatarImage src="/placeholder-user.jpg" />
-                        <AvatarFallback>SM</AvatarFallback>
+                      <Avatar className="relative h-9 w-7">
+                        <Image src={avatar2} alt="Avatar" layout="fill" className="rounded-full object-cover" />
                       </Avatar>
                       <div>
                         <div className="text-sm font-semibold">Fernanda L. </div>

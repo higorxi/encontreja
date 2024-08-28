@@ -51,6 +51,7 @@ const config: Config = {
               "foreground": "hsl(var(--card-foreground))"
             },
             LaranjaIndustrial: '#FF5E01',
+            LaranjaEscuro: '#C74900',
             AzulProfundo: '#0558FF',
             AmareloGastronômica: '#FFD208'
           },
