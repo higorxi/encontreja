@@ -49,7 +49,10 @@ const config: Config = {
             "card": {
               "DEFAULT": "hsl(var(--card))",
               "foreground": "hsl(var(--card-foreground))"
-            }
+            },
+            LaranjaIndustrial: '#FF5E01',
+            AzulProfundo: '#0558FF',
+            AmareloGastronômica: '#FFD208'
           },
       borderRadius: {
             "lg": "var(--radius)",

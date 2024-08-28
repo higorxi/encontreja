@@ -8,6 +8,8 @@ import { ModalProfile } from "./modal-profile";
 import { ModalServiceRegister } from "./modal-service-register";
 import { ModalLogin } from "./modal-login";
 import { useAuth } from "@/contexts/AuthContext";
+import Logo from "../ui/logo";
+import LogoAlternative from "../ui/logo-alternative";
 
 export function HeaderAlternative() {
   const { isAuthenticated } = useAuth()
@@ -31,29 +33,26 @@ export function HeaderAlternative() {
     <header className="relative bg-background shadow-sm">
       {/* Desktop View */}
       <div className="hidden md:flex items-center justify-between px-4 py-3">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
-          <MountainIcon className="h-6 w-6" />
-          <span className="text-lg font-semibold">Acme Inc</span>
-        </Link>
+        <Logo/>
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-4">
             <Link
               href="/"
-              className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
+              className="text-sm font-medium text-muted-foreground hover:text-black transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-AzulProfundo after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
               prefetch={false}
             >
               Home
             </Link>
             <Link
               href="#contact"
-              className="text-sm font-medium text-muted-foreground hover:text-primary-foreground transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
+              className="text-sm font-medium text-muted-foreground hover:text-black transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-AzulProfundo after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
               prefetch={false}
             >
               Contato
             </Link>
           </div>
           <Button className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium" onClick={handlePostServiceClick}>
-            <PlusIcon className="h-4 w-4" />
+          <LogoAlternative logoType={2} className="w-4 h-4" />
             <span>Postar Serviço</span>
           </Button>
 
@@ -97,10 +96,7 @@ export function HeaderAlternative() {
 
       {/* Mobile View */}
       <div className="md:hidden flex items-center justify-between px-4 py-3">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
-          <MountainIcon className="h-6 w-6" />
-          <span className="text-lg font-semibold">Acme Inc</span>
-        </Link>
+        <Logo/>
         <button
           className="p-2"
           onClick={handleMenuToggle}
@@ -153,6 +149,7 @@ export function HeaderAlternative() {
               handlePostServiceClick();
             }}
           >
+            <LogoAlternative logoType={2} className="w-4 h-4 mr-2" />
             Postar Serviço
           </Button>
           {isAuthenticated && (

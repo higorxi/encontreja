@@ -1,23 +1,21 @@
 import Link from 'next/link';
+import Logo from '../ui/logo';
 
 export function Footer() {
   return (
-    <footer className="bg-muted text-muted-foreground py-12 border-t">
+    <footer className="bg-black text-white py-12 border-t">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="flex flex-col items-start gap-4">
-            <Link href="#" className="flex items-center gap-2" prefetch={false}>
-              <MountainIcon className="w-8 h-8" />
-              <span className="text-xl font-bold">EncontreJá</span>
-            </Link>
+            <Logo/>
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex items-center gap-2">
                 <PhoneIcon className="w-4 h-4" />
-                <span>+55 (62) 555-5555</span>
+                <span>+55 (62) 98519-4415</span>
               </div>
               <div className="flex items-center gap-2">
                 <MailIcon className="w-4 h-4" />
-                <span>info@serviceprovider.com</span>
+                <span>suporte@useencontreja.com.br</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPinIcon className="w-4 h-4" />
@@ -28,28 +26,28 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-6 md:gap-12">
             <div className="grid gap-2">
               <h4 className="text-lg font-medium">Companhia</h4>
-              <Link href="#" className="hover:underline" prefetch={false}>
+              <Link href="#" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Sobre
               </Link>
-              <Link href="/#why" className="hover:underline" prefetch={false}>
+              <Link href="/#why" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Serviços
               </Link>
-              <Link href="/#price" className="hover:underline" prefetch={false}>
+              <Link href="/#price" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Preços
               </Link>
-              <Link href="/#contact" className="hover:underline" prefetch={false}>
+              <Link href="/#contact" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Contate-nos
               </Link>
             </div>
             <div className="grid gap-2">
               <h4 className="text-lg font-medium">Recursos</h4>
-              <Link href="/faq" className="hover:underline" prefetch={false}>
+              <Link href="/faq" className="hover:underline hover:text-blue-300" prefetch={false}>
                 FAQ
               </Link>
-              <Link href="/termos-de-uso" className="hover:underline" prefetch={false}>
+              <Link href="/termos-de-uso" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Termos de Uso
               </Link>
-              <Link href="/politica-de-privacidade" className="hover:underline" prefetch={false}>
+              <Link href="/politica-de-privacidade" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Política de Privacidade
               </Link>
             </div>
@@ -58,22 +56,22 @@ export function Footer() {
             <h4 className="text-lg font-medium">Redes sociais</h4>
             <div className="flex gap-4">
               <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <TwitterIcon className="w-6 h-6" />
+                <TwitterIcon className="w-6 h-6 hover:text-blue-200" />
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <FacebookIcon className="w-6 h-6" />
+                <FacebookIcon className="w-6 h-6 hover:text-blue-600" />
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <InstagramIcon className="w-6 h-6" />
+                <InstagramIcon className="w-6 h-6 hover:text-orange-500" />
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <LinkedinIcon className="w-6 h-6" />
+                <LinkedinIcon className="w-6 h-6 hover:text-blue-600" />
               </Link>
             </div>
           </div>
         </div>
         <div className="mt-12 text-center text-sm">
-          <p>&copy; 2024 EncontreJá. All rights reserved.</p>
+          <p>&copy; 2024 EncontreJá. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
