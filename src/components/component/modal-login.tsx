@@ -190,7 +190,7 @@ export function ModalLogin({ onClose }: any) {
                     'Login'
                   )}
                 </Button>
-                <p className="text-center text-sm">
+                <p className="text-center text-sm  cursor-pointer">
                   <a onClick={() => setOpenRecoveryPassword(true)} className="text-blue-500">
                     Esqueceu sua senha?
                   </a>
@@ -200,8 +200,8 @@ export function ModalLogin({ onClose }: any) {
             <TabsContent value="register">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
                 <div className="flex flex-col items-center justify-center p-4 relative">
-                  <Label htmlFor="profile-pic" className="mb-2">
-                    Profile Picture
+                  <Label htmlFor="profile-pic" className="mb-2">      
+                    Foto do perfil
                   </Label>
                   {images[0] ? (
                     <>
@@ -239,12 +239,13 @@ export function ModalLogin({ onClose }: any) {
                       onDrop={(e) => handleDrop(e, 0)}
                       onDragOver={(e) => e.preventDefault()}
                     >
-                      <span className="text-gray-500 text-center">Drag and drop your image here</span>
+                      <span className="text-gray-500 text-center">
+                      Arraste e solte sua imagem aqui</span>
                       <label
                         htmlFor="image-upload-0"
                         className="mt-2 cursor-pointer text-blue-500"
                       >
-                        Upload Image
+                        Carregar imagem
                         <input
                           id="image-upload-0"
                           type="file"

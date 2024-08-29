@@ -53,19 +53,19 @@ export function DetailsServiceProvider({
     : ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"];
 
   return (
-    <Card className="w-full max-w-6xl mx-auto">
-      <div className="flex items-start justify-between gap-6 p-6 bg-muted rounded-t-lg">
-        <div className="flex items-center gap-6">
+    <Card className="w-full max-w-6xl mx-auto p-4">
+      <div className="flex items-start justify-between gap-4 p-4 bg-muted rounded-t-lg">
+        <div className="flex items-center gap-4">
           <Image
             src={provider.imgSrc}
             alt="Profile Picture"
-            width={80}
-            height={80}
+            width={60}
+            height={60}
             className="rounded-full"
             style={{ aspectRatio: "1/1", objectFit: "cover" }}
           />
-          <div className="grid gap-2">
-            <h2 className="text-xl font-bold">{provider.name}</h2>
+          <div className="grid gap-1">
+            <h2 className="text-lg font-bold">{provider.name}</h2>
             <div className="text-muted-foreground">
               <span className="font-medium">Location:</span> {provider.location}
             </div>
@@ -75,79 +75,79 @@ export function DetailsServiceProvider({
           </div>
         </div>
         <div className="flex flex-col text-muted-foreground">
-          <div className="flex items-center gap-2 mb-2">
-            <PhoneIcon className="w-5 h-5" />
+          <div className="flex items-center gap-1 mb-1">
+            <PhoneIcon className="w-4 h-4" />
             <span className="truncate">{provider.phone}</span>
           </div>
-          <div className="flex items-center gap-2 mb-2">
-            <MailOpenIcon className="w-5 h-5" />
+          <div className="flex items-center gap-1 mb-1">
+            <MailOpenIcon className="w-4 h-4" />
             <span className="truncate">{provider.email}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <WhatsappIcon className="w-5 h-5" />
+          <div className="flex items-center gap-1">
+            <WhatsappIcon className="w-4 h-4" />
             <span className="truncate">{provider.whatsapp}</span>
           </div>
         </div>
       </div>
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <CardContent className="p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Service Details Column */}
           <div className="lg:col-span-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Service Details */}
-              <div className="grid gap-4">
+              <div className="grid gap-2">
                 <h3 className="text-lg font-semibold">Service Details</h3>
-                <div className="grid gap-2 text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <BriefcaseIcon className="w-5 h-5" />
+                <div className="grid gap-1 text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <BriefcaseIcon className="w-4 h-4" />
                     <span>Plumbing Services</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <HomeIcon className="w-5 h-5" />
+                  <div className="flex items-center gap-1">
+                    <HomeIcon className="w-4 h-4" />
                     <span>Home Visits</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <ClockIcon className="w-5 h-5" />
+                  <div className="flex items-center gap-1">
+                    <ClockIcon className="w-4 h-4" />
                     <span>Mon-Fri, 9am - 5pm</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <span className="font-medium">Available:</span> Yes
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <span className="font-medium">Price Range:</span> {defaultProvider.details.priceRange}
                   </div>
                 </div>
               </div>
-              <div className="grid gap-4">
+              <div className="grid gap-2">
                 <h3 className="text-lg font-semibold">Mais Detalhes do Serviço</h3>
-                <div className="grid gap-2 text-muted-foreground">
-                  <div className="flex items-center gap-2">
+                <div className="grid gap-1 text-muted-foreground">
+                  <div className="flex items-center gap-1">
                     <span className="font-medium">Disponível:</span>
                     <span>{defaultProvider.details.available ? "Sim" : "Não"}</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <span className="font-medium">Faixa de Preço:</span>
                     <span>{defaultProvider.details.priceRange}</span>
                   </div>
                 </div>
               </div>
             </div>
-            <Separator className='mt-4'/>
-            <div className="grid gap-2 mt-4">
+            <Separator className='mt-2'/>
+            <div className="grid gap-2 mt-2">
               <h3 className="text-lg font-semibold">About</h3>
               <p className="text-muted-foreground">{provider.description}</p>
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             {servicePhotos.map((photo, index) => (
               <Image
                 key={index}
                 src={photo}
                 alt={`Service Photo ${index + 1}`}
-                width={150}  // provide width
-                height={150} // provide height
+                width={120} 
+                height={120} 
                 className="w-full h-auto rounded-lg object-cover"
-                style={{ height: "150px", objectFit: "cover" }}
+                style={{ height: "120px", objectFit: "cover" }}
               />
             ))}
           </div>
@@ -156,7 +156,6 @@ export function DetailsServiceProvider({
     </Card>
   );
 }
-
 
 function BriefcaseIcon(props: any) {
   return (

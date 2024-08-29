@@ -134,9 +134,9 @@ export function Advertisements() {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4 sm:mt-0">
-          <Button onClick={() => setCityModalOpen(true)}>{userCity || 'Selecione sua cidade'}</Button>
+          <Button variant='orange' onClick={() => setCityModalOpen(true)}>{userCity || 'Selecione sua cidade'}</Button>
           <Select onValueChange={(value) => setTypeFilter(value)}>
-            <SelectTrigger className="w-full sm:w-40">
+            <SelectTrigger className="w-full sm:w-40 ">
               <SelectValue placeholder="Tipo de Serviço" />
             </SelectTrigger>
             <SelectContent>
@@ -165,10 +165,10 @@ export function Advertisements() {
         {filteredProviders.slice(0, visibleCount).map((provider) => (
           <div
             key={provider.name}
-            className="bg-background rounded-lg shadow-sm overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+            className="bg-gray-100 p-2 rounded-lg shadow-sm overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
             onClick={() => openProviderModal(provider)}
           >
-            <div className="aspect-square">
+            <div className="aspect-square rounded-lg overflow-hidden">
               <Image
                 src={provider.imgSrc}
                 alt="Service Provider"
@@ -178,7 +178,7 @@ export function Advertisements() {
                 style={{ aspectRatio: '400/400', objectFit: 'cover' }}
               />
             </div>
-            <div className="p-4 sm:p-6">
+            <div className="p-4 sm:p-6 ">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-lg font-semibold">{provider.name}</div>
                 <div className="flex items-center gap-1 text-sm text-primary">
@@ -200,7 +200,7 @@ export function Advertisements() {
         ))}
       </div>
       <div className="flex flex-col items-center mt-8 sm:mt-10 lg:mt-12">
-        {hasMore ? (
+        {hasMore && filteredProviders.length > 0 ? (
           <Button variant="outline" onClick={loadMore} disabled={filteredProviders.length === 0}>
             Carregar Mais
           </Button>

@@ -44,6 +44,9 @@ export function Footer() {
               <Link href="/faq" className="hover:underline hover:text-blue-300" prefetch={false}>
                 FAQ
               </Link>
+              <Link href="/parceiros" className="hover:underline hover:text-blue-300" prefetch={false}>
+                Parceiros
+              </Link>
               <Link href="/termos-de-uso" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Termos de Uso
               </Link>
