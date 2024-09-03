@@ -5,8 +5,13 @@ import { Header } from "@/components/component/header";
 export default function ContactScreen(){
     return(
         <>
+        <div className="flex flex-col min-h-screen">
         <Header />
+        <div className="flex-grow">
         <Contact />
-        <Footer /></>
+        </div>
+        <Footer />
+        </div>
+        </>
     )
 }
