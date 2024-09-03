@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ModalLogin } from './modal-login';
@@ -12,7 +12,7 @@ export function Header() {
   const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const city = localStorage.getItem('userCity')
+  const [city, setCity] = useState(null)
   const handlePostServiceClick = () => {
     setIsModalOpen(true);
   };
@@ -24,6 +24,13 @@ export function Header() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const city = localStorage.getItem('userCity')
+    if(city){
+      setCity(JSON.parse(city))
+    }
+  }, [])
 
   return (
     <header className="relative bg-background shadow-sm">
