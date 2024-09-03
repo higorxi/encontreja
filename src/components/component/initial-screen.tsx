@@ -5,6 +5,7 @@ import avatar1 from '../../../public/avatar/avatar-1.svg';
 import avatar2 from '../../../public/avatar/avatar-2.svg';
 import ImageHome from '../../../public/HomeScreen/Encanador.svg'
 import Marquee from "react-fast-marquee";
+import { FaBroom, FaCut, FaDesktop, FaHammer, FaLaptop, FaLeaf, FaPaintBrush, FaPen, FaPencilAlt, FaPlug, FaShower, FaSoap, FaUserTie, FaWater, FaWrench } from 'react-icons/fa';
 
 
 export function InitialScreen() {
@@ -48,21 +49,49 @@ export function InitialScreen() {
           </div>
         </section>
 
-
-         {/* Seção de Marquee */}
          <section className="w-full py-12 md:py-16 lg:py-22">
           <div className="container px-4 md:px-8 mx-auto">
-            <Marquee>
-              <div className="flex items-center space-x-4">
-                <span role="img" aria-label="eletricista">🔧</span>
-                <span role="img" aria-label="encanador">🚰</span>
-                <span role="img" aria-label="pintor">🎨</span>
-                <span role="img" aria-label="faxineiro">🧹</span>
-                <span role="img" aria-label="técnico">💻</span>
-                <span role="img" aria-label="cabeleireiro">✂️</span>
-                <span role="img" aria-label="esteticista">💅</span>
-              </div>
-            </Marquee>
+            <Link href="/servicos">
+                <Marquee speed={25}>
+                  <div className="flex items-center space-x-6">
+                    <FaWrench title="Eletricista" size={24} className='ml-6' />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaLaptop title="Técnico" size={24} />
+                    <FaCut title="Cabeleireiro" size={24} />
+                    <FaLeaf title="Jardineiro" size={24} />
+                    <FaHammer title="Carpinteiro" size={24} />
+                    <FaShower title="Encanador" size={24} />
+                    <FaPlug title="Eletricista" size={24} />
+                    <FaPen title="Pintor" size={24} />
+                    <FaSoap title="Faxineiro" size={24} />
+                    <FaDesktop title="Técnico" size={24} />
+                    <FaUserTie title="Consultor" size={24} />
+                    <FaPencilAlt title="Designer" size={24} />
+                    <FaWrench title="Eletricista" size={24} />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaLaptop title="Técnico" size={24} />
+                    <FaCut title="Cabeleireiro" size={24} />
+                    <FaLeaf title="Jardineiro" size={24} />
+                    <FaHammer title="Carpinteiro" size={24} />
+                    <FaShower title="Encanador" size={24} />
+                    <FaPlug title="Eletricista" size={24} />
+                    <FaPen title="Pintor" size={24} />
+                    <FaSoap title="Faxineiro" size={24} />
+                    <FaDesktop title="Técnico" size={24} />
+                    <FaUserTie title="Consultor" size={24} />
+                    <FaPencilAlt title="Designer" size={24} />
+                    <FaWrench title="Eletricista" size={24} />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaLaptop title="Técnico" size={24}  className='mr-4'/>
+                  </div>
+                </Marquee>
+            </Link>
           </div>
         </section>
 
