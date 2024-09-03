@@ -1,6 +1,6 @@
 import Link from "next/link";
 import LogoEzzpay from '../../../public/logo/LogoParceiros/EzzPayLogo.png';
-import LogoFigurati from '../../../public/logo/LogoParceiros/FiguratiTemporario.png';
+import LogoFigurati from '../../../public/logo/LogoParceiros/logo-figurati.svg';
 import LogoStripe from '../../../public/logo/LogoParceiros/StripeLogo.svg';
 import Image from "next/image";
 

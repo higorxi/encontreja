@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { register } from '@/service/registerService';
-import { CEP, DateOfBirth, Document, Email, Specialty, Telephone, UserGender } from '@/types/userTypes';
+import { CEP, DateOfBirth, Document, Email, Specialty, Telephone, UserGender } from '@/@types/userTypes';
 
 interface User {
   id: string;

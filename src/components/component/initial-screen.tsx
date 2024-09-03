@@ -3,7 +3,7 @@ import { Avatar } from '@/components/ui/avatar';
 import Image from 'next/image';
 import avatar1 from '../../../public/avatar/avatar-1.svg';
 import avatar2 from '../../../public/avatar/avatar-2.svg';
-import ImageHome from '../../../public/HomeScreen/WallpaperHome (5).svg'
+import ImageHome from '../../../public/HomeScreen/Encanador.svg'
 
 export function InitialScreen() {
   return (

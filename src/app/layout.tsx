@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { CadastroProvider } from '@/contexts/SignupContext';
+import { Head } from 'next/document';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,12 +25,12 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={inter.className}>
         <CadastroProvider>
-        <AuthProvider>
-          {children}
-          <Analytics />
-          <SpeedInsights />
-          <ToastContainer />
-        </AuthProvider>
+          <AuthProvider>
+            {children}
+            <Analytics />
+            <SpeedInsights />
+            <ToastContainer />
+          </AuthProvider>
         </CadastroProvider>
       </body>
     </html>
