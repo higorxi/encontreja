@@ -12,7 +12,7 @@ export function Header() {
   const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [city, setCity] = useState(null)
+  const [city, setCity] = useState('')
   const handlePostServiceClick = () => {
     setIsModalOpen(true);
   };
@@ -26,9 +26,9 @@ export function Header() {
   };
 
   useEffect(() => {
-    const city = localStorage.getItem('userCity')
-    if(city){
-      setCity(JSON.parse(city))
+    const city1 = localStorage.getItem('userCity')
+    if(city1){
+      setCity(city1)
     }
   }, [])
 
@@ -76,7 +76,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile View */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3">
         <Logo />
         <button className="p-2" onClick={toggleMenu}>
@@ -84,10 +83,8 @@ export function Header() {
         </button>
       </div>
 
-      {/* Overlay */}
       {isMenuOpen && <div className="fixed inset-0 bg-black opacity-50 z-40 lg:hidden" onClick={toggleMenu} />}
 
-      {/* Menu Lateral */}
       <div
         className={`fixed top-0 right-0 h-full w-64 bg-black text-white transition-transform transform ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
@@ -126,7 +123,6 @@ export function Header() {
         </nav>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <>{isAuthenticated ? <ModalServiceRegister onClose={closeModal} /> : <ModalLogin onClose={closeModal} />}</>
       )}
