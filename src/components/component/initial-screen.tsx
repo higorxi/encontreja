@@ -4,6 +4,8 @@ import Image from 'next/image';
 import avatar1 from '../../../public/avatar/avatar-1.svg';
 import avatar2 from '../../../public/avatar/avatar-2.svg';
 import ImageHome from '../../../public/HomeScreen/Encanador.svg'
+import Marquee from "react-fast-marquee";
+
 
 export function InitialScreen() {
   return (
@@ -43,6 +45,24 @@ export function InitialScreen() {
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+
+         {/* Seção de Marquee */}
+         <section className="w-full py-12 md:py-16 lg:py-22">
+          <div className="container px-4 md:px-8 mx-auto">
+            <Marquee>
+              <div className="flex items-center space-x-4">
+                <span role="img" aria-label="eletricista">🔧</span>
+                <span role="img" aria-label="encanador">🚰</span>
+                <span role="img" aria-label="pintor">🎨</span>
+                <span role="img" aria-label="faxineiro">🧹</span>
+                <span role="img" aria-label="técnico">💻</span>
+                <span role="img" aria-label="cabeleireiro">✂️</span>
+                <span role="img" aria-label="esteticista">💅</span>
+              </div>
+            </Marquee>
           </div>
         </section>
 
