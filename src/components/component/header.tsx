@@ -12,7 +12,7 @@ export function Header() {
   const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const city = localStorage.getItem('userCity')
   const handlePostServiceClick = () => {
     setIsModalOpen(true);
   };
@@ -54,11 +54,15 @@ export function Header() {
             </Link>
           </div>
           <Link href="/servicos" passHref>
-            <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white text-black border hover:bg-gray-200 hover:text-gray-900">
+            <Button className="flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulEscuro1 hover:bg-gray-5100 hover:text-AzulClaro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105">
               Visualizar Serviços
+              <p>{city ? 'em': ''}</p>
+              <p className='font-bold'>
+              {city ? `${city}` : ''}
+              </p>
             </Button>
           </Link>
-          <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium" onClick={handlePostServiceClick}>
+          <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105" onClick={handlePostServiceClick}>
             <LogoAlternative logoType={2} className="w-4 h-4" />
             Postar Serviço
           </Button>

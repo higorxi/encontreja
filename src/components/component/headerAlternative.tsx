@@ -51,7 +51,7 @@ export function HeaderAlternative() {
               Contato
             </Link>
           </div>
-          <Button className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium" onClick={handlePostServiceClick}>
+          <Button className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105" onClick={handlePostServiceClick}>
           <LogoAlternative logoType={2} className="w-4 h-4" />
             <span>Postar Serviço</span>
           </Button>

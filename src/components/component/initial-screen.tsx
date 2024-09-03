@@ -1,14 +1,15 @@
 import Link from 'next/link';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar } from '@/components/ui/avatar';
 import Image from 'next/image';
 import avatar1 from '../../../public/avatar/avatar-1.svg';
 import avatar2 from '../../../public/avatar/avatar-2.svg';
+import ImageHome from '../../../public/HomeScreen/WallpaperHome (5).svg'
 
 export function InitialScreen() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-32">
+        <section className="w-full py-12 md:py-14 lg:py-18 xl:py-22">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px] justify-center">
               <div className="flex flex-col justify-center space-y-4">
@@ -25,7 +26,7 @@ export function InitialScreen() {
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Link
                     href="/servicos"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    className="inline-flex h-10 items-center justify-center bg-AmareloGastronômica px-10 py- text-lg font-semibold text-black  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
                     prefetch={false}
                   >
                     Explorar serviços
@@ -34,9 +35,9 @@ export function InitialScreen() {
               </div>
               <div className="relative">
                 <Image
-                  src="/placeholder.svg"
-                  width="550"
-                  height="550"
+                  src={ImageHome}
+                  width="600"
+                  height="400"
                   alt="Hero"
                   className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:aspect-square"
                 />
@@ -45,8 +46,8 @@ export function InitialScreen() {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6 mx-auto">
+        <section className="w-full py-12 md:py-16 lg:py-22 mb-10">
+          <div className="container px-4 md:px-8 mx-auto">
             <div className="grid gap-6 lg:grid-cols-3 lg:gap-8 justify-center">
               <div className="flex flex-col items-center gap-4">
                 <div className="bg-primary rounded-md p-3 flex items-center justify-center">
@@ -95,12 +96,12 @@ export function InitialScreen() {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-LaranjaEscuro">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-LaranjaEscuro1">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 justify-center">
               <div className="space-y-2">
                 <h2
-                  className="text-3xl text-AmareloGastronômica font-bold tracking-tighter md:text-4xl/tight"
+                  className="text-3xl text-AmareloClaro3 font-bold tracking-tighter md:text-4xl/tight"
                   style={{
                     textShadow: `
                   1px 1px 0 #000, 
@@ -148,7 +149,7 @@ export function InitialScreen() {
                   Confiado por milhares
                 </p>
                 <h2
-                  className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center text-AmareloGastronômica"
+                  className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center text-AmareloClaro3"
                   style={{
                     textShadow: `
                     1px 1px 0 #000, 

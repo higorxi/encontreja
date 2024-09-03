@@ -19,7 +19,6 @@ export function ModalServiceRegister({ onClose }: any) {
     cash: false,
   });
 
-
   const handleImageChange = (e: any, index: number) => {
     const file = e.target.files[0];
     if (file) {
@@ -84,22 +83,21 @@ export function ModalServiceRegister({ onClose }: any) {
 
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[1300px] sm:max-h-[600px] flex flex-col">
-        <div className="flex justify-between items-center p-4 border-b">
+      <DialogContent className="max-w-full max-h-full sm:max-w-[1300px] sm:max-h-[600px] flex flex-col p-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4">
           <div>
             <DialogTitle>Registrar Seu Serviço</DialogTitle>
             <DialogDescription>Preencha o formulário abaixo para registrar seu serviço.</DialogDescription>
-          </div>          
+          </div>
         </div>
-        <div className="flex-1 overflow-auto p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+        <div className="flex-1 overflow-auto py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div className="flex gap-4 w-full h-48">
+              <div className="flex flex-col sm:flex-row gap-4">
                 {images.map((image, index) => (
                   <div
                     key={index}
-                    className="relative flex-1 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg"
+                    className="relative flex-1 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-48"
                     onDrop={(e) => handleDrop(e, index)}
                     onDragOver={(e) => e.preventDefault()}
                   >
@@ -146,7 +144,7 @@ export function ModalServiceRegister({ onClose }: any) {
                           onChange={(e) => handleImageChange(e, index)}
                           className="absolute inset-0 opacity-0 cursor-pointer"
                         />
-                        <Button className="mt-2">Escolher Foto</Button>
+                        <Button className="mt-2 bg-LaranjaEscuro1">Escolher Foto</Button>
                       </div>
                     )}
                   </div>
@@ -236,17 +234,17 @@ export function ModalServiceRegister({ onClose }: any) {
                 </div>
                 <div className="flex-1 min-w-[250px]">
                   <Label htmlFor="address">Endereço</Label>
-                  <Input id="address" type="text" placeholder="Endereço do serviço" />
+                  <Input id="address" type="text" placeholder="Endereço completo" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={() => onClose()}>
+        <DialogFooter className="flex justify-end mt-4 space-x-2">
+          <Button variant="outline" onClick={onClose}>
             Fechar
           </Button>
-          <Button type="submit">Salvar</Button>
+          <Button type="submit" className="bg-AzulProfundo text-white">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

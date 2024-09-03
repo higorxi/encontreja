@@ -12,6 +12,7 @@ import { RecoveryPassword } from './recovery-password';
 import { InputDateOfBirth } from './input-date-of-birth';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/contexts/AuthContext';
+import { RegistrationDetails, useCadastro } from '@/contexts/SignupContext';
 
 const formatCPF = (cpf: string) => {
   return cpf
@@ -29,6 +30,7 @@ const validateEmail = (email: string) => {
 
 export function ModalLogin({ onClose }: any) {
   const { loginAuth } = useAuth();
+  const { registerUser } = useCadastro();
   const [showPassword, setShowPassword] = useState(false);
   const [inputValueLogin, setInputValueLogin] = useState('');
   const [inputValuePassword, setInputValuePassword] = useState('');
@@ -124,6 +126,28 @@ export function ModalLogin({ onClose }: any) {
       }
     } catch (error) {
       toast.error('Erro ao fazer login.');
+    } finally {
+      setLoading(false); 
+    }
+  };
+
+  const handleRegister = async () => {
+    if (!isValidEmail || !isValidCPF) {
+      toast.error('Dados inválidos');
+      return;
+    }
+    setLoading(true)
+    try {
+      const data = { name, email, gender, dateOfBirth: InputDateOfBirth, telephone: phone, cpf, cep, specialty: 'Eletricista' }
+      const response = await registerUser(data as unknown as RegistrationDetails);
+      if(response){
+        toast.success('Cadastro bem-sucedido!'); 
+        onClose(); 
+      } else {
+        throw new Error(''); 
+      }
+    } catch (error) {
+      toast.error('Erro ao fazer cadastro.');
     } finally {
       setLoading(false); 
     }
@@ -304,9 +328,9 @@ export function ModalLogin({ onClose }: any) {
                       <SelectValue placeholder="Selecione o Gênero" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="male">Masculino</SelectItem>
-                      <SelectItem value="female">Feminino</SelectItem>
-                      <SelectItem value="other">Outros</SelectItem>
+                      <SelectItem value="masculino">Masculino</SelectItem>
+                      <SelectItem value="feminino">Feminino</SelectItem>
+                      <SelectItem value="outro">Outros</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -333,7 +357,20 @@ export function ModalLogin({ onClose }: any) {
                 </div>
               </div>
             </div>
-            <Button className="w-full mt-4">Cadastrar</Button>
+            <Button onClick={handleRegister} className="w-full" disabled={loading ? true: false}>
+                {loading ? (
+                    <div className="flex items-center justify-center">
+                      <span className="ml-2 flex items-center">
+                        <span className='mr-1'>Carregando</span>
+                        <span className="dot-blink"></span>
+                        <span className="dot-blink"></span>
+                        <span className="dot-blink"></span>
+                      </span>
+                    </div>
+                  ) : (
+                    'Cadastrar'
+                  )}
+                </Button>
           </TabsContent>
         </Tabs>
       </DialogContent>
