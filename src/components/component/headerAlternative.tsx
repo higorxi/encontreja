@@ -30,7 +30,7 @@ export function HeaderAlternative() {
   const handleMenuToggle = () => setMenuOpen(!isMenuOpen);
 
   return (
-    <header className="relative bg-background shadow-sm">
+    <header className="relative bg-background">
       {/* Desktop View */}
       <div className="hidden md:flex items-center justify-between px-4 py-3">
         <Logo/>
@@ -192,7 +192,7 @@ export function HeaderAlternative() {
       {/* Modal */}
       {isModalOpen && (
         <>
-          {isAuthenticated ? (
+          {!isAuthenticated ? (
             <ModalServiceRegister onClose={closeModal}/>
           ) : (
             <ModalLogin onClose={closeModal}/>

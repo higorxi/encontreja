@@ -49,10 +49,10 @@ export function InitialScreen() {
           </div>
         </section>
 
-         <section className="w-full py-12 md:py-16 lg:py-22">
-          <div className="container px-4 md:px-8 mx-auto">
+         <section className="w-full min-w-full py-12 md:py-16 lg:py-22">
+          <div className="container  min-w-full  mx-auto">
             <Link href="/servicos">
-                <Marquee speed={25}>
+                <Marquee speed={50} className='w-full'>
                   <div className="flex items-center space-x-6">
                     <FaWrench title="Eletricista" size={24} className='ml-6' />
                     <FaWater title="Encanador" size={24} />
@@ -140,108 +140,6 @@ export function InitialScreen() {
               <div className="flex flex-col items-center gap-4"></div>
               <div className="flex flex-col items-center gap-4">
                 <h3 className="text-xl font-semibold text-center"> E muito mais...</h3>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-LaranjaEscuro1">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 justify-center">
-              <div className="space-y-2">
-                <h2
-                  className="text-3xl text-AmareloClaro3 font-bold tracking-tighter md:text-4xl/tight"
-                  style={{
-                    textShadow: `
-                  1px 1px 0 #000, 
-                  2px 2px 0 #000, 
-                  3px 3px 0 #000,
-                  4px 4px 0 #000
-                `,
-                  }}
-                >
-                  Alcance e Vantagens
-                </h2>
-                <p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  O EncontreJá não apenas facilita a busca por serviços locais, mas também oferece uma experiência
-                  confiável e eficiente, seja qual for a sua necessidade.
-                </p>
-                <ul className="grid gap-4 py-4">
-                  <li className="flex items-start gap-4">
-                    <CheckIcon className="h-6 w-6 text-primary" />
-                    <p className="text-base text-white">Disponível em Todo o Brasil</p>
-                  </li>
-                  <li className="flex items-start gap-4">
-                    <CheckIcon className="h-6 w-6 text-primary" />
-                    <p className="text-base text-white">Rapidez e Facilidade</p>
-                  </li>
-                  <li className="flex items-start gap-4">
-                    <CheckIcon className="h-6 w-6 text-primary" />
-                    <p className="text-base text-white">Segurança e Confiança</p>
-                  </li>
-                  <li className="flex items-start gap-4">
-                    <CheckIcon className="h-6 w-6 text-primary" />
-                    <p className="text-base text-white">Variedade de Serviços</p>
-                  </li>
-                  <li className="flex items-start gap-4">
-                    <CheckIcon className="h-6 w-6 text-primary" />
-                    <p className="text-base text-white">Economia de Tempo</p>
-                  </li>
-                  <li className="flex items-start gap-4">
-                    <CheckIcon className="h-6 w-6 text-primary" />
-                    <p className="text-base text-white">Expansão Contínua</p>
-                  </li>
-                </ul>
-              </div>
-              <div className="flex flex-col items-center space-y-2">
-                <p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Confiado por milhares
-                </p>
-                <h2
-                  className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center text-AmareloClaro3"
-                  style={{
-                    textShadow: `
-                    1px 1px 0 #000, 
-                    2px 2px 0 #000, 
-                    3px 3px 0 #000,
-                    4px 4px 0 #000
-                  `,
-                  }}
-                >
-                  O que nossos clientes dizem
-                </h2>
-                <div className="grid gap-6">
-                  <div className="grid gap-2 rounded-lg bg-background p-4">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="relative h-9 w-7">
-                        <Image src={avatar1} alt="Avatar" layout="fill" className="rounded-full object-cover" />
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-semibold">Lucas R.</div>
-                        <div className="text-xs text-muted-foreground">Cliente Satisfeito</div>
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground">
-                      Foi a primeira vez que usei o EncontreJá, e agora não quero outra coisa! Encontrei um encanador
-                      excelente que resolveu tudo rapidinho.
-                    </p>
-                  </div>
-                  <div className="grid gap-2 rounded-lg bg-background p-4">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="relative h-9 w-7">
-                        <Image src={avatar2} alt="Avatar" layout="fill" className="rounded-full object-cover" />
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-semibold">Fernanda L. </div>
-                        <div className="text-xs text-muted-foreground">Cliente Satisfeito</div>
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground">
-                      O EncontreJá foi uma mão na roda quando precisei de uma faxineira de última hora. Consegui agendar
-                      tudo de forma rápida e prática. Super recomendo!
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

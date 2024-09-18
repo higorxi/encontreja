@@ -1,18 +1,19 @@
-import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { useState } from "react";
-import { AiOutlineDelete, AiOutlineReload } from "react-icons/ai";
-import Image from "next/image";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
+import { AiOutlineDelete, AiOutlineReload } from 'react-icons/ai';
+import Image from 'next/image';
+import InputMask from 'react-input-mask';
 
 export function ModalServiceRegister({ onClose }: any) {
   const [images, setImages] = useState<(string | ArrayBuffer | null)[]>([null, null, null]);
   const [selectedServices, setSelectedServices] = useState<string>('');
-  const [physicalSpace, setPhysicalSpace] = useState(false);
+  const [serviceLocation, setServiceLocation] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState({
     card: false,
     pix: false,
@@ -25,7 +26,7 @@ export function ModalServiceRegister({ onClose }: any) {
       const reader = new FileReader();
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          setImages(prevImages => {
+          setImages((prevImages) => {
             const updatedImages = [...prevImages];
             updatedImages[index] = reader.result;
             return updatedImages;
@@ -43,7 +44,7 @@ export function ModalServiceRegister({ onClose }: any) {
       const reader = new FileReader();
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          setImages(prevImages => {
+          setImages((prevImages) => {
             const updatedImages = [...prevImages];
             updatedImages[index] = reader.result;
             return updatedImages;
@@ -55,7 +56,7 @@ export function ModalServiceRegister({ onClose }: any) {
   };
 
   const handleImageRemove = (index: number) => {
-    setImages(prevImages => {
+    setImages((prevImages) => {
       const updatedImages = [...prevImages];
       updatedImages[index] = null;
       return updatedImages;
@@ -66,19 +67,16 @@ export function ModalServiceRegister({ onClose }: any) {
     e: React.ChangeEvent<HTMLSelectElement>,
     setter: React.Dispatch<React.SetStateAction<string[]>>
   ) => {
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option: HTMLOptionElement) => option.value
-    );
+    const selectedOptions = Array.from(e.target.selectedOptions, (option: HTMLOptionElement) => option.value);
     setter(selectedOptions);
   };
 
-  const handlePhysicalSpaceChange = () => {
-    setPhysicalSpace(prev => !prev);
+  const handleServiceLocationChange = () => {
+    setServiceLocation((prev) => !prev);
   };
 
   const handlePaymentMethodChange = (method: keyof typeof paymentMethods) => {
-    setPaymentMethods(prev => ({ ...prev, [method]: !prev[method] }));
+    setPaymentMethods((prev) => ({ ...prev, [method]: !prev[method] }));
   };
 
   return (
@@ -107,6 +105,8 @@ export function ModalServiceRegister({ onClose }: any) {
                           src={image as string}
                           alt={`Imagem do Serviço ${index + 1}`}
                           className="w-full h-full object-cover rounded-lg"
+                          width={500}
+                          height={300}
                         />
                         <button
                           type="button"
@@ -122,7 +122,7 @@ export function ModalServiceRegister({ onClose }: any) {
                           <AiOutlineReload className="text-black" />
                           <input
                             id={`image-upload-${index}`}
-                            type="file"
+                            type="button"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, index)}
                             className="absolute inset-0 opacity-0 cursor-pointer"
@@ -151,7 +151,9 @@ export function ModalServiceRegister({ onClose }: any) {
                 ))}
               </div>
               <div className="p-4 border rounded-lg bg-gray-50">
-                <Label htmlFor="description">Descrição do Serviço</Label>
+                <Label htmlFor="description" className="mb-2 block text-gray-700">
+                  Descrição do Serviço
+                </Label>
                 <Textarea
                   id="description"
                   rows={3}
@@ -165,10 +167,7 @@ export function ModalServiceRegister({ onClose }: any) {
               <div className="flex flex-col gap-4">
                 <div className="flex-1 min-w-[250px]">
                   <Label htmlFor="service">Serviço</Label>
-                  <Select
-                    value={selectedServices}
-                    onValueChange={setSelectedServices}
-                  >
+                  <Select value={selectedServices} onValueChange={setSelectedServices}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione os serviços" />
                     </SelectTrigger>
@@ -188,7 +187,9 @@ export function ModalServiceRegister({ onClose }: any) {
                         checked={paymentMethods.card}
                         onCheckedChange={() => handlePaymentMethodChange('card')}
                       />
-                      <Label htmlFor="card" className="ml-2">Cartão</Label>
+                      <Label htmlFor="card" className="ml-2">
+                        Cartão
+                      </Label>
                     </div>
                     <div className="flex items-center">
                       <Switch
@@ -196,7 +197,9 @@ export function ModalServiceRegister({ onClose }: any) {
                         checked={paymentMethods.pix}
                         onCheckedChange={() => handlePaymentMethodChange('pix')}
                       />
-                      <Label htmlFor="pix" className="ml-2">Pix</Label>
+                      <Label htmlFor="pix" className="ml-2">
+                        Pix
+                      </Label>
                     </div>
                     <div className="flex items-center">
                       <Switch
@@ -204,37 +207,82 @@ export function ModalServiceRegister({ onClose }: any) {
                         checked={paymentMethods.cash}
                         onCheckedChange={() => handlePaymentMethodChange('cash')}
                       />
-                      <Label htmlFor="cash" className="ml-2">Dinheiro</Label>
+                      <Label htmlFor="cash" className="ml-2">
+                        Dinheiro
+                      </Label>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                <div className="flex-1 min-w-[250px]">
-                  <Label htmlFor="opening-hours-start">Horário de Funcionamento</Label>
-                  <div className="flex gap-2">
-                    <Input id="opening-hours-start" type="time" placeholder="Início" />
-                    <span>-</span>
-                    <Input id="opening-hours-end" type="time" placeholder="Fim" />
+                <div className="flex-1 min-w-[250px] space-y-2">
+                  <Label htmlFor="opening-hours-start" className="block text-gray-700">
+                    Horário de Funcionamento
+                  </Label>
+                  <div className="flex gap-4 items-center">
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">Abertura</span>
+                      <Input
+                        id="opening-hours-start"
+                        type="time"
+                        defaultValue="09:00" 
+                        className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <span className="text-gray-500 font-medium">-</span>
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">Fechamento</span>
+                      <Input
+                        id="opening-hours-end"
+                        type="time"
+                        defaultValue="18:00" 
+                        className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="flex-1 min-w-[250px]">
-                  <Label htmlFor="whatsapp">WhatsApp</Label>
-                  <Input id="whatsapp" type="tel" placeholder="(11) 99999-9999" />
+
+                <div className="flex space-x-4">
+                  <div className="flex-1 min-w-[250px]">
+                    <Label htmlFor="whatsapp">WhatsApp</Label>
+                    <InputMask
+                      mask="(99) 99999-9999"
+                      id="whatsapp"
+                      type="tel"
+                      placeholder="(11) 99999-9999"
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-[250px]">
+                    <Label htmlFor="portfolio">Link do Site/Portfólio</Label>
+                    <Input
+                      id="portfolio"
+                      type="url"
+                      placeholder="https://meuportfolio.com"
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                <div className="flex-1 min-w-[250px]">
-                  <Label htmlFor="physical-space">Espaço Físico</Label>
+                <div className="flex items-center">
                   <Switch
-                    id="physical-space"
-                    checked={physicalSpace}
-                    onCheckedChange={handlePhysicalSpaceChange}
+                    id="has-service-location"
+                    checked={serviceLocation}
+                    onCheckedChange={handleServiceLocationChange}
                   />
+                  <Label htmlFor="pix" className="ml-2">
+                    Tem local de atendimento
+                  </Label>
                 </div>
                 <div className="flex-1 min-w-[250px]">
-                  <Label htmlFor="address">Endereço</Label>
-                  <Input id="address" type="text" placeholder="Endereço completo" />
+                  {serviceLocation && (
+                    <>
+                      <Label htmlFor="address">Endereço de atendimento</Label>
+                      <Input id="address" type="text" placeholder="Rua 1, Quadra 1, Lote 1.." />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -244,7 +292,9 @@ export function ModalServiceRegister({ onClose }: any) {
           <Button variant="outline" onClick={onClose}>
             Fechar
           </Button>
-          <Button type="submit" className="bg-AzulProfundo text-white">Salvar</Button>
+          <Button type="submit" className="bg-AzulProfundo text-white">
+            Salvar
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -95,17 +95,6 @@ export function WhyIsEncontreJA() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
-                <div className="bg-primary rounded-md p-3 flex items-center justify-center">
-                  <CalendarIcon className="w-6 h-6 text-primary-foreground" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Agendamento Imediato</h3>
-                  <p className="text-muted-foreground">
-                    Agende compromissos e reserve serviços com apenas alguns cliques.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

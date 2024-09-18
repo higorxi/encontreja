@@ -33,7 +33,7 @@ export function Header() {
   }, [])
 
   return (
-    <header className="relative bg-background shadow-sm">
+    <header className="relative bg-background">
       <div className="hidden lg:flex items-center justify-between px-4 py-3">
         <Logo />
         <div className="flex items-center gap-4">

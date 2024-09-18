@@ -1,3 +1,4 @@
+import { Coments } from "@/components/component/coments";
 import { ContactSection } from "@/components/component/contact-section";
 import { Footer } from "@/components/component/footer";
 import { Header } from "@/components/component/header";
@@ -11,6 +12,7 @@ export default function Home() {
     <>
     <Header/>
     <InitialScreen/>
+    <Coments/>
     <section id="why">
     <WhyIsEncontreJA/>
     </section>
