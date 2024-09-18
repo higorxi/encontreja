@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { FiArrowRight } from "react-icons/fi"
 import { Feedback } from "./feedback"
 

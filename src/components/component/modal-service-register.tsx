@@ -81,7 +81,7 @@ export function ModalServiceRegister({ onClose }: any) {
 
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
-      <DialogContent className="max-w-full max-h-full sm:max-w-[1300px] sm:max-h-[600px] flex flex-col p-4">
+      <DialogContent className="max-w-full max-h-full sm:max-w-[1300px] sm:max-h-[550px] flex flex-col p-4 min-h-[550px]">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4">
           <div>
             <DialogTitle>Registrar Seu Serviço</DialogTitle>
@@ -178,6 +178,7 @@ export function ModalServiceRegister({ onClose }: any) {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className='flex'>
                 <div className="flex-1 min-w-[250px]">
                   <Label>Método de Pagamento</Label>
                   <div className="flex flex-col gap-2">
@@ -213,8 +214,6 @@ export function ModalServiceRegister({ onClose }: any) {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-4">
                 <div className="flex-1 min-w-[250px] space-y-2">
                   <Label htmlFor="opening-hours-start" className="block text-gray-700">
                     Horário de Funcionamento
@@ -241,6 +240,10 @@ export function ModalServiceRegister({ onClose }: any) {
                     </div>
                   </div>
                 </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                
 
                 <div className="flex space-x-4">
                   <div className="flex-1 min-w-[250px]">
