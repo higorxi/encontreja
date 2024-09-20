@@ -16,7 +16,7 @@ export function Price() {
   const [showModal, setShowModal] = useState<'price' | 'login' | null>(null);
 
   const openModal = (planName: string, planPrice: number) => {
-    if (isAuthenticated) {
+    if (!isAuthenticated) {
       setSelectedPlan({ planName, planPrice });
       setShowModal('price');
     } else {
@@ -78,7 +78,7 @@ export function Price() {
           <div className="absolute inset-0 border-4 border-blue-500 rounded-lg"></div>
         </div>
         <div
-          className="bg-green-100 rounded-lg p-6 flex flex-col gap-4 text-gray-800 shadow-md mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer relative"
+          className="bg-LaranjaIndustrial bg-opacity-55 rounded-lg p-6 flex flex-col gap-4 text-gray-800 shadow-md mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer relative"
           onClick={() => openModal('Mensal', 19.99)}
         >
           <div className="space-y-2">
@@ -111,8 +111,8 @@ export function Price() {
               Suporte estendido e consultoria para otimização do perfil.
             </li>
           </ul>
-          <Button className="bg-green-500 text-white hover:bg-green-600">Comprar</Button>
-          <div className="absolute inset-0 border-4 border-green-300 rounded-lg"></div>
+          <Button className="bg-LaranjaIndustrial text-white hover:bg-LaranjaEscuro2">Comprar</Button>
+          <div className="absolute inset-0 border-4 border-LaranjaIndustrial opacity-55 rounded-lg"></div>
         </div>
         <div
           className="bg-yellow-100 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer shadow-md hover:shadow-lg relative"

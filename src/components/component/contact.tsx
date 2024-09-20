@@ -29,7 +29,11 @@ export function Contact() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="message">Mensagem</Label>
-              <Textarea id="message" placeholder="Descreva sua dúvida ou problema" className="min-h-[150px]" />
+              <Textarea
+                id="message"
+                placeholder="Descreva sua dúvida ou problema"
+                className="min-h-[150px] resize-none" 
+              />
             </div>
             <Button type="submit" className="w-full">
               Enviar

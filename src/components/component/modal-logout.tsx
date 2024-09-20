@@ -10,19 +10,19 @@ export function ModalLogout({ onClose }: { onClose: () => void }) {
         <div className="flex flex-col items-center justify-center gap-4 py-8">
           <CircleIcon className="size-12 text-muted" />
           <div className="space-y-2 text-center">
-            <h3 className="text-lg font-medium">Logout Confirmation</h3>
-            <p className="text-muted-foreground">Are you sure you want to logout?</p>
+            <h3 className="text-lg font-medium">Confirmação de Logout</h3>
+            <p className="text-muted-foreground">Tem certeza de que deseja sair?</p>
           </div>
         </div>
         <DialogFooter>
           <Button variant="outline" className="mr-2" onClick={onClose}>
-            Cancel
+            Cancelar
           </Button>
           <Button onClick={async () => {
             await logout()
             onClose();
           }}>
-            Confirm
+            Sair
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -17,10 +17,10 @@ export function Coments() {
             prontos para oferecer as melhores soluções para você.
           </p>
           <div className="flex items-center w-full justify-start">
-            <Button className="bg-AzulProfundo text-white rounded-full px-6 py-3 flex items-center justify-between w-full lg:w-auto pr-2 rounded-2xl">
+            <Button className="bg-white text-black rounded-full px-6 py-3 flex items-center justify-between w-full lg:w-auto pr-2 rounded-2xl hover:text-white">
               <span className="mr-auto">Saiba Mais</span>
-              <div className="bg-white rounded-full p-2 ml-4 rounded-2xl">
-                <FiArrowRight className="text-black" />
+              <div className="bg-black rounded-full p-2 ml-4 rounded-2xl">
+                <FiArrowRight className="text-white" />
               </div>
             </Button>
           </div>

@@ -1,6 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import { BsWhatsapp } from "react-icons/bs";
+import { IoLogoInstagram } from "react-icons/io";
+import { CiMail } from "react-icons/ci";
+import { FaPhoneFlip } from "react-icons/fa6";
 
 interface DetailsServiceProviderProps {
   dataServiceProvider?: {
@@ -84,16 +88,16 @@ export function DetailsServiceProvider({
         </div>
         <div className="flex flex-col text-muted-foreground">
           <div className="flex items-center gap-1 mb-1">
-            <PhoneIcon className="w-4 h-4" />
-            <span className="truncate">{provider.phone}</span>
+            <FaPhoneFlip className="w-4 h-4" />
+            <span className="truncate">{defaultProvider.phone}</span>
           </div>
           <div className="flex items-center gap-1 mb-1">
-            <MailOpenIcon className="w-4 h-4" />
-            <span className="truncate">{provider.email}</span>
+            <CiMail className="w-4 h-4" />
+            <span className="truncate">{defaultProvider.email}</span>
           </div>
           <div className="flex items-center gap-1">
-            <WhatsappIcon className="w-4 h-4" />
-            <span className="truncate">{provider.whatsapp}</span>
+            <BsWhatsapp className="w-4 h-4" />
+            <span className="truncate">{defaultProvider.whatsapp}</span>
           </div>
         </div>
       </div>
@@ -127,7 +131,7 @@ export function DetailsServiceProvider({
                 </div>
               </div>
               <div className="grid gap-2">
-                <h3 className="text-lg font-semibold">Mais Detalhes do Serviço</h3>
+                <h3 className="text-lg font-semibold">Mais Detalhes</h3>
                 <div className="grid gap-1 text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <span className="font-medium">Disponível:</span>
@@ -167,7 +171,7 @@ export function DetailsServiceProvider({
             rel="noopener noreferrer"
             className="flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
           >
-            <WhatsappIcon className="w-5 h-5 mr-2" />
+            <BsWhatsapp className="w-5 h-5 mr-2" />
             Entrar em contato no WhatsApp
           </a>
           <a
@@ -176,7 +180,7 @@ export function DetailsServiceProvider({
             rel="noopener noreferrer"
             className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
-            <InstagramIcon className="w-5 h-5 mr-2" />
+            <IoLogoInstagram className="w-5 h-5 mr-2" />
             Visualizar portfólio/Instagram
           </a>
         </div>
@@ -266,82 +270,3 @@ function HomeIcon(props: any) {
   );
 }
 
-function PhoneIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 16.92v-2a1 1 0 0 0-1-1h-1.29a4.44 4.44 0 0 0-1.66-.82l-1.68-.28a1 1 0 0 0-1.07.72l-1.6 4.4a1 1 0 0 0 .65 1.26l3.48 1.15a8.9 8.9 0 0 1-3.6 3.69 1 1 0 0 0-.72 1.08l1.25 1.54a1 1 0 0 0 1.26.65l4.4-1.6a1 1 0 0 0 .72-1.07l-.28-1.68a4.44 4.44 0 0 0-.82-1.66H22a1 1 0 0 0 1-1z" />
-      <path d="M2 8.4v2a1 1 0 0 0 1 1h1.29a4.44 4.44 0 0 0 1.66.82l1.68.28a1 1 0 0 0 1.07-.72l1.6-4.4a1 1 0 0 0-.65-1.26L6.65 4.65A8.9 8.9 0 0 1 10.1 1.96a1 1 0 0 0 .72-1.08L9.57-.64a1 1 0 0 0-1.26-.65L4.74 0.82a1 1 0 0 0-.72 1.07l.28 1.68a4.44 4.44 0 0 0 .82 1.66H2a1 1 0 0 0-1 1z" />
-    </svg>
-  );
-}
-
-function MailOpenIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" />
-      <path d="M2 6l10 7 10-7" />
-    </svg>
-  );
-}
-
-function WhatsappIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15.5v-2a6 6 0 0 0-6-6h-8a6 6 0 0 0-6 6v2l-1.5 1.5v3l1.5 1.5v1.5h3L12 21l6-1.5h3v-1.5l1.5-1.5v-3L21 15.5zM4 12a8 8 0 0 1 8-8h8a8 8 0 0 1 8 8v2h-4a6 6 0 0 0-6 6v2H6v-2a6 6 0 0 0-6-6H0v-2z" />
-    </svg>
-  );
-}
-
-function InstagramIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <circle cx="12" cy="12" r="4" />
-      <line x1="16.5" y1="7.5" x2="16.5" y2="7.5" />
-    </svg>
-  );
-}

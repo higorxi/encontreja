@@ -1,6 +1,6 @@
 const serviceProviders = [
   {
-    name: "John Doe",
+    name: "João Batista",
     location: "San Francisco, CA",
     rating: 4.5,
     description: "John is a highly skilled handyman with over 10 years of experience. He specializes in a wide range of home repair and maintenance services, including plumbing, electrical, carpentry, and more. John is known for his attention to detail, reliable service, and friendly demeanor.",

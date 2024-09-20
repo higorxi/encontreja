@@ -15,7 +15,7 @@ export function InitialScreen() {
         <section className="w-full py-12 md:py-14 lg:py-18 xl:py-22">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px] justify-center">
-              <div className="flex flex-col justify-center space-y-4">
+              <div className="flex flex-col justify-center space-y-8">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                     Encontre o serviço local ideal para você, de forma rápida e fácil!
@@ -55,6 +55,72 @@ export function InitialScreen() {
                 <Marquee speed={50} className='w-full'>
                   <div className="flex items-center space-x-6">
                     <FaWrench title="Eletricista" size={24} className='ml-6' />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaLaptop title="Técnico" size={24} />
+                    <FaCut title="Cabeleireiro" size={24} />
+                    <FaLeaf title="Jardineiro" size={24} />
+                    <FaHammer title="Carpinteiro" size={24} />
+                    <FaShower title="Encanador" size={24} />
+                    <FaPlug title="Eletricista" size={24} />
+                    <FaPen title="Pintor" size={24} />
+                    <FaSoap title="Faxineiro" size={24} />
+                    <FaDesktop title="Técnico" size={24} />
+                    <FaUserTie title="Consultor" size={24} />
+                    <FaPencilAlt title="Designer" size={24} />
+                    <FaWrench title="Eletricista" size={24} />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaLaptop title="Técnico" size={24} />
+                    <FaCut title="Cabeleireiro" size={24} />
+                    <FaLeaf title="Jardineiro" size={24} />
+                    <FaHammer title="Carpinteiro" size={24} />
+                    <FaShower title="Encanador" size={24} />
+                    <FaPlug title="Eletricista" size={24} />
+                    <FaPen title="Pintor" size={24} />
+                    <FaSoap title="Faxineiro" size={24} />
+                    <FaDesktop title="Técnico" size={24} />
+                    <FaUserTie title="Consultor" size={24} />
+                    <FaPencilAlt title="Designer" size={24} />
+                    <FaWrench title="Eletricista" size={24} />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaLaptop title="Técnico" size={24} />
+                    <FaCut title="Cabeleireiro" size={24} />
+                    <FaLeaf title="Jardineiro" size={24} />
+                    <FaHammer title="Carpinteiro" size={24} />
+                    <FaShower title="Encanador" size={24} />
+                    <FaPlug title="Eletricista" size={24} />
+                    <FaPen title="Pintor" size={24} />
+                    <FaSoap title="Faxineiro" size={24} />
+                    <FaDesktop title="Técnico" size={24} />
+                    <FaUserTie title="Consultor" size={24} />
+                    <FaPencilAlt title="Designer" size={24} />
+                    <FaWrench title="Eletricista" size={24} />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
+                    <FaLaptop title="Técnico" size={24} />
+                    <FaCut title="Cabeleireiro" size={24} />
+                    <FaLeaf title="Jardineiro" size={24} />
+                    <FaHammer title="Carpinteiro" size={24} />
+                    <FaShower title="Encanador" size={24} />
+                    <FaPlug title="Eletricista" size={24} />
+                    <FaPen title="Pintor" size={24} />
+                    <FaSoap title="Faxineiro" size={24} />
+                    <FaDesktop title="Técnico" size={24} />
+                    <FaUserTie title="Consultor" size={24} />
+                    <FaPencilAlt title="Designer" size={24} />
+                    <FaWrench title="Eletricista" size={24} />
+                    <FaWater title="Encanador" size={24} />
+                    <FaPaintBrush title="Pintor" size={24} />
+                    <FaBroom title="Faxineiro" size={24} />
                     <FaWater title="Encanador" size={24} />
                     <FaPaintBrush title="Pintor" size={24} />
                     <FaBroom title="Faxineiro" size={24} />

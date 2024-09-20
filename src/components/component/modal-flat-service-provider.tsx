@@ -72,7 +72,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
     setStep(2);
   };
 
-  const handlePaymentMethodChange = (value: any) => {
+  const handlePaymentMethodChange = (value: string) => {
     setPaymentMethod(value);
     if (value === 'pix') {
       setTimer(60);
@@ -294,7 +294,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                   value={cardState.name}
                   onChange={handleCardInputChange}
                   onFocus={handleCardInputFocus}
-                  placeholder="John Doe"
+                  placeholder="João Batista"
                 />
               </div>
               <div className="flex justify-between space-x-4">
@@ -349,11 +349,14 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
         )}
         {step === 3 && (
           <div className="grid gap-6">
-            <h2 className="text-2xl font-semibold">Confirmation</h2>
+            <h2 className="text-2xl font-semibold">Confirmação</h2>
             <p>
             Seu pagamento foi processado com sucesso. Obrigado!</p>
             <p>
-             Mais informações serão repassadas via email, caso necessite alterar alguma informação, entre em contato com o suporte: suporte@encontreja.com</p>
+             Mais informações serão repassadas via email, caso necessite alterar alguma informação, entre em contato com o suporte: 
+             <strong>suporte@encontreja.com</strong>
+             </p>
+             
             <Button onClick={onClose}>Fechar</Button>
           </div>
         )}

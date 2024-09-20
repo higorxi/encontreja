@@ -17,7 +17,7 @@ export function Feedback() {
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
               <div className="grid gap-0.5">
-                <div className="font-medium">John Doe</div>
+                <div className="font-medium">João Batista</div>
                 <div className="text-xs text-muted-foreground">Pro Plan</div>
               </div>
             </div>

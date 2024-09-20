@@ -8,6 +8,7 @@ import { DetailsServiceProvider } from './details-service-provider';
 import usePageTitle from '@/Hooks/usePageTittle';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { ModalSearchCity } from './modal-search-city';
+import { FaSearch } from "react-icons/fa";
 
 export function Advertisements() {
   const [locationFilter, setLocationFilter] = useState('');
@@ -134,12 +135,20 @@ export function Advertisements() {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4 sm:mt-0">
-          <Button variant='orange' onClick={() => setCityModalOpen(true)}>{userCity || 'Selecione sua cidade'}</Button>
+          <Button variant="orange" onClick={() => setCityModalOpen(true)}>
+            {userCity || 'Selecione sua cidade'}
+          </Button>
           <Select onValueChange={(value) => setTypeFilter(value)}>
             <SelectTrigger className="w-full sm:w-40 ">
               <SelectValue placeholder="Tipo de Serviço" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="descubra">
+                <div className="flex items-center">
+                  <strong>Descreva seu problema</strong>
+                  <FaSearch  className="ml-2" />
+                </div>
+              </SelectItem>
               {['Cleaning', 'Landscaping', 'Plumbing', 'Electrician', 'Handyman'].map((type) => (
                 <SelectItem key={type} value={type.toLowerCase()}>
                   {type}
@@ -152,8 +161,8 @@ export function Advertisements() {
               <SelectValue placeholder="Avaliação" />
             </SelectTrigger>
             <SelectContent>
-              {['5 stars', '4 stars', '3 stars', '2 stars', '1 star'].map((rating) => (
-                <SelectItem key={rating} value={rating.replace(/ stars| star/g, '')}>
+              {['5 estrelas', '4 estrelas', '3 estrelas', '2 estrelas', '1 estrelas'].map((rating) => (
+                <SelectItem key={rating} value={rating.replace(/ estrelas| estrelas/g, '')}>
                   {rating}
                 </SelectItem>
               ))}
@@ -210,9 +219,7 @@ export function Advertisements() {
       </div>
 
       {isModalOpen && selectedProvider && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay"
-        >
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
             <DetailsServiceProvider dataServiceProvider={selectedProvider} onClose={closeProviderModal} />
           </div>

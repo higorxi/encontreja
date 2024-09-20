@@ -34,7 +34,7 @@ export function Header() {
 
   return (
     <header className="relative bg-background">
-      <div className="hidden lg:flex items-center justify-between px-4 py-3">
+      <div className="hidden lg:flex items-center justify-between px-8 py-4">
         <Logo />
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-4">
@@ -71,7 +71,7 @@ export function Header() {
           </Link>
           <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105" onClick={handlePostServiceClick}>
             <LogoAlternative logoType={2} className="w-4 h-4" />
-            Postar Serviço
+            {isAuthenticated ? 'Postar Serviço' : 'Login'}
           </Button>
         </div>
       </div>
@@ -118,7 +118,7 @@ export function Header() {
             }}
           >
             <LogoAlternative logoType={2} className="w-4 h-4 mr-2" />
-            Postar Serviço
+            {isAuthenticated ? 'Postar Serviço' : 'Login'}
           </Button>
         </nav>
       </div>
