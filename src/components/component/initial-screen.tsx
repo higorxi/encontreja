@@ -1,8 +1,5 @@
 import Link from 'next/link';
-import { Avatar } from '@/components/ui/avatar';
 import Image from 'next/image';
-import avatar1 from '../../../public/avatar/avatar-1.svg';
-import avatar2 from '../../../public/avatar/avatar-2.svg';
 import ImageHome from '../../../public/HomeScreen/Encanador.svg'
 import Marquee from "react-fast-marquee";
 import { FaBroom, FaCut, FaDesktop, FaHammer, FaLaptop, FaLeaf, FaPaintBrush, FaPen, FaPencilAlt, FaPlug, FaShower, FaSoap, FaUserTie, FaWater, FaWrench } from 'react-icons/fa';
@@ -29,7 +26,7 @@ export function InitialScreen() {
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Link
                     href="/servicos"
-                    className="inline-flex h-10 items-center justify-center bg-AmareloGastronômica px-10 py- text-lg font-semibold text-black  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+                    className="inline-flex h-12 items-center justify-center bg-AmareloGastronômica px-10 text-lg font-semibold text-black  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
                     prefetch={false}
                   >
                     Explorar serviços
