@@ -192,7 +192,7 @@ export function HeaderAlternative() {
       {/* Modal */}
       {isModalOpen && (
         <>
-          {!isAuthenticated ? (
+          {isAuthenticated ? (
             <ModalServiceRegister onClose={closeModal}/>
           ) : (
             <ModalLogin onClose={closeModal}/>

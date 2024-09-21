@@ -16,7 +16,7 @@ export function Price() {
   const [showModal, setShowModal] = useState<'price' | 'login' | null>(null);
 
   const openModal = (planName: string, planPrice: number) => {
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
       setSelectedPlan({ planName, planPrice });
       setShowModal('price');
     } else {
