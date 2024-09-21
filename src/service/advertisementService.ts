@@ -8,7 +8,7 @@ export const getAnuncio = async (anuncioId: string) => {
 };
 
 export const createAnuncio = async (data: advertisementDetails) => {
-  return await post('/anuncios', data);
+  return await post('/advertisement', data);
 };
 
 export const updateAnuncio = async (anuncioId: string, data: any) => {

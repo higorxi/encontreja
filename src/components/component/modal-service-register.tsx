@@ -9,16 +9,26 @@ import { useState } from 'react';
 import { AiOutlineDelete, AiOutlineReload } from 'react-icons/ai';
 import Image from 'next/image';
 import InputMask from 'react-input-mask';
+import { createAnuncio } from '@/service/advertisementService';
+import { advertisementDetails } from '@/@types/advertisement';
+import { toast } from 'react-toastify';
 
 export function ModalServiceRegister({ onClose }: any) {
+  const user = JSON.parse(localStorage.getItem('user') as string);
   const [images, setImages] = useState<(string | ArrayBuffer | null)[]>([null, null, null]);
   const [selectedServices, setSelectedServices] = useState<string>('');
-  const [serviceLocation, setServiceLocation] = useState(false);
+  const [hasServiceLocation, setHasServiceLocation] = useState(false);
+  const [linkWebsitePortfolio, setLinkWebsitePortfolio] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [serviceLocation, setServiceLocation] = useState('');
   const [paymentMethods, setPaymentMethods] = useState({
     card: false,
     pix: false,
     cash: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
 
   const handleImageChange = (e: any, index: number) => {
     const file = e.target.files[0];
@@ -72,11 +82,47 @@ export function ModalServiceRegister({ onClose }: any) {
   };
 
   const handleServiceLocationChange = () => {
-    setServiceLocation((prev) => !prev);
+    setHasServiceLocation((prev) => !prev);
   };
 
   const handlePaymentMethodChange = (method: keyof typeof paymentMethods) => {
     setPaymentMethods((prev) => ({ ...prev, [method]: !prev[method] }));
+  };
+
+  const handleRegisterAD = async () => {
+    setLoading(true);
+    try {
+      const data = {
+        user: { document: '06512743113' },
+        title,
+        description,
+        price: 1,
+        whatsappNumber,
+        acceptPix: paymentMethods.pix,
+        acceptCard: paymentMethods.card,
+        acceptMoney: paymentMethods.cash,
+        hasServiceLocation: hasServiceLocation,
+        serviceLocation,
+        linkWebsitePortfolio,
+        servicesAvailable: [
+          {
+            id: 6,
+            description: 'Jardineiros',
+          },
+        ],
+      };
+      const response = await createAnuncio(data as advertisementDetails);
+      if (response) {
+        toast.success('Anuncio criado com sucesso');
+        onClose();
+      } else {
+        throw new Error('');
+      }
+    } catch (error) {
+      toast.error('Erro ao criar anuncio, tente novamente!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -151,14 +197,29 @@ export function ModalServiceRegister({ onClose }: any) {
                 ))}
               </div>
               <div className="p-4 border rounded-lg bg-gray-50">
+                <Label htmlFor="title" className="mb-2 block text-gray-700">
+                  Titulo
+                </Label>
+                <Input
+                  id="title"
+                  type="title"
+                  value={title}
+                  placeholder="Descreva seu serviço..."
+                  className="w-full p-2 border rounded"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div className="p-4 border rounded-lg bg-gray-50">
                 <Label htmlFor="description" className="mb-2 block text-gray-700">
                   Descrição do Serviço
                 </Label>
                 <Textarea
                   id="description"
                   rows={3}
+                  value={description}
                   placeholder="Descreva seu serviço..."
                   className="w-full h-24 resize-none"
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
             </div>
@@ -178,73 +239,71 @@ export function ModalServiceRegister({ onClose }: any) {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className='flex'>
-                <div className="flex-1 min-w-[250px]">
-                  <Label>Método de Pagamento</Label>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center">
-                      <Switch
-                        id="card"
-                        checked={paymentMethods.card}
-                        onCheckedChange={() => handlePaymentMethodChange('card')}
-                      />
-                      <Label htmlFor="card" className="ml-2">
-                        Cartão
-                      </Label>
-                    </div>
-                    <div className="flex items-center">
-                      <Switch
-                        id="pix"
-                        checked={paymentMethods.pix}
-                        onCheckedChange={() => handlePaymentMethodChange('pix')}
-                      />
-                      <Label htmlFor="pix" className="ml-2">
-                        Pix
-                      </Label>
-                    </div>
-                    <div className="flex items-center">
-                      <Switch
-                        id="cash"
-                        checked={paymentMethods.cash}
-                        onCheckedChange={() => handlePaymentMethodChange('cash')}
-                      />
-                      <Label htmlFor="cash" className="ml-2">
-                        Dinheiro
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-1 min-w-[250px] space-y-2">
-                  <Label htmlFor="opening-hours-start" className="block text-gray-700">
-                    Horário de Funcionamento
-                  </Label>
-                  <div className="flex gap-4 items-center">
-                    <div className="flex flex-col">
-                      <span className="text-sm text-gray-600">Abertura</span>
-                      <Input
-                        id="opening-hours-start"
-                        type="time"
-                        defaultValue="09:00" 
-                        className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <span className="text-gray-500 font-medium">-</span>
-                    <div className="flex flex-col">
-                      <span className="text-sm text-gray-600">Fechamento</span>
-                      <Input
-                        id="opening-hours-end"
-                        type="time"
-                        defaultValue="18:00" 
-                        className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+                <div className="flex">
+                  <div className="flex-1 min-w-[250px]">
+                    <Label>Método de Pagamento</Label>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center">
+                        <Switch
+                          id="card"
+                          checked={paymentMethods.card}
+                          onCheckedChange={() => handlePaymentMethodChange('card')}
+                        />
+                        <Label htmlFor="card" className="ml-2">
+                          Cartão
+                        </Label>
+                      </div>
+                      <div className="flex items-center">
+                        <Switch
+                          id="pix"
+                          checked={paymentMethods.pix}
+                          onCheckedChange={() => handlePaymentMethodChange('pix')}
+                        />
+                        <Label htmlFor="pix" className="ml-2">
+                          Pix
+                        </Label>
+                      </div>
+                      <div className="flex items-center">
+                        <Switch
+                          id="cash"
+                          checked={paymentMethods.cash}
+                          onCheckedChange={() => handlePaymentMethodChange('cash')}
+                        />
+                        <Label htmlFor="cash" className="ml-2">
+                          Dinheiro
+                        </Label>
+                      </div>
                     </div>
                   </div>
-                </div>
+                  <div className="flex-1 min-w-[250px] space-y-2">
+                    <Label htmlFor="opening-hours-start" className="block text-gray-700">
+                      Horário de Funcionamento
+                    </Label>
+                    <div className="flex gap-4 items-center">
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-600">Abertura</span>
+                        <Input
+                          id="opening-hours-start"
+                          type="time"
+                          defaultValue="09:00"
+                          className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                      <span className="text-gray-500 font-medium">-</span>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-600">Fechamento</span>
+                        <Input
+                          id="opening-hours-end"
+                          type="time"
+                          defaultValue="18:00"
+                          className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                
-
                 <div className="flex space-x-4">
                   <div className="flex-1 min-w-[250px]">
                     <Label htmlFor="whatsapp">WhatsApp</Label>
@@ -254,6 +313,8 @@ export function ModalServiceRegister({ onClose }: any) {
                       type="tel"
                       placeholder="(11) 99999-9999"
                       className="w-full p-2 border rounded"
+                      value={whatsappNumber}
+                      onChange={(e) => setWhatsappNumber(e.target.value)}
                     />
                   </div>
 
@@ -264,6 +325,8 @@ export function ModalServiceRegister({ onClose }: any) {
                       type="url"
                       placeholder="https://meuportfolio.com"
                       className="w-full p-2 border rounded"
+                      value={linkWebsitePortfolio}
+                      onChange={(e) => setLinkWebsitePortfolio(e.target.value)}
                     />
                   </div>
                 </div>
@@ -272,7 +335,7 @@ export function ModalServiceRegister({ onClose }: any) {
                 <div className="flex items-center">
                   <Switch
                     id="has-service-location"
-                    checked={serviceLocation}
+                    checked={hasServiceLocation}
                     onCheckedChange={handleServiceLocationChange}
                   />
                   <Label htmlFor="pix" className="ml-2">
@@ -283,7 +346,13 @@ export function ModalServiceRegister({ onClose }: any) {
                   {serviceLocation && (
                     <>
                       <Label htmlFor="address">Endereço de atendimento</Label>
-                      <Input id="address" type="text" placeholder="Rua 1, Quadra 1, Lote 1.." />
+                      <Input
+                        id="address"
+                        type="text"
+                        placeholder="Rua 1, Quadra 1, Lote 1.."
+                        value={serviceLocation}
+                        onChange={(e) => setServiceLocation(e.target.value)}
+                      />
                     </>
                   )}
                 </div>
@@ -295,7 +364,7 @@ export function ModalServiceRegister({ onClose }: any) {
           <Button variant="outline" onClick={onClose}>
             Fechar
           </Button>
-          <Button type="submit" className="bg-AzulProfundo text-white">
+          <Button type="submit" className="bg-AzulProfundo text-white" onClick={handleRegisterAD}>
             Salvar
           </Button>
         </DialogFooter>

@@ -7,6 +7,21 @@ const api = axios.create({
     },
   });
 
+  api.interceptors.request.use(
+    (config) => {
+      const user = JSON.parse(localStorage.getItem('user') as string);
+  
+      if (user.token) {
+        config.headers['Authorization'] = `Bearer ${user.token}`;
+      }
+  
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
 // Função GET
 export const get = async (endpoint: string, params?: any) => {
   const response = await api.get(endpoint, { params });

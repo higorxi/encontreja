@@ -12,5 +12,8 @@ export interface advertisementDetails {
     hasServiceLocation: boolean;
     serviceLocation?: string
     linkWebsitePortfolio?: string;
-    servicesAvailable: string[]
+    servicesAvailable: [{
+        id: number,
+        description: string
+    }]
   }
