@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { register } from '@/service/registerService';
-import { CEP, DateOfBirth, Document, Email, Specialty, Telephone, UserGender } from '@/@types/userTypes';
+import { Document, Email, Telephone } from '@/@types/userTypes';
 
 interface User {
   id: string;
@@ -10,13 +10,14 @@ interface User {
 
 export interface RegistrationDetails {
   name: string;
-  gender: UserGender;
+  gender: {
+    id: 1
+  };
   email: Email;
-  dateOfBirth: DateOfBirth;
-  telephone: Telephone;
-  specialty: Specialty;
-  cpf: Document;
-  cep: CEP;
+  phone: Telephone;
+  document: Document;
+  password: string;
+  city: string;
 }
 
 interface CadastroContextType {

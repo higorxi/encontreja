@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { IoIosLogOut } from "react-icons/io";
 
 export function ModalLogout({ onClose }: { onClose: () => void }) {
   const { logout } = useAuth();
@@ -8,7 +9,7 @@ export function ModalLogout({ onClose }: { onClose: () => void }) {
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <div className="flex flex-col items-center justify-center gap-4 py-8">
-          <CircleIcon className="size-12 text-muted" />
+          <IoIosLogOut className="size-12 text-muted" />
           <div className="space-y-2 text-center">
             <h3 className="text-lg font-medium">Confirmação de Logout</h3>
             <p className="text-muted-foreground">Tem certeza de que deseja sair?</p>

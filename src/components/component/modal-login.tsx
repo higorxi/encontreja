@@ -13,6 +13,7 @@ import { InputDateOfBirth } from './input-date-of-birth';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/contexts/AuthContext';
 import { RegistrationDetails, useCadastro } from '@/contexts/SignupContext';
+import { SearchIcon } from 'lucide-react';
 
 const formatCPF = (cpf: string) => {
   return cpf
@@ -41,13 +42,37 @@ export function ModalLogin({ onClose }: any) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [cpf, setCpf] = useState('');
+  const [password, setPassword] = useState('');
   const [gender, setGender] = useState('');
   const [birthdate, setBirthdate] = useState('');
-  const [specialty, setSpecialty] = useState('');
   const [cep, setCep] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
   const [openRecoveryPassword, setOpenRecoveryPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  const handleSearch = async () => {
+    if (cep.length === 8 || cep.length === 9) {
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+        if (data.erro) {
+          alert('CEP não encontrado');
+          setCity('');
+          setState('');
+        } else {
+          setCity(data.localidade);
+          setState(data.uf);
+        }
+      } catch (error) {
+        alert('Erro ao buscar o CEP');
+        console.error(error);
+      }
+    } else {
+      alert('CEP inválido');
+    }
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -111,23 +136,23 @@ export function ModalLogin({ onClose }: any) {
       toast.error('Email inválido');
       return;
     }
-    setLoading(true)
+    setLoading(true);
     try {
       let email, password;
       email = inputValueLogin.toLowerCase();
       password = inputValuePassword;
-      const data = { email, password}
+      const data = { email, password };
       const response = await loginAuth(data);
-      if(response){
-        toast.success('Login bem-sucedido!'); 
-        onClose(); 
+      if (response) {
+        toast.success('Login bem-sucedido!');
+        onClose();
       } else {
-        throw new Error(''); 
+        throw new Error('');
       }
     } catch (error) {
       toast.error('Erro ao fazer login.');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -136,20 +161,20 @@ export function ModalLogin({ onClose }: any) {
       toast.error('Dados inválidos');
       return;
     }
-    setLoading(true)
+    setLoading(true);
     try {
-      const data = { name, email, gender, dateOfBirth: InputDateOfBirth, telephone: phone, cpf, cep, specialty: 'Eletricista' }
-      const response = await registerUser(data as unknown as RegistrationDetails);
-      if(response){
-        toast.success('Cadastro bem-sucedido!'); 
-        onClose(); 
+      const data = { name, email, gender: { id: Number(gender) }, phone, document: cpf, city, password };
+      const response = await registerUser(data as RegistrationDetails);
+      if (response) {
+        toast.success('Cadastro bem-sucedido!');
+        onClose();
       } else {
-        throw new Error(''); 
+        throw new Error('');
       }
     } catch (error) {
       toast.error('Erro ao fazer cadastro.');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -171,19 +196,25 @@ export function ModalLogin({ onClose }: any) {
                     type="email"
                     placeholder="joaobatista@encontreja.com"
                     value={inputValueLogin}
-                    disabled={loading ? true: false}
+                    disabled={loading ? true : false}
                     onChange={(e) => {
                       setInputValueLogin(e.target.value);
                       setIsValidEmail(validateEmail(e.target.value));
                     }}
-                    className={`pr-10 ${!isValidEmail && inputValueLogin.length !== 0 ? 'border-red-500' : isValidEmail && inputValueLogin.length > 2 ? 'border-green-300' : ''}`}
+                    className={`pr-10 ${
+                      !isValidEmail && inputValueLogin.length !== 0
+                        ? 'border-red-500'
+                        : isValidEmail && inputValueLogin.length > 2
+                        ? 'border-green-300'
+                        : ''
+                    }`}
                   />
                 </div>
                 <div className="space-y-4 relative">
                   <Label htmlFor="password">Senha</Label>
                   <div className="relative">
                     <Input
-                      disabled={loading ? true: false}
+                      disabled={loading ? true : false}
                       id="password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="********"
@@ -200,11 +231,10 @@ export function ModalLogin({ onClose }: any) {
                     </Button>
                   </div>
                 </div>
-                <Button onClick={handleLogin} className="w-full" disabled={loading ? true: false}>
-                {loading ? (
+                <Button onClick={handleLogin} className="w-full" disabled={loading ? true : false}>
+                  {loading ? (
                     <div className="flex items-center justify-center">
                       <span className="ml-2 flex items-center">
-                        <span className='mr-1'>Carregando</span>
                         <span className="dot-blink"></span>
                         <span className="dot-blink"></span>
                         <span className="dot-blink"></span>
@@ -224,7 +254,7 @@ export function ModalLogin({ onClose }: any) {
             <TabsContent value="register">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
                 <div className="flex flex-col items-center justify-center p-4 relative">
-                  <Label htmlFor="profile-pic" className="mb-2">      
+                  <Label htmlFor="profile-pic" className="mb-2">
                     Foto do perfil
                   </Label>
                   {images[0] ? (
@@ -263,12 +293,8 @@ export function ModalLogin({ onClose }: any) {
                       onDrop={(e) => handleDrop(e, 0)}
                       onDragOver={(e) => e.preventDefault()}
                     >
-                      <span className="text-gray-500 text-center">
-                      Arraste e solte sua imagem aqui</span>
-                      <label
-                        htmlFor="image-upload-0"
-                        className="mt-2 cursor-pointer text-blue-500"
-                      >
+                      <span className="text-gray-500 text-center">Arraste e solte sua imagem aqui</span>
+                      <label htmlFor="image-upload-0" className="mt-2 cursor-pointer text-blue-500">
                         Carregar imagem
                         <input
                           id="image-upload-0"
@@ -282,104 +308,137 @@ export function ModalLogin({ onClose }: any) {
                   )}
                 </div>
 
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Nome</Label>
-                  <Input id="name" placeholder="João Batista" value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Nome</Label>
+                    <Input
+                      id="name"
+                      placeholder="João Batista"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="joaobatista@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Telefone</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="(00) 00000-0000"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cpf">CPF</Label>
+                    <Input
+                      id="cpf"
+                      type="text"
+                      placeholder="000.000.000-00"
+                      value={cpf}
+                      onChange={handleInputChange}
+                      className={`pr-10 ${!isValidCPF ? 'border-red-500' : ''}`}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Senha</Label>
+                    <Input
+                      id="password"
+                      type="text"
+                      placeholder="*******"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="joaobatista@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Telefone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="(00) 00000-0000"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="cpf">CPF</Label>
-                  <Input
-                    id="cpf"
-                    type="text"
-                    placeholder="000.000.000-00"
-                    value={cpf}
-                    onChange={handleInputChange}
-                    className={`pr-10 ${!isValidCPF ? 'border-red-500' : ''}`}
-                  />
-                </div>
-              </div>
 
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="gender">Gênero</Label>
-                  <Select value={gender} onValueChange={setGender}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o Gênero" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="masculino">Masculino</SelectItem>
-                      <SelectItem value="feminino">Feminino</SelectItem>
-                      <SelectItem value="outro">Outros</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="birthdate">Data de nascimento</Label>
-                  <InputDateOfBirth showLabel={false} value={birthdate} onChange={(e) => setBirthdate(e.target.value)}/>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="specialty">Especialidade</Label>
-                  <Select value={specialty} onValueChange={setSpecialty}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione sua especialidade" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Eletricista</SelectItem>
-                      <SelectItem value="female">Pedreiro</SelectItem>
-                      <SelectItem value="other">Outro</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="cep">CEP</Label>
-                  <Input id="cep" placeholder="00000-000" value={cep} onChange={(e) => setCep(e.target.value)} />
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="gender">Gênero</Label>
+                    <Select value={gender} onValueChange={setGender}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o Gênero" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">Masculino</SelectItem>
+                        <SelectItem value="2">Feminino</SelectItem>
+                        <SelectItem value="3">Outros</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="birthdate">Data de nascimento</Label>
+                    <InputDateOfBirth
+                      showLabel={false}
+                      value={birthdate}
+                      onChange={(e) => setBirthdate(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="space-y-2 grid gap-4">
+
+                    <div className="grid gap-2 space-y-2">
+                      <Label htmlFor="zipcode">CEP</Label>
+                      <div className="relative w-full">
+                        <Input
+                          id="zipcode"
+                          placeholder="12345-678"
+                          value={cep}
+                          onChange={(e) => setCep(e.target.value)}
+                          className="w-full"
+                        />
+                        <Button
+                          type="button"
+                          size="icon"
+                          className="absolute right-2 top-1/2 -translate-y-1/2"
+                          onClick={handleSearch}
+                        >
+                          <SearchIcon className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    {city && (
+                      <>
+                        <div className="grid gap-2">
+                          <Label htmlFor="city">Cidade</Label>
+                          <Input id="city" placeholder="Anápolis" value={city} readOnly className="w-full" />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="city">Estado</Label>
+                          <Input id="state" placeholder="Goiás" value={state} readOnly className="w-full" />
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-            <Button onClick={handleRegister} className="w-full" disabled={loading ? true: false}>
+              <Button onClick={handleRegister} className="w-full" disabled={loading ? true : false}>
                 {loading ? (
-                    <div className="flex items-center justify-center">
-                      <span className="ml-2 flex items-center">
-                        <span className='mr-1'>Carregando</span>
-                        <span className="dot-blink"></span>
-                        <span className="dot-blink"></span>
-                        <span className="dot-blink"></span>
-                      </span>
-                    </div>
-                  ) : (
-                    'Cadastrar'
-                  )}
-                </Button>
-          </TabsContent>
-        </Tabs>
-      </DialogContent>
-    </Dialog>
-    {openRecoveryPassword && (
-        <RecoveryPassword onClose={() => setOpenRecoveryPassword(false)}/>
-      )}
+                  <div className="flex items-center justify-center">
+                    <span className="ml-2 flex items-center">
+                      <span className="dot-blink"></span>
+                      <span className="dot-blink"></span>
+                      <span className="dot-blink"></span>
+                    </span>
+                  </div>
+                ) : (
+                  'Cadastrar'
+                )}
+              </Button>
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
+      {openRecoveryPassword && <RecoveryPassword onClose={() => setOpenRecoveryPassword(false)} />}
     </>
   );
 }
-
-
