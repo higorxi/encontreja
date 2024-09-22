@@ -30,7 +30,7 @@ const uploadImageHandler = async (req: NextApiRequest, res: NextApiResponse) => 
 
       const formData = new FormData();
       const fileStream = fs.createReadStream(imageFile[0].filepath); 
-      formData.append('file', fileStream, imageFile[0].originalFilename); 
+      formData.append('file', fileStream, imageFile[0].originalFilename as string); 
       formData.append('metadata', JSON.stringify({})); 
       formData.append('requireSignedURLs', 'false'); 
 
