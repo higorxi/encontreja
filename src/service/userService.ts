@@ -10,6 +10,10 @@ export const updateUserProfile = async (userId: string, data: any) => {
   return await put(`/users/${userId}`, data);
 };
 
+export const updateUserProfilePhotoURL = async (userId: string, data: any) => {
+  return await put(`/users/${userId}`, data);
+};
+
 export const deleteUser = async (userId: string) => {
   return await del(`/users/${userId}`);
 };

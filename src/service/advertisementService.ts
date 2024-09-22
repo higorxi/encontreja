@@ -3,8 +3,12 @@
 import { advertisementDetails } from '@/@types/advertisement';
 import { get, post, put, del } from './apiService';
 
-export const getAnuncio = async (anuncioId: string) => {
-  return await get(`/anuncios/${anuncioId}`);
+export const getAnuncios = async (city: string) => {
+  return await get(`/advertisement/city/${city}`);
+};
+
+export const getAnuncio = async (id: string) => {
+  return await get(`/advertisement/${id}`);
 };
 
 export const createAnuncio = async (data: advertisementDetails) => {

@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 
 export function ModalProfile({ onClose }: { onClose: () => void }) {
   return (
@@ -21,6 +22,11 @@ export function ModalProfile({ onClose }: { onClose: () => void }) {
               <CardHeader>
                 <CardTitle>Informações da Conta</CardTitle>
                 <CardDescription>Atualize os detalhes do seu perfil aqui.</CardDescription>
+                <CardDescription>
+                  <Link href="/perfil">
+                  Visualize maiores informações do seu perfil.
+                  </Link>
+                  </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">

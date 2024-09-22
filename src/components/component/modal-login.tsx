@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -14,20 +14,10 @@ import { toast } from 'react-toastify';
 import { useAuth } from '@/contexts/AuthContext';
 import { RegistrationDetails, useCadastro } from '@/contexts/SignupContext';
 import { SearchIcon } from 'lucide-react';
-
-const formatCPF = (cpf: string) => {
-  return cpf
-    .replace(/\D/g, '')
-    .replace(/(\d{3})(\d)/, '$1.$2')
-    .replace(/(\d{3})(\d)/, '$1.$2')
-    .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-    .substring(0, 14);
-};
-
-const validateEmail = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
+import { formatCPF } from '@/utils/cpf';
+import { validateEmail } from '@/utils/email';
+import axios from 'axios';
+import { updateUserProfilePhotoURL } from '@/service/userService';
 
 export function ModalLogin({ onClose }: any) {
   const { loginAuth } = useAuth();
@@ -37,7 +27,7 @@ export function ModalLogin({ onClose }: any) {
   const [inputValuePassword, setInputValuePassword] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidCPF, setIsValidCPF] = useState(true);
-  const [images, setImages] = useState<(string | ArrayBuffer | null)[]>([null, null, null]);
+  const [image, setImage] = useState<File | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -51,6 +41,24 @@ export function ModalLogin({ onClose }: any) {
   const [openRecoveryPassword, setOpenRecoveryPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const metadata = JSON.stringify({
+    description: `Uma imagem de perfil do usuário: ${name}`,
+    category: "perfil",
+    tags: ["foto", "perfil"]
+  });
+
+  useEffect(() => {
+    if (image instanceof File) {
+      const objectUrl = URL.createObjectURL(image);
+      setImageSrc(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setImageSrc(image);
+    }
+  }, [image]);
+
 
   const handleSearch = async () => {
     if (cep.length === 8 || cep.length === 9) {
@@ -82,54 +90,49 @@ export function ModalLogin({ onClose }: any) {
     setIsValidCPF(onlyNumbers.length === 11);
   };
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setEmail(value);
-    setIsValidEmail(validateEmail(value));
-  };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setImages((prevImages) => {
-            const updatedImages = [...prevImages];
-            updatedImages[index] = reader.result;
-            return updatedImages;
-          });
-        }
-      };
-      reader.readAsDataURL(file);
+      setImage(file);
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setImages((prevImages) => {
-            const updatedImages = [...prevImages];
-            updatedImages[index] = reader.result;
-            return updatedImages;
-          });
-        }
-      };
-      reader.readAsDataURL(file);
+      setImage(file);
     }
   };
 
-  const handleImageRemove = (index: number) => {
-    setImages((prevImages) => {
-      const updatedImages = [...prevImages];
-      updatedImages[index] = null;
-      return updatedImages;
-    });
+  const handleImageRemove = () => {
+    setImage(null);
   };
+
+  const handleUpload = async () => {
+    if (!image) {
+      alert('Por favor, selecione uma imagem antes de enviar.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', image); 
+    formData.append('metadata', metadata); 
+
+    try {
+      const response = await axios.post('/api/uploadImageProfile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Imagem enviada com sucesso:', response.data);
+      return response.data.result.variants[0]
+    } catch (error) {
+      console.error('Erro ao enviar a imagem:', error);
+    }
+  };
+  
 
   const handleLogin = async () => {
     if (!isValidEmail) {
@@ -166,6 +169,8 @@ export function ModalLogin({ onClose }: any) {
       const data = { name, email, gender: { id: Number(gender) }, phone, document: cpf, city, password };
       const response = await registerUser(data as RegistrationDetails);
       if (response) {
+        const urlImage = await handleUpload();
+        await updateUserProfilePhotoURL(cpf, urlImage)
         toast.success('Cadastro bem-sucedido!');
         onClose();
       } else {
@@ -257,19 +262,21 @@ export function ModalLogin({ onClose }: any) {
                   <Label htmlFor="profile-pic" className="mb-2">
                     Foto do perfil
                   </Label>
-                  {images[0] ? (
+                  {image ? (
                     <>
-                      <Image
-                        src={images[0] as string}
-                        alt="User Image"
-                        className="w-full h-full object-cover rounded-lg"
-                        width={200}
-                        height={200}
-                      />
+                      {imageSrc && (
+                        <Image
+                          src={imageSrc}
+                          alt="User Image"
+                          className="w-full h-full object-cover rounded-lg"
+                          width={200}
+                          height={200}
+                        />
+                      )}
                       <button
                         type="button"
                         className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md"
-                        onClick={() => handleImageRemove(0)}
+                        onClick={() => handleImageRemove()}
                       >
                         <AiOutlineDelete className="text-red-500" />
                       </button>
@@ -282,7 +289,7 @@ export function ModalLogin({ onClose }: any) {
                           id="image-upload-0"
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleImageChange(e, 0)}
+                          onChange={(e) => handleImageChange(e)}
                           className="absolute inset-0 opacity-0 cursor-pointer"
                         />
                       </label>
@@ -290,7 +297,7 @@ export function ModalLogin({ onClose }: any) {
                   ) : (
                     <div
                       className="flex flex-col items-center justify-center w-full h-full border-dashed border-2 border-gray-300 rounded-lg"
-                      onDrop={(e) => handleDrop(e, 0)}
+                      onDrop={(e) => handleDrop(e)}
                       onDragOver={(e) => e.preventDefault()}
                     >
                       <span className="text-gray-500 text-center">Arraste e solte sua imagem aqui</span>
@@ -300,7 +307,7 @@ export function ModalLogin({ onClose }: any) {
                           id="image-upload-0"
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleImageChange(e, 0)}
+                          onChange={(e) => handleImageChange(e)}
                           className="absolute inset-0 opacity-0 cursor-pointer"
                         />
                       </label>
@@ -385,7 +392,6 @@ export function ModalLogin({ onClose }: any) {
                   </div>
 
                   <div className="space-y-2 grid gap-4">
-
                     <div className="grid gap-2 space-y-2">
                       <Label htmlFor="zipcode">CEP</Label>
                       <div className="relative w-full">

@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
@@ -5,9 +6,13 @@ import { BsWhatsapp } from "react-icons/bs";
 import { IoLogoInstagram } from "react-icons/io";
 import { CiMail } from "react-icons/ci";
 import { FaPhoneFlip } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { getAnuncio } from "@/service/advertisementService";
+import { Loading } from "./loading";
 
 interface DetailsServiceProviderProps {
-  dataServiceProvider?: {
+  dataServiceProvider: any;
+  dataServiceProvider1?: {
     imgSrc: string;
     name: string;
     location: string;
@@ -28,8 +33,32 @@ interface DetailsServiceProviderProps {
 
 export function DetailsServiceProvider({
   dataServiceProvider,
-  onClose
+  onClose,
 }: DetailsServiceProviderProps) {
+  const [serviceProvider, setServiceProvider] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    const fetchServiceProvider = async () => {
+      setLoading(true)
+      try {
+        const data = await getAnuncio(dataServiceProvider.id);
+        setServiceProvider(data);
+      } catch (err) {
+        setError('Failed to fetch service provider');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServiceProvider();
+  }, []); 
+
+  if (loading) {
+    return <Loading/>
+  }
 
   const defaultProvider = {
     imgSrc: "https://via.placeholder.com/80",
@@ -51,9 +80,9 @@ export function DetailsServiceProvider({
     }
   };
 
-  const provider = dataServiceProvider || defaultProvider;
-  const servicePhotos = Array.isArray(provider.servicePhotos) && provider.servicePhotos.length > 0 
-    ? provider.servicePhotos 
+  const provider = serviceProvider || defaultProvider;
+  const servicePhotos = Array.isArray(provider.photoUrls) && provider.photoUrls.length > 0 
+    ? provider.photoUrls 
     : ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"];
 
   return (
@@ -69,7 +98,7 @@ export function DetailsServiceProvider({
       <div className="flex items-start justify-between gap-4 p-4 bg-muted rounded-t-lg">
         <div className="flex items-center gap-4">
           <Image
-            src={provider.imgSrc}
+            src={provider.user.profilePhotoUrl}
             alt="Foto do Perfil"
             width={60}
             height={60}
@@ -77,27 +106,27 @@ export function DetailsServiceProvider({
             style={{ aspectRatio: "1/1", objectFit: "cover" }}
           />
           <div className="grid gap-1">
-            <h2 className="text-lg font-bold">{provider.name}</h2>
+            <h2 className="text-lg font-bold">{provider.user.name}</h2>
             <div className="text-muted-foreground">
-              <span className="font-medium">Localização:</span> {provider.location}
+              <span className="font-medium">Localização:</span> {provider.user.city}
             </div>
             <div className="text-muted-foreground">
-              <span className="font-medium">Avaliação:</span> {provider.rating} ★
+              <span className="font-medium">Avaliação:</span> 5 ★
             </div>
           </div>
         </div>
         <div className="flex flex-col text-muted-foreground">
           <div className="flex items-center gap-1 mb-1">
             <FaPhoneFlip className="w-4 h-4" />
-            <span className="truncate">{defaultProvider.phone}</span>
+            <span className="truncate">{defaultProvider.phone} <strong>PRECISA RESOLVER</strong></span>
           </div>
           <div className="flex items-center gap-1 mb-1">
             <CiMail className="w-4 h-4" />
-            <span className="truncate">{defaultProvider.email}</span>
+            <span className="truncate">{defaultProvider.email} <strong>PRECISA RESOLVER</strong></span>
           </div>
           <div className="flex items-center gap-1">
             <BsWhatsapp className="w-4 h-4" />
-            <span className="truncate">{defaultProvider.whatsapp}</span>
+            <span className="truncate">{provider.whatsappNumber}</span>
           </div>
         </div>
       </div>
@@ -147,14 +176,14 @@ export function DetailsServiceProvider({
             <Separator className='mt-2'/>
             <div className="grid gap-2 mt-2">
               <h3 className="text-lg font-semibold">Sobre</h3>
-              <p className="text-muted-foreground">{defaultProvider.description}</p>
+              <p className="text-muted-foreground">{serviceProvider.description}</p>
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            {servicePhotos.map((photo, index) => (
+            {servicePhotos.map((photoUrls: string, index: number) => (
               <Image
                 key={index}
-                src={photo}
+                src={photoUrls}
                 alt={`Foto do Serviço ${index + 1}`}
                 width={120} 
                 height={120} 

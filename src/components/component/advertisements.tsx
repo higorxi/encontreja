@@ -3,18 +3,18 @@
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import serviceProviders from '@/lib/providers';
 import { DetailsServiceProvider } from './details-service-provider';
 import usePageTitle from '@/Hooks/usePageTittle';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { ModalSearchCity } from './modal-search-city';
 import { FaSearch } from "react-icons/fa";
+import { getAnuncios } from '@/service/advertisementService';
 
 export function Advertisements() {
   const [locationFilter, setLocationFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [ratingFilter, setRatingFilter] = useState('');
-  const [selectedProvider, setSelectedProvider] = useState(null);
+  const [selectedProvider, setSelectedProvider] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cityModalOpen, setCityModalOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
@@ -22,6 +22,7 @@ export function Advertisements() {
   usePageTitle('Serviços - EncontreJA');
   const [userCity, setUserCity] = useState('');
   const [permissionModalOpen, setPermissionModalOpen] = useState(false);
+  const [serviceProviders, setServiceProviders] = useState([])
 
   useEffect(() => {
     const storedCity = localStorage.getItem('userCity');
@@ -74,21 +75,21 @@ export function Advertisements() {
 
   async function fetchServiceProviders(city: string) {
     try {
-      const response = await fetch(`/api/providers?city=${city.toLowerCase().replace(/ /g, '-')}`);
-      const providers = await response.json();
-
-      console.log('Provedores de serviço:', providers);
+      const response = await getAnuncios(city);
+      setServiceProviders(response);
+      console.log("service providers", serviceProviders)
     } catch (error) {
       console.error('Erro ao buscar provedores de serviço:', error);
     }
   }
 
-  const filteredProviders = serviceProviders.filter((provider) => {
-    const locationMatch = locationFilter ? provider.location.toLowerCase().includes(locationFilter) : true;
-    const typeMatch = typeFilter ? provider.type === typeFilter : true;
-    const ratingMatch = ratingFilter ? provider.rating >= parseFloat(ratingFilter) : true;
+  const filteredProviders = serviceProviders.filter((provider: any) => {
+    const locationMatch = locationFilter ? provider.user.city.toLowerCase().includes(locationFilter) : true;
+    //const typeMatch = typeFilter ? provider.servicesAvailable[0] === typeFilter : true;
+    //const ratingMatch = ratingFilter ? provider.rating >= parseFloat(ratingFilter) : true;
 
-    return locationMatch && typeMatch && ratingMatch;
+    //return locationMatch && typeMatch && ratingMatch;
+    return locationMatch;
   });
 
   const loadMore = () => {
@@ -108,7 +109,7 @@ export function Advertisements() {
 
   const closeProviderModal = () => {
     setIsModalOpen(false);
-    setSelectedProvider(null);
+    setSelectedProvider({});
   };
 
   const handleCityModalClose = () => {
@@ -171,7 +172,7 @@ export function Advertisements() {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-        {filteredProviders.slice(0, visibleCount).map((provider) => (
+        {filteredProviders.slice(0, visibleCount).map((provider: any) => (
           <div
             key={provider.name}
             className="bg-gray-100 p-2 rounded-lg shadow-sm overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
@@ -179,8 +180,8 @@ export function Advertisements() {
           >
             <div className="aspect-square rounded-lg overflow-hidden">
               <Image
-                src={provider.imgSrc}
-                alt="Service Provider"
+                src={provider.user.profilePhotoUrl}
+                alt="Prestador de serviço"
                 width={400}
                 height={400}
                 className="w-full h-full object-cover"
@@ -189,20 +190,20 @@ export function Advertisements() {
             </div>
             <div className="p-4 sm:p-6 ">
               <div className="flex items-center justify-between mb-2">
-                <div className="text-lg font-semibold">{provider.name}</div>
+                <div className="text-lg font-semibold">{provider.user.name}</div>
                 <div className="flex items-center gap-1 text-sm text-primary">
                   {Array.from({ length: 5 }, (_, index) => (
                     <StarIcon
                       key={index}
                       className={`w-4 h-4 ${
-                        index < Math.floor(provider.rating) ? 'fill-primary' : 'fill-muted stroke-muted-foreground'
+                        index < Math.floor(5) ? 'fill-primary' : 'fill-muted stroke-muted-foreground'
                       }`}
                     />
                   ))}
-                  <span>({provider.rating.toFixed(1)})</span>
+                  <span>(5)</span>
                 </div>
               </div>
-              <div className="text-muted-foreground mb-4">{provider.location}</div>
+              <div className="text-muted-foreground mb-4">{provider.user.city}, {provider.user.uf}</div>
               <p className="text-sm leading-relaxed">{provider.description}</p>
             </div>
           </div>
@@ -220,9 +221,7 @@ export function Advertisements() {
 
       {isModalOpen && selectedProvider && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
             <DetailsServiceProvider dataServiceProvider={selectedProvider} onClose={closeProviderModal} />
-          </div>
         </div>
       )}
 
