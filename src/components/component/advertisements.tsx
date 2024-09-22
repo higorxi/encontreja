@@ -77,7 +77,6 @@ export function Advertisements() {
     try {
       const response = await getAnuncios(city);
       setServiceProviders(response);
-      console.log("service providers", serviceProviders)
     } catch (error) {
       console.error('Erro ao buscar provedores de serviço:', error);
     }

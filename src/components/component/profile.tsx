@@ -131,8 +131,8 @@ export function Profile() {
                 and tidy throughout the process.
               </p>
               <p>
-                If you're looking for a trustworthy and skilled handyman, I would be honored to work with you. Please
-                don't hesitate to contact me to discuss your project and get a free estimate.
+                If you are looking for a trustworthy and skilled handyman, I would be honored to work with you. Please
+                dont hesitate to contact me to discuss your project and get a free estimate.
               </p>
             </div>
           </div>
@@ -196,7 +196,7 @@ export function Profile() {
                     <span>1 week ago</span>
                   </div>
                   <div>
-                    I hired John to paint my entire house, and I couldn't be happier with the results. He was
+                    I hired John to paint my entire house, and I could not be happier with the results. He was
                     professional, efficient, and the quality of his work was top-notch. I would definitely use his
                     services again.
                   </div>
