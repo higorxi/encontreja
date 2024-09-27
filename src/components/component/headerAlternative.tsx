@@ -32,7 +32,7 @@ export function HeaderAlternative() {
   return (
     <header className="relative bg-background">
       {/* Desktop View */}
-      <div className="hidden md:flex items-center justify-between px-4 py-3">
+      <div className="hidden md:flex items-center justify-between px-8 py-4">
         <Logo/>
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-4">
