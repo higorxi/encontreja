@@ -18,6 +18,7 @@ import { formatCPF } from '@/utils/cpf';
 import { validateEmail } from '@/utils/email';
 import axios from 'axios';
 import { updateUserProfilePhotoURL } from '@/service/userService';
+import InputMask from 'react-input-mask';
 
 export function ModalLogin({ onClose }: any) {
   const { loginAuth } = useAuth();
@@ -60,13 +61,20 @@ export function ModalLogin({ onClose }: any) {
   }, [image]);
 
 
+  useEffect(() => {
+    if(cep.length === 8){
+      handleSearch()
+    }
+  }, [cep]);
+
+
   const handleSearch = async () => {
     if (cep.length === 8 || cep.length === 9) {
       try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         const data = await response.json();
         if (data.erro) {
-          alert('CEP não encontrado');
+          toast.error('CEP não encontrado');
           setCity('');
           setState('');
         } else {
@@ -74,11 +82,11 @@ export function ModalLogin({ onClose }: any) {
           setState(data.uf);
         }
       } catch (error) {
-        alert('Erro ao buscar o CEP');
+        toast.error('Erro ao buscar o CEP');
         console.error(error);
       }
     } else {
-      alert('CEP inválido');
+      toast.error('CEP inválido');
     }
   };
 
@@ -161,7 +169,7 @@ export function ModalLogin({ onClose }: any) {
 
   const handleRegister = async () => {
     if (!isValidEmail || !isValidCPF) {
-      toast.error('Dados inválidos');
+      toast.error('CPF ou Email inválido, revise os dados');
       return;
     }
     setLoading(true);
@@ -183,6 +191,12 @@ export function ModalLogin({ onClose }: any) {
     }
   };
 
+  const isFormLoginValid = inputValueLogin !== '' && inputValuePassword !== '';
+
+  const isFormRegisterValid = name !== '' && email !== '' && gender !== '' && phone !== '' && cpf !== '' && city !== '' && password !== '' && image !== null;
+
+
+
   return (
     <>
       <Dialog defaultOpen onOpenChange={onClose}>
@@ -195,7 +209,7 @@ export function ModalLogin({ onClose }: any) {
             <TabsContent value="login">
               <div className="space-y-14 p-6">
                 <div className="space-y-4">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">Email*</Label>
                   <Input
                     id="email"
                     type="email"
@@ -213,10 +227,11 @@ export function ModalLogin({ onClose }: any) {
                         ? 'border-green-300'
                         : ''
                     }`}
+                    required
                   />
                 </div>
                 <div className="space-y-4 relative">
-                  <Label htmlFor="password">Senha</Label>
+                  <Label htmlFor="password">Senha*</Label>
                   <div className="relative">
                     <Input
                       disabled={loading ? true : false}
@@ -226,6 +241,7 @@ export function ModalLogin({ onClose }: any) {
                       className="pr-10"
                       value={inputValuePassword}
                       onChange={(e) => setInputValuePassword(e.target.value)}
+                      required
                     />
                     <Button
                       type="button"
@@ -236,7 +252,7 @@ export function ModalLogin({ onClose }: any) {
                     </Button>
                   </div>
                 </div>
-                <Button onClick={handleLogin} className="w-full" disabled={loading ? true : false}>
+                <Button onClick={handleLogin} className="w-full" disabled={!isFormLoginValid || loading}>
                   {loading ? (
                     <div className="flex items-center justify-center">
                       <span className="ml-2 flex items-center">
@@ -260,7 +276,7 @@ export function ModalLogin({ onClose }: any) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
                 <div className="flex flex-col items-center justify-center p-4 relative">
                   <Label htmlFor="profile-pic" className="mb-2">
-                    Foto do perfil
+                    Foto do perfil*
                   </Label>
                   {image ? (
                     <>
@@ -291,6 +307,7 @@ export function ModalLogin({ onClose }: any) {
                           accept="image/*"
                           onChange={(e) => handleImageChange(e)}
                           className="absolute inset-0 opacity-0 cursor-pointer"
+                          required={true}
                         />
                       </label>
                     </>
@@ -309,6 +326,7 @@ export function ModalLogin({ onClose }: any) {
                           accept="image/*"
                           onChange={(e) => handleImageChange(e)}
                           className="absolute inset-0 opacity-0 cursor-pointer"
+                          required={true}
                         />
                       </label>
                     </div>
@@ -317,16 +335,17 @@ export function ModalLogin({ onClose }: any) {
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nome</Label>
+                    <Label htmlFor="name">Nome Completo*</Label>
                     <Input
                       id="name"
                       placeholder="João Batista"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">Email*</Label>
                     <Input
                       id="email"
                       type="email"
@@ -336,17 +355,19 @@ export function ModalLogin({ onClose }: any) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Telefone</Label>
-                    <Input
-                      id="phone"
+                    <Label htmlFor="phone">Telefone*</Label>
+                    <InputMask
+                      mask="(99) 99999-9999"
+                      id="whatsapp"
                       type="tel"
-                      placeholder="(00) 00000-0000"
+                      placeholder="(11) 99999-9999"
+                      className="w-full p-2 border rounded"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="cpf">CPF</Label>
+                    <Label htmlFor="cpf">CPF*</Label>
                     <Input
                       id="cpf"
                       type="text"
@@ -357,7 +378,7 @@ export function ModalLogin({ onClose }: any) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Senha</Label>
+                    <Label htmlFor="password">Senha*</Label>
                     <Input
                       id="password"
                       type="text"
@@ -370,7 +391,7 @@ export function ModalLogin({ onClose }: any) {
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="gender">Gênero</Label>
+                    <Label htmlFor="gender">Gênero*</Label>
                     <Select value={gender} onValueChange={setGender}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o Gênero" />
@@ -383,7 +404,7 @@ export function ModalLogin({ onClose }: any) {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="birthdate">Data de nascimento</Label>
+                    <Label htmlFor="birthdate">Data de nascimento*</Label>
                     <InputDateOfBirth
                       showLabel={false}
                       value={birthdate}
@@ -393,12 +414,13 @@ export function ModalLogin({ onClose }: any) {
 
                   <div className="space-y-2 grid gap-4">
                     <div className="grid gap-2 space-y-2">
-                      <Label htmlFor="zipcode">CEP</Label>
+                      <Label htmlFor="zipcode">CEP*</Label>
                       <div className="relative w-full">
                         <Input
                           id="zipcode"
                           placeholder="12345-678"
                           value={cep}
+                          maxLength={9}
                           onChange={(e) => setCep(e.target.value)}
                           className="w-full"
                         />
@@ -415,11 +437,11 @@ export function ModalLogin({ onClose }: any) {
                     {city && (
                       <>
                         <div className="grid gap-2">
-                          <Label htmlFor="city">Cidade</Label>
+                          <Label htmlFor="city">Cidade*</Label>
                           <Input id="city" placeholder="Anápolis" value={city} readOnly className="w-full" />
                         </div>
                         <div className="grid gap-2">
-                          <Label htmlFor="city">Estado</Label>
+                          <Label htmlFor="city">Estado*</Label>
                           <Input id="state" placeholder="Goiás" value={state} readOnly className="w-full" />
                         </div>
                       </>
@@ -427,7 +449,7 @@ export function ModalLogin({ onClose }: any) {
                   </div>
                 </div>
               </div>
-              <Button onClick={handleRegister} className="w-full" disabled={loading ? true : false}>
+              <Button onClick={handleRegister} className="w-full" disabled={!isFormRegisterValid || loading}>
                 {loading ? (
                   <div className="flex items-center justify-center">
                     <span className="ml-2 flex items-center">

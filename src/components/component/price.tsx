@@ -91,19 +91,19 @@ export function Price() {
           </div>
           <ul className="space-y-2 text-gray-800">
             <li>
-              <CheckIcon className="mr-2 inline-block h-4 w-4 text-green-600" />
+              <CheckIcon className="mr-2 inline-block h-4 w-4 text-orange-800" />
               Listagem do perfil por 30 dias.
             </li>
             <li>
-              <CheckIcon className="mr-2 inline-block h-4 w-4 text-green-600" />
+              <CheckIcon className="mr-2 inline-block h-4 w-4 text-orange-800" />
               Disponibilidade de seleção de três serviços.
             </li>
             <li>
-              <CheckIcon className="mr-2 inline-block h-4 w-4 text-green-600" />
+              <CheckIcon className="mr-2 inline-block h-4 w-4 text-orange-800" />
               Sempre no topo das buscas.
             </li>
             <li>
-              <CheckIcon className="mr-2 inline-block h-4 w-4 text-green-600" />
+              <CheckIcon className="mr-2 inline-block h-4 w-4 text-orange-800" />
               Destaca seu perfil entre os recomendados.
             </li>
             <li>

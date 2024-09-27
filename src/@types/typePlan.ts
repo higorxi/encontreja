@@ -1,0 +1,1 @@
+export type typePlan = 'PLANO_BASICO' | 'PLANO_PRATA' | 'PLANO_OURO';
