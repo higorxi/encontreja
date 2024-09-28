@@ -1,11 +1,29 @@
+'use client';
 import { useState, useEffect } from 'react';
-import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
+
+const stripePromise = loadStripe(
+  'pk_live_51PrtGQ03J0JuscImJhDClxai2DSx74OE5fWnWIRSAO5xvJOQDWlLXzUFHMShxSoE074NqjfS1tNyoaHKP2jFJCBD00cDrjRTMO'
+);
+
+const FormContainer = styled.div`
+  background: White;
+  padding: 3rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30vw;
+  text-align: center;
+`;
 
 export function ModalFlatServiceProvider({ onClose, plan }: any) {
   const [zipcode, setZipcode] = useState('');
@@ -22,10 +40,98 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
     name: '',
     focus: undefined,
   });
-  const [installments, setInstallments] = useState(1);
 
-  const handleInstallmentsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setInstallments(Number(e.target.value));
+  const PaymentForm = () => {
+    const stripe = useStripe();
+
+    const elements = useElements();
+
+    const handleSubmit = async (event: any) => {
+      event.preventDefault();
+
+      if (!stripe || !elements) {
+        return;
+      }
+
+      const response = await fetch('http://localhost:8080/api/payments/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userDocument: '06512743113',
+          plan: {
+            id: 1,
+          },
+        }),
+      });
+
+      const { clientSecret } = await response.json();
+
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(PaymentElement),
+        },
+      });
+
+      if (error) {
+        toast.error(error.message);
+      } else {
+        if (paymentIntent.status === 'succeeded') {
+          toast.error('Pagamento realizado com sucesso!');
+          handleConfirm();
+        } else {
+          toast.error(`Pagamento não foi bem-sucedido: ${paymentIntent.status}`);
+        }
+      }
+    };
+
+    return (
+      <FormContainer>
+        <h2 className="mb-8">Insira os dados</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-8">
+            <CardElement
+              options={{
+                style: {
+                  base: {
+                    fontSize: '16px',
+                    color: '#424770',
+                    '::placeholder': {
+                      color: '#aab7c4',
+                    },
+                  },
+                  invalid: {
+                    color: '#9e2146',
+                  },
+                },
+                iconStyle: "solid",
+                classes:{
+                  
+                }
+                
+              }}
+            />
+          </div>
+          <div className="flex space-x-4">
+            <Button
+            className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulProfundo hover:bg-gray-100 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+            variant='none'
+            type="button" disabled={!stripe} onClick={backStep}
+          >
+            Cancelar
+          </Button>
+            <Button
+            className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-AzulEscuro1 text-gray-50 hover:bg-AzulEscuro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+            variant='none'
+            type="submit" disabled={!stripe}
+          >
+            Pagar
+          </Button>
+          </div>
+        </form>
+      </FormContainer>
+    );
   };
 
   useEffect(() => {
@@ -86,15 +192,6 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
 
   const backStep = () => {
     setStep((prevStep) => prevStep - 1);
-  };
-
-  const handleCardInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setCardState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCardInputFocus = (e: any) => {
-    setCardState((prev) => ({ ...prev, focus: e.target.name }));
   };
 
   const code = '12312312301920391203912093091293012031029301290312312312312312312312';
@@ -265,84 +362,20 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
           </div>
         )}
         {step === 2 && paymentMethod === 'credit-card' && (
-          <div className="grid gap-6">
-            <h2 className="text-2xl font-semibold">Pagamento por cartão de crédito</h2>
-            <Cards
-              number={cardState.number}
-              name={cardState.name}
-              expiry={cardState.expiry}
-              cvc={cardState.cvc}
-              focused={cardState.focus}
-            />
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="card-number">Número do cartão</Label>
-                <Input
-                  id="card-number"
-                  name="number"
-                  value={cardState.number}
-                  onChange={handleCardInputChange}
-                  onFocus={handleCardInputFocus}
-                  placeholder="1234 5678 9012 3456"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="card-name">Nome do titular do cartão</Label>
-                <Input
-                  id="card-name"
-                  name="name"
-                  value={cardState.name}
-                  onChange={handleCardInputChange}
-                  onFocus={handleCardInputFocus}
-                  placeholder="João Batista"
-                />
-              </div>
-              <div className="flex justify-between space-x-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="card-expiry">Data de expiração</Label>
-                  <Input
-                    id="card-expiry"
-                    name="expiry"
-                    value={cardState.expiry}
-                    onChange={handleCardInputChange}
-                    onFocus={handleCardInputFocus}
-                    placeholder="MM/YY"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="card-cvc">CVV</Label>
-                  <Input
-                    id="card-cvc"
-                    name="cvc"
-                    value={cardState.cvc}
-                    onChange={handleCardInputChange}
-                    onFocus={handleCardInputFocus}
-                    placeholder="123"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="installments">Selecione as parcelas</Label>
-                <select id="installments" className="p-2 border rounded-md" onChange={handleInstallmentsChange}>
-                  <option value="1">1x - R${(plan.planPrice / 1).toFixed(2)}</option>
-                  <option value="2">2x - R${(plan.planPrice / 2).toFixed(2)}</option>
-                  <option value="3">3x - R${(plan.planPrice / 3).toFixed(2)}</option>
-                  <option value="3">4x - R${(plan.planPrice / 4).toFixed(2)}</option>
-                  <option value="3">5x - R${(plan.planPrice / 5).toFixed(2)}</option>
-                  <option value="3">6x - R${(plan.planPrice / 6).toFixed(2)}</option>
-                </select>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="font-semibold">Total</div>
-                <div className="text-2xl font-semibold">{installments} x R${(plan.planPrice / installments).toFixed(2)} = {plan.planPrice}</div>
-              </div>
-
-              <div className="flex justify-between space-x-4">
-                <Button type="button" variant="outline" onClick={backStep}>
-                  Voltar
-                </Button>
-                <Button onClick={handleConfirm}>Confirmar</Button>
+          <div className="flex flex-col items-center justify-center">
+            <div className="mb-4">
+              <h2 className="text-2xl font-semibold text-center">Pagamento por cartão de crédito</h2>
+            </div>
+            <div className="mb-4">
+              <Cards number="11111111111111111" name="João Batista" expiry="01/11" cvc="190" />
+            </div>
+            <Elements stripe={stripePromise}>
+              <PaymentForm />
+            </Elements>
+            <div className="mt-4 w-full">
+              <div className="flex items-center justify-between bg-white p-4 rounded-md shadow-md">
+                <div className="text-xl font-semibold">Total</div>
+                <div className="text-xl font-semibold">R$ {plan.planPrice}</div>
               </div>
             </div>
           </div>
@@ -350,13 +383,13 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
         {step === 3 && (
           <div className="grid gap-6">
             <h2 className="text-2xl font-semibold">Confirmação</h2>
+            <p>Seu pagamento foi processado com sucesso. Obrigado!</p>
             <p>
-            Seu pagamento foi processado com sucesso. Obrigado!</p>
-            <p>
-             Mais informações serão repassadas via email, caso necessite alterar alguma informação, entre em contato com o suporte: 
-             <strong>suporte@encontreja.com</strong>
-             </p>
-             
+              Mais informações serão repassadas via email, caso necessite alterar alguma informação, entre em contato
+              com o suporte:
+              <strong>suporte@encontreja.com</strong>
+            </p>
+
             <Button onClick={onClose}>Fechar</Button>
           </div>
         )}

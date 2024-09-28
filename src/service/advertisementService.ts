@@ -19,6 +19,14 @@ export const updateAnuncio = async (anuncioId: string, data: any) => {
   return await put(`/anuncios/${anuncioId}`, data);
 };
 
+export const updateAnuncioPhotosURL = async (anuncioId: string, photosURL: string[]) => {
+  const data = {
+    anuncioId,
+    photosURL
+  }
+  return await put(`/anuncios/${anuncioId}`, data);
+};
+
 export const deleteAnuncio = async (anuncioId: string) => {
   return await del(`/anuncios/${anuncioId}`);
 };

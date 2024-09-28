@@ -9,9 +9,11 @@ import { useState } from 'react';
 import { AiOutlineDelete, AiOutlineReload } from 'react-icons/ai';
 import Image from 'next/image';
 import InputMask from 'react-input-mask';
-import { createAnuncio } from '@/service/advertisementService';
+import { createAnuncio, updateAnuncioPhotosURL } from '@/service/advertisementService';
 import { advertisementDetails } from '@/@types/advertisement';
 import { toast } from 'react-toastify';
+import InfoIcon from './infoIcon';
+import axios from 'axios';
 
 export function ModalServiceRegister({ onClose }: any) {
   const user = JSON.parse(localStorage.getItem('user') as string);
@@ -29,7 +31,11 @@ export function ModalServiceRegister({ onClose }: any) {
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
-
+  const metadata = JSON.stringify({
+    description: `Imagens do serviço de: ${user.name}`,
+    category: "servico",
+    tags: ["foto", "servico"]
+  });
   const handleImageChange = (e: any, index: number) => {
     const file = e.target.files[0];
     if (file) {
@@ -88,8 +94,37 @@ export function ModalServiceRegister({ onClose }: any) {
   const handlePaymentMethodChange = (method: keyof typeof paymentMethods) => {
     setPaymentMethods((prev) => ({ ...prev, [method]: !prev[method] }));
   };
+  
+  const handleUpload = async () => {
+    if (!images || images.length === 0) {
+      alert('Por favor, selecione pelo menos uma imagem antes de enviar.');
+      return;
+    }
+  
+    const formData = new FormData();
+    
+    images.forEach((image) => {
+      formData.append('files', image); 
+    });
+  
+    if (metadata) {
+      formData.append('metadata', JSON.stringify(metadata));
+    }
+  
+    try {
+      const response = await axios.post('/api/uploadImageAdvertisement', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data.result.variants[0]; 
+    } catch (error) {
+      console.error('Erro ao enviar as imagens:', error);
+    }
+  };
 
   const handleRegisterAD = async () => {
+    const urlImage = await handleUpload();
     setLoading(true);
     try {
       const data = {
@@ -113,6 +148,8 @@ export function ModalServiceRegister({ onClose }: any) {
       };
       const response = await createAnuncio(data as advertisementDetails);
       if (response) {
+        const urlImage = await handleUpload();
+        await updateAnuncioPhotosURL('ID DO SERVIÇO', urlImage);
         toast.success('Anuncio criado com sucesso');
         onClose();
       } else {
@@ -128,9 +165,9 @@ export function ModalServiceRegister({ onClose }: any) {
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
       <DialogContent className="max-w-full max-h-full sm:max-w-[1300px] sm:max-h-[550px] flex flex-col p-4 min-h-[550px]">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-2">
           <div>
-            <DialogTitle>Registrar Seu Serviço</DialogTitle>
+            <DialogTitle className='text-xl'>Registrar Seu Serviço</DialogTitle>
             <DialogDescription>Preencha o formulário abaixo para registrar seu serviço.</DialogDescription>
           </div>
         </div>
@@ -198,7 +235,7 @@ export function ModalServiceRegister({ onClose }: any) {
               </div>
               <div className="p-4 border rounded-lg bg-gray-50">
                 <Label htmlFor="title" className="mb-2 block text-gray-700">
-                  Titulo
+                  Titulo*
                 </Label>
                 <Input
                   id="title"
@@ -211,7 +248,7 @@ export function ModalServiceRegister({ onClose }: any) {
               </div>
               <div className="p-4 border rounded-lg bg-gray-50">
                 <Label htmlFor="description" className="mb-2 block text-gray-700">
-                  Descrição do Serviço
+                  Descrição do Serviço*
                 </Label>
                 <Textarea
                   id="description"
@@ -227,10 +264,18 @@ export function ModalServiceRegister({ onClose }: any) {
             <div className="space-y-4">
               <div className="flex flex-col gap-4">
                 <div className="flex-1 min-w-[250px]">
-                  <Label htmlFor="service">Serviço</Label>
+                  <div className="flex items-center mb-2">
+                    <Label htmlFor="service" className="mr-2">
+                      Serviço*
+                    </Label>
+                    <InfoIcon
+                      message="Você poderá informar mais de 1 tipo de serviço assinando os planos Mensais ou Anual."
+                      title="Serviços"
+                    />
+                  </div>
                   <Select value={selectedServices} onValueChange={setSelectedServices}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecione os serviços" />
+                      <SelectValue placeholder="Selecione o tipo de serviço" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="service1">Serviço 1</SelectItem>
@@ -241,7 +286,7 @@ export function ModalServiceRegister({ onClose }: any) {
                 </div>
                 <div className="flex">
                   <div className="flex-1 min-w-[250px]">
-                    <Label>Método de Pagamento</Label>
+                    <Label>Métodos de Pagamento*</Label>
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center">
                         <Switch
@@ -277,7 +322,7 @@ export function ModalServiceRegister({ onClose }: any) {
                   </div>
                   <div className="flex-1 min-w-[250px] space-y-2">
                     <Label htmlFor="opening-hours-start" className="block text-gray-700">
-                      Horário de Funcionamento
+                      Horário de Funcionamento*
                     </Label>
                     <div className="flex gap-4 items-center">
                       <div className="flex flex-col">
@@ -306,7 +351,7 @@ export function ModalServiceRegister({ onClose }: any) {
               <div className="flex flex-col gap-4">
                 <div className="flex space-x-4">
                   <div className="flex-1 min-w-[250px]">
-                    <Label htmlFor="whatsapp">WhatsApp</Label>
+                    <Label htmlFor="whatsapp">WhatsApp*</Label>
                     <InputMask
                       mask="(99) 99999-9999"
                       id="whatsapp"
@@ -343,7 +388,7 @@ export function ModalServiceRegister({ onClose }: any) {
                   </Label>
                 </div>
                 <div className="flex-1 min-w-[250px]">
-                  {serviceLocation && (
+                  {hasServiceLocation && (
                     <>
                       <Label htmlFor="address">Endereço de atendimento</Label>
                       <Input
@@ -360,14 +405,22 @@ export function ModalServiceRegister({ onClose }: any) {
             </div>
           </div>
         </div>
-        <DialogFooter className="flex justify-end mt-4 space-x-2">
-          <Button variant="outline" onClick={onClose}>
+
+        <div className="flex justify-center space-x-4 border-t border-gray-300 pt-4">
+          <Button
+            className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulEscuro1 hover:bg-gray-100 hover:text-AzulClaro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+            onClick={onClose}
+          >
             Fechar
           </Button>
-          <Button type="submit" className="bg-AzulProfundo text-white" onClick={handleRegisterAD}>
-            Salvar
+          <Button
+            className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-AzulEscuro1 text-gray-50 hover:bg-AzulEscuro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+            onClick={handleRegisterAD}
+            type="submit"
+          >
+            Registrar Serviço
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
