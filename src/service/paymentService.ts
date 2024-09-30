@@ -14,20 +14,22 @@ export const createPaymentPIX = async (userDocument: string, typePlan: typePlan)
     userDocument,
     typePlan,
   };
-  const response = await post('/api/payment/create/pix', data);
+  const response = await post('/api/payments/create/pix', data);
   return response.data
 };
 
 export const getStatusPaymentPIX = async (paymentId: string) => {
-    return await get(`/api/payment/pix/${paymentId}`);
+    return await get(`/api/payments/pix/${paymentId}`);
   };
 
-export const createPaymentCreditCard = async (id: string, clientSecret: string) => {
+export const createPaymentCreditCard = async (userDocument: string, plan: any) => {
     const data = {
-        id,
-        clientSecret,
+        userDocument,
+        plan:{
+          id: plan.id
+        }
       };
-    const response = await post('/api/payment/create', data);
-    return response.data;
+    const response = await post('/api/payments/create', data);
+    return response;
 };
 

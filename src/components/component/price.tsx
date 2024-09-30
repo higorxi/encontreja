@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { ModalFlatServiceProvider } from './modal-flat-service-provider';
 import { ModalLogin } from './modal-login'; 
 import { useAuth } from '@/contexts/AuthContext';
+import { createPaymentCreditCard } from '@/service/paymentService';
 
 interface PriceDetails {
   planName: string;
   planPrice: number;
+  id: number
 }
 
 export function Price() {
@@ -15,9 +17,9 @@ export function Price() {
   const [selectedPlan, setSelectedPlan] = useState<PriceDetails>();
   const [showModal, setShowModal] = useState<'price' | 'login' | null>(null);
 
-  const openModal = (planName: string, planPrice: number) => {
+  const openModal = (planName: string, planPrice: number, id: number) => {
     if (isAuthenticated) {
-      setSelectedPlan({ planName, planPrice });
+      setSelectedPlan({ planName, planPrice, id });
       setShowModal('price');
     } else {
       setShowModal('login');
@@ -42,7 +44,7 @@ export function Price() {
       <div className="container grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-6 max-w-7xl mx-auto">
         <div
           className="bg-blue-100 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-105 cursor-pointer shadow-md hover:shadow-lg"
-          onClick={() => openModal('Semanal', 4.99)}
+          onClick={() => openModal('Semanal', 4.99, 1)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold text-gray-800">Plano Semanal</h3>
@@ -79,7 +81,7 @@ export function Price() {
         </div>
         <div
           className="bg-LaranjaIndustrial bg-opacity-55 rounded-lg p-6 flex flex-col gap-4 text-gray-800 shadow-md mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer relative"
-          onClick={() => openModal('Mensal', 19.99)}
+          onClick={() => openModal('Mensal', 19.99, 2)}
         >
           <div className="space-y-2">
             <h3 className="text-2xl font-bold">Plano Mensal</h3>
@@ -116,7 +118,7 @@ export function Price() {
         </div>
         <div
           className="bg-yellow-100 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer shadow-md hover:shadow-lg relative"
-          onClick={() => openModal('Anual', 199.99)}
+          onClick={() => openModal('Anual', 199.99, 3)}
         >
           <div className="space-y-2">
             <div className="absolute top-0 right-0 bg-yellow-200 text-gray-800 py-1 px-3 rounded-bl-lg">Melhor Opção</div>
@@ -155,7 +157,7 @@ export function Price() {
       </div>
 
       {showModal === 'price' && selectedPlan && (
-        <ModalFlatServiceProvider onClose={closeModal} plan={selectedPlan} />
+        <ModalFlatServiceProvider onClose={closeModal} plan={selectedPlan}/>
       )}
       {showModal === 'login' && <ModalLogin onClose={closeModal} />}
     </section>

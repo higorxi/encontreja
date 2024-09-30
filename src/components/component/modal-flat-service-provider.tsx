@@ -5,25 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import styled from 'styled-components';
+import { loadStripe, StripePaymentElementOptions } from '@stripe/stripe-js';
+import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { toast } from 'react-toastify';
+import { createPaymentCreditCard } from '@/service/paymentService';
 
-const stripePromise = loadStripe(
-  'pk_live_51PrtGQ03J0JuscImJhDClxai2DSx74OE5fWnWIRSAO5xvJOQDWlLXzUFHMShxSoE074NqjfS1tNyoaHKP2jFJCBD00cDrjRTMO'
-);
-
-const FormContainer = styled.div`
-  background: White;
-  padding: 3rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 30vw;
-  text-align: center;
-`;
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
 
 export function ModalFlatServiceProvider({ onClose, plan }: any) {
   const [zipcode, setZipcode] = useState('');
@@ -33,104 +21,98 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
   const [paymentMethod, setPaymentMethod] = useState('credit-card');
   const [timer, setTimer] = useState(0);
   const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(true);
-  const [cardState, setCardState] = useState({
-    number: '',
-    expiry: '',
-    cvc: '',
-    name: '',
-    focus: undefined,
-  });
-
-  const PaymentForm = () => {
-    const stripe = useStripe();
-
-    const elements = useElements();
-
-    const handleSubmit = async (event: any) => {
-      event.preventDefault();
-
-      if (!stripe || !elements) {
-        return;
-      }
-
-      const response = await fetch('http://localhost:8080/api/payments/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userDocument: '06512743113',
-          plan: {
-            id: 1,
-          },
-        }),
-      });
-
-      const { clientSecret } = await response.json();
-
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(PaymentElement),
-        },
-      });
-
-      if (error) {
-        toast.error(error.message);
-      } else {
-        if (paymentIntent.status === 'succeeded') {
-          toast.error('Pagamento realizado com sucesso!');
-          handleConfirm();
+  const [clientSecret, setClientSecret] = useState('');
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchClientSecret = async () => {
+      setLoading(true);
+      try {
+        const response = await createPaymentCreditCard('06512743113', plan);
+        console.log('response', response);
+        if (response.clientSecret) {
+          setClientSecret(response.clientSecret);
         } else {
-          toast.error(`Pagamento não foi bem-sucedido: ${paymentIntent.status}`);
+          throw new Error('Client secret not received');
         }
+      } catch (error) {
+        console.error('Error fetching client secret:', error);
+        toast.error('Failed to retrieve payment details.');
+      } finally {
+        setLoading(false);
       }
     };
 
+    fetchClientSecret();
+  }, []);
+
+  const PaymentForm = ({ dpmCheckerLink }: any) => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [message, setMessage] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (event: any) => {
+      event.preventDefault();
+    
+      if (!stripe || !elements) {
+        return;
+      }
+    
+      // Define loading como true ao iniciar o processo de pagamento
+      setLoading(true);
+    
+      try {
+        const { error } = await stripe.confirmPayment({
+          elements,
+          confirmParams: {
+            return_url: 'http://localhost:3000',
+          },
+        });
+    
+        if (error) {
+          toast.error(error.message);
+        } else {
+          toast.success('Pagamento realizado com sucesso!');
+          handleConfirm();
+        }
+      } catch (error) {
+        // Lide com qualquer erro inesperado
+        toast.error('Ocorreu um erro ao processar o pagamento.');
+        console.error(error);
+      } finally {
+        // Define loading como false após a operação
+        setLoading(false);
+      }
+    };
+
+    const paymentElementOptions: StripePaymentElementOptions = {
+      layout: "accordion",
+    };
+
     return (
-      <FormContainer>
-        <h2 className="mb-8">Insira os dados</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-8">
-            <CardElement
-              options={{
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#424770',
-                    '::placeholder': {
-                      color: '#aab7c4',
-                    },
-                  },
-                  invalid: {
-                    color: '#9e2146',
-                  },
-                },
-                iconStyle: "solid",
-                classes:{
-                  
-                }
-                
-              }}
-            />
-          </div>
-          <div className="flex space-x-4">
+      <>
+        <form id="payment-form" onSubmit={handleSubmit}>
+          <PaymentElement id="payment-element" options={paymentElementOptions} />
+          <div className="flex space-x-4  mt-4">
             <Button
             className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulProfundo hover:bg-gray-100 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
             variant='none'
-            type="button" disabled={!stripe} onClick={backStep}
+            type="button" onClick={backStep}
           >
             Cancelar
           </Button>
             <Button
             className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-AzulEscuro1 text-gray-50 hover:bg-AzulEscuro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
             variant='none'
-            type="submit" disabled={!stripe}
+            type="submit" disabled={isLoading || !stripe || !elements}
+            id="submit"
           >
             Pagar
           </Button>
           </div>
+          {message && <div id="payment-message">{message}</div>}
         </form>
-      </FormContainer>
+      </>
     );
   };
 
@@ -195,6 +177,30 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
   };
 
   const code = '12312312301920391203912093091293012031029301290312312312312312312312';
+
+  const customAppearance = {
+    clientSecret: clientSecret as unknown as string,
+    shapes: {
+      borderRadius: 12,
+      borderWidth: 0.5,
+    },
+    primaryButton: {
+      shapes: {
+        borderRadius: 20,
+      },
+    },
+    colors: {
+      primary: '#FF0000 !important',
+      background: '#FF0000 !important',
+      componentBackground: '#FF0000',
+      componentBorder: '#FF0000',
+      componentDivider: '#FF0000',
+      primaryText: '#FF0000',
+      secondaryText: '#FF0000',
+      componentText: '#FF0000',
+      placeholderText: '#FF0000',
+    },
+  };
 
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
@@ -366,12 +372,17 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
             <div className="mb-4">
               <h2 className="text-2xl font-semibold text-center">Pagamento por cartão de crédito</h2>
             </div>
-            <div className="mb-4">
-              <Cards number="11111111111111111" name="João Batista" expiry="01/11" cvc="190" />
-            </div>
-            <Elements stripe={stripePromise}>
-              <PaymentForm />
-            </Elements>
+
+            {loading && clientSecret !== null ? (
+              <div className="flex items-center justify-center h-32">
+                <div className="loader">Loading...</div>
+              </div>
+            ) : (
+              <Elements stripe={stripePromise} options={customAppearance}>
+                <PaymentForm />
+              </Elements>
+            )}
+
             <div className="mt-4 w-full">
               <div className="flex items-center justify-between bg-white p-4 rounded-md shadow-md">
                 <div className="text-xl font-semibold">Total</div>

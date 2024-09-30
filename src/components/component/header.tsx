@@ -59,6 +59,15 @@ export function Header() {
             >
               Planos
             </Link>
+            {isAuthenticated ? 
+            <Link
+              href="meu-servico"
+              className="text-sm font-medium text-muted-foreground hover:text-black transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-AzulProfundo after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
+              prefetch={false}
+            >
+              Meu(s) Anuncios
+            </Link>
+            : null}
           </div>
           <Link href="/servicos" passHref>
             <Button className="flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulEscuro1 hover:bg-gray-5100 hover:text-AzulClaro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105">
