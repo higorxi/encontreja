@@ -103,7 +103,7 @@ export function ModalServiceRegister({ onClose }: any) {
   
     const formData = new FormData();
     
-    images.forEach((image) => {
+    images.forEach((image: any) => {
       formData.append('files', image); 
     });
   
