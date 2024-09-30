@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (storedUser) {
         setUser(JSON.parse(storedUser));
         setIsAuthenticated(true);
+        return;
       }
       setUser(null);
       setIsAuthenticated(false);
