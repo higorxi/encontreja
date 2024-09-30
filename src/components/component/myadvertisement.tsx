@@ -74,7 +74,7 @@ export function MyAdvertisement() {
                     <span>(5)</span>
                   </div>
                 </div>
-                <div className="text-muted-foreground mb-4">'Minaçu', GO</div>
+                <div className="text-muted-foreground mb-4">Minaçu, GO</div>
                 <p className="text-sm leading-relaxed">Eu sou o Higor </p>
               </div>
             </div>
@@ -110,7 +110,7 @@ export function MyAdvertisement() {
                     <span>(5)</span>
                   </div>
                 </div>
-                <div className="text-muted-foreground mb-4">'Minaçu', GO</div>
+                <div className="text-muted-foreground mb-4">Minaçu, GO</div>
                 <p className="text-sm leading-relaxed">Eu sou o Higor </p>
               </div>              
             </div>
