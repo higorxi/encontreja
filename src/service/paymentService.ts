@@ -1,35 +1,38 @@
 // src/services/paymentService.ts
 
-import { typePlan } from '@/@types/typePlan';
-import { get, post, put, del } from './apiService';
+import { get, post } from './apiService';
 
 export interface PaymentResponse {
-    paymentId: string;
-    qrCode: string;
-    pixCode: string;
+    transactionId: string;
+    base64image: string;
+    emvqrcps: string;
   }
 
-export const createPaymentPIX = async (userDocument: string, typePlan: typePlan): Promise<PaymentResponse> => {
+export const createPaymentPIX = async (userDocument: string, plan: any, dataBilling: object): Promise<PaymentResponse> => {
   const data = {
     userDocument,
-    typePlan,
+    plan:{
+      id: plan.id
+    },
+    billingAddress: dataBilling
   };
-  const response = await post('/api/payments/create/pix', data);
-  return response.data
+  const response = await post('/api/payments/pix', data);
+  return response
 };
 
 export const getStatusPaymentPIX = async (paymentId: string) => {
     return await get(`/api/payments/pix/${paymentId}`);
   };
 
-export const createPaymentCreditCard = async (userDocument: string, plan: any) => {
-    const data = {
+export const createPaymentCreditCard = async (userDocument: string, plan: any, dataBilling: object) => {
+      const data = {
         userDocument,
         plan:{
           id: plan.id
-        }
+        },
+        billingAddress: dataBilling
       };
-    const response = await post('/api/payments/create', data);
+    const response = await post('/api/payments/', data);
     return response;
 };
 

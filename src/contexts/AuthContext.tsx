@@ -5,6 +5,8 @@ import { login } from '@/service/authService';
 interface User {
   id: string;
   email: string;
+  document: string;
+  token: string
 }
 
 interface Credentials {
@@ -20,6 +22,21 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const useUser = () => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      setUser(null);
+    }
+  }, []);
+
+  return user;
+};
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -59,6 +76,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('user'); 
     setUser(null); 
     setIsAuthenticated(false); 
+    window.location.reload(); 
   };
 
   return (

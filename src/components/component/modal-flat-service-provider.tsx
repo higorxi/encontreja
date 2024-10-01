@@ -9,43 +9,43 @@ import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import { loadStripe, StripePaymentElementOptions } from '@stripe/stripe-js';
 import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { toast } from 'react-toastify';
-import { createPaymentCreditCard } from '@/service/paymentService';
+import { createPaymentCreditCard, createPaymentPIX } from '@/service/paymentService';
+import { useUser } from '@/contexts/AuthContext';
+import { AxiosError } from 'axios';
+import { FaRegCopy } from 'react-icons/fa';
+import React from 'react';
+interface FetchClientSecretResponse {
+  success: boolean;
+  error: string | null;
+}
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
 
 export function ModalFlatServiceProvider({ onClose, plan }: any) {
+  const user = useUser();
   const [zipcode, setZipcode] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
   const [step, setStep] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('credit-card');
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [timer, setTimer] = useState(0);
   const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState('');
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const fetchClientSecret = async () => {
-      setLoading(true);
-      try {
-        const response = await createPaymentCreditCard('06512743113', plan);
-        console.log('response', response);
-        if (response.clientSecret) {
-          setClientSecret(response.clientSecret);
-        } else {
-          throw new Error('Client secret not received');
-        }
-      } catch (error) {
-        console.error('Error fetching client secret:', error);
-        toast.error('Failed to retrieve payment details.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const [dataBilling, setDataBilling] = useState({
+    name: '',
+    email: '',
+    document: '',
+    telephone: '',
+    postalCode: '',
+    city: '',
+    uf: '',
+  });
+  const [dataPIX, setDataPix] = useState({
+    base64image: '',
+    emvqrcps: '',
+    transactionId: '',
+  });
 
-    fetchClientSecret();
-  }, []);
-
-  const PaymentForm = ({ dpmCheckerLink }: any) => {
+  const PaymentForm = ({}) => {
     const stripe = useStripe();
     const elements = useElements();
     const [message, setMessage] = useState(null);
@@ -53,22 +53,20 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
 
     const handleSubmit = async (event: any) => {
       event.preventDefault();
-    
+
       if (!stripe || !elements) {
         return;
       }
-    
-      // Define loading como true ao iniciar o processo de pagamento
+
       setLoading(true);
-    
       try {
         const { error } = await stripe.confirmPayment({
           elements,
           confirmParams: {
-            return_url: 'http://localhost:3000',
+            return_url: 'https://encontreja.vercel.app/meu-servico',
           },
         });
-    
+
         if (error) {
           toast.error(error.message);
         } else {
@@ -76,17 +74,15 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
           handleConfirm();
         }
       } catch (error) {
-        // Lide com qualquer erro inesperado
         toast.error('Ocorreu um erro ao processar o pagamento.');
         console.error(error);
       } finally {
-        // Define loading como false após a operação
         setLoading(false);
       }
     };
 
     const paymentElementOptions: StripePaymentElementOptions = {
-      layout: "accordion",
+      layout: 'accordion',
     };
 
     return (
@@ -95,20 +91,22 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
           <PaymentElement id="payment-element" options={paymentElementOptions} />
           <div className="flex space-x-4  mt-4">
             <Button
-            className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulProfundo hover:bg-gray-100 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
-            variant='none'
-            type="button" onClick={backStep}
-          >
-            Cancelar
-          </Button>
+              className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulProfundo hover:bg-gray-100 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+              variant="none"
+              type="button"
+              onClick={backStep}
+            >
+              Cancelar
+            </Button>
             <Button
-            className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-AzulEscuro1 text-gray-50 hover:bg-AzulEscuro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
-            variant='none'
-            type="submit" disabled={isLoading || !stripe || !elements}
-            id="submit"
-          >
-            Pagar
-          </Button>
+              className="w-64 flex items-center gap-1 px-4 py-2 text-sm font-medium bg-AzulEscuro1 text-gray-50 hover:bg-AzulEscuro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+              variant="none"
+              type="submit"
+              disabled={isLoading || !stripe || !elements}
+              id="submit"
+            >
+              Pagar
+            </Button>
           </div>
           {message && <div id="payment-message">{message}</div>}
         </form>
@@ -139,25 +137,30 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
         const response = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`);
         const data = await response.json();
         if (data.erro) {
-          alert('CEP não encontrado');
-          setCity('');
-          setState('');
+          toast.error('CEP não encontrado');
+          setDataBilling((prevState) => ({
+            ...prevState,
+            city: '',
+            uf: '',
+          }));
         } else {
-          setCity(data.localidade);
-          setState(data.uf);
+          setDataBilling((prevState) => ({
+            ...prevState,
+            city: data.localidade,
+            uf: data.uf,
+          }));
         }
       } catch (error) {
-        alert('Erro ao buscar o CEP');
+        toast.error('Erro ao buscar o CEP');
         console.error(error);
       }
     } else {
-      alert('CEP inválido');
+      toast.error('CEP inválido');
     }
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    setStep(2);
   };
 
   const handlePaymentMethodChange = (value: string) => {
@@ -168,6 +171,99 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof typeof dataBilling) => {
+    let valueToSet = e.target.value;
+
+    setDataBilling((prevState) => ({
+      ...prevState,
+      [fieldName]: valueToSet,
+    }));
+  };
+
+  const insertDataFetchForPIX = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof typeof dataBilling) => {
+    let valueToSet = e.target.value;
+
+    setDataPix((prevState) => ({
+      ...prevState,
+      [fieldName]: valueToSet,
+    }));
+  };
+
+  const fetchClientSecret = async (): Promise<FetchClientSecretResponse> => {
+    if (paymentMethod === 'credit-card') {
+      setLoading(true);
+      try {
+        const response = await createPaymentCreditCard(user?.document as string, plan, dataBilling);
+
+        if (response.clientSecret) {
+          setClientSecret(response.clientSecret);
+          return { success: true, error: null };
+        } else {
+          throw new Error('Client secret not received');
+        }
+      } catch (error: unknown) {
+        console.error('Error fetching client secret:', error);
+        const errorMessage =
+          error instanceof AxiosError
+            ? error.response?.data || error.message
+            : 'Entre em contato com o suporte: suporte@useencontreja.com.br';
+
+        return { success: false, error: errorMessage };
+      } finally {
+        setLoading(false);
+      }
+    }
+    return { success: false, error: 'Invalid payment method' };
+  };
+
+  const fetchPix = async (): Promise<FetchClientSecretResponse> => {
+    if (paymentMethod === 'pix') {
+      setLoading(true);
+      try {
+        const response = await createPaymentPIX(user?.document as string, plan, dataBilling);
+        if (response) {
+          setDataPix({
+            base64image: response.base64image,
+            emvqrcps: response.emvqrcps,
+            transactionId: response.transactionId,
+          });
+          return { success: true, error: null };
+        }
+      } catch (error: unknown) {
+        console.error('Error fetching client secret for PIX:', error);
+        const errorMessage =
+          error instanceof AxiosError
+            ? error.response?.data || error.message
+            : 'Entre em contato com o suporte: suporte@useencontreja.com.br';
+
+        return { success: false, error: errorMessage };
+      } finally {
+        setLoading(false);
+      }
+    }
+    return { success: false, error: 'Invalid payment method' };
+  };
+
+  const nextStep = async () => {
+    if (paymentMethod === 'credit-card') {
+      const result = await fetchClientSecret();
+      if (result.success === true) {
+        setStep(2);
+      } else {
+        setStep(1);
+        toast.error(`Error ao gerar pagamento: ${result.error}`);
+      }
+    } else {
+      const result = await fetchPix();
+      if (result.error === null) {
+        setStep(2);
+      } else {
+        setStep(1);
+        toast.error(`Error ao gerar pagamento: ${result.error}`);
+      }
+    }
+  };
+
   const handleConfirm = () => {
     setStep(3);
   };
@@ -175,8 +271,6 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
   const backStep = () => {
     setStep((prevStep) => prevStep - 1);
   };
-
-  const code = '12312312301920391203912093091293012031029301290312312312312312312312';
 
   const customAppearance = {
     clientSecret: clientSecret as unknown as string,
@@ -202,6 +296,16 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
     },
   };
 
+  const isFormDataBillingValid =
+    dataBilling.name !== '' &&
+    dataBilling.email !== '' &&
+    dataBilling.document !== '' &&
+    dataBilling.telephone !== '' &&
+    dataBilling.postalCode !== '' &&
+    dataBilling.city !== '' &&
+    dataBilling.uf !== '' &&
+    paymentMethod !== '';
+
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
@@ -223,21 +327,42 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="name">Nome</Label>
-                  <Input id="name" placeholder="João Batista" />
+                  <Input
+                    id="name"
+                    placeholder="João Batista"
+                    value={dataBilling.name}
+                    onChange={(e) => handleInputChange(e, 'name')}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="joaobatista@email.com" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="joaobatista@email.com"
+                    value={dataBilling.email}
+                    onChange={(e) => handleInputChange(e, 'email')}
+                  />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="cpf">CPF</Label>
-                  <Input id="cpf" placeholder="123.456.789-00" />
+                  <Input
+                    id="cpf"
+                    placeholder="123.456.789-00"
+                    value={dataBilling.document}
+                    onChange={(e) => handleInputChange(e, 'document')}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="phone">Telefone</Label>
-                  <Input id="phone" placeholder="+55 (11) 12345-6789" />
+                  <Input
+                    id="phone"
+                    placeholder="+55 (11) 12345-6789"
+                    value={dataBilling.telephone}
+                    onChange={(e) => handleInputChange(e, 'telephone')}
+                  />
                 </div>
               </div>
               <div className="grid gap-2">
@@ -250,7 +375,10 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                         id="zipcode"
                         placeholder="12345-678"
                         value={zipcode}
-                        onChange={(e) => setZipcode(e.target.value)}
+                        onChange={(e) => {
+                          setZipcode(e.target.value);
+                          handleInputChange(e, 'postalCode');
+                        }}
                       />
                       <Button
                         type="button"
@@ -264,11 +392,23 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="city">Cidade</Label>
-                    <Input id="city" placeholder="São Paulo" value={city} readOnly />
+                    <Input
+                      id="city"
+                      placeholder="São Paulo"
+                      value={dataBilling.city}
+                      readOnly
+                      onChange={(e) => handleInputChange(e, 'city')}
+                    />
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="state">Estado</Label>
-                    <Input id="state" placeholder="SP" value={state} readOnly />
+                    <Input
+                      id="state"
+                      placeholder="SP"
+                      value={dataBilling.uf}
+                      readOnly
+                      onChange={(e) => handleInputChange(e, 'uf')}
+                    />
                   </div>
                 </div>
               </div>
@@ -294,7 +434,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                   <div className="font-semibold">Total</div>
                   <div className="text-2xl font-semibold">R${plan.planPrice}</div>
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" onClick={nextStep} disabled={!isFormDataBillingValid}>
                   Continuar
                 </Button>
               </div>
@@ -307,31 +447,24 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
             <div className="grid gap-4">
               <div className="flex items-center justify-center">
                 <div className="w-40 h-40 bg-gray-200 rounded-md flex items-center justify-center text-gray-600">
-                  QR Code
+                  <img
+                    src={`data:image/png;base64,${dataPIX.base64image}`}
+                    alt="QR Code"
+                    className="w-full h-full object-cover rounded-md"
+                  />
                 </div>
               </div>
               <div className="text-center mt-4">
                 <p className="text-lg">Copie e cole o código abaixo para pagar:</p>
                 <div className="relative bg-gray-100 p-4 rounded-md text-lg flex justify-between items-center">
-                  <span className="select-all">{code.length > 40 ? `${code.substring(0, 40)}...` : code}</span>
+                  <span className="select-all">
+                    {dataPIX.emvqrcps.length > 40 ? `${dataPIX.emvqrcps.substring(0, 40)}...` : dataPIX.emvqrcps}
+                  </span>
                   <button
                     className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
-                    onClick={() => navigator.clipboard.writeText(code)}
+                    onClick={() => navigator.clipboard.writeText(dataPIX.emvqrcps)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-3M16 5l4 4m-4-4v4h4"
-                      />
-                    </svg>
+                    <FaRegCopy />
                   </button>
                 </div>
               </div>
@@ -361,7 +494,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {confirmButtonDisabled ? 'Desbloqueando...' : 'Continuar'}
+                  {confirmButtonDisabled ? 'Aguardando pagamento...' : 'Continuar'}
                 </Button>
               </div>
             </div>
