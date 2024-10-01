@@ -4,19 +4,19 @@ import { advertisementDetails } from '@/@types/advertisement';
 import { get, post, put, del } from './apiService';
 
 export const getAnuncios = async (city: string) => {
-  return await get(`/advertisement/city/${city}`);
+  return await get(`/api/advertisement/city/${city}`);
 };
 
 export const getAnuncio = async (id: string) => {
-  return await get(`/advertisement/${id}`);
+  return await get(`/api/api/advertisement/${id}`);
 };
 
 export const createAnuncio = async (data: advertisementDetails) => {
-  return await post('/advertisement', data);
+  return await post('/api/advertisement', data);
 };
 
 export const updateAnuncio = async (anuncioId: string, data: any) => {
-  return await put(`/anuncios/${anuncioId}`, data);
+  return await put(`/api/anuncios/${anuncioId}`, data);
 };
 
 export const updateAnuncioPhotosURL = async (anuncioId: string, photosURL: string[]) => {
@@ -24,13 +24,13 @@ export const updateAnuncioPhotosURL = async (anuncioId: string, photosURL: strin
     anuncioId,
     photosURL
   }
-  return await put(`/anuncios/${anuncioId}`, data);
+  return await put(`/api/anuncios/${anuncioId}`, data);
 };
 
 export const deleteAnuncio = async (anuncioId: string) => {
-  return await del(`/anuncios/${anuncioId}`);
+  return await del(`/api/anuncios/${anuncioId}`);
 };
 
 export const listAnuncios = async (params?: any) => {
-  return await get('/anuncios', params);
+  return await get('/api/anuncios', params);
 };
