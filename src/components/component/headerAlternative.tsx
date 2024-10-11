@@ -115,7 +115,7 @@ export function HeaderAlternative() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-gray-800 text-white transition-transform transform ${
+        className={`fixed top-0 right-0 h-full w-64 bg-black text-white transition-transform transform ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         } md:hidden z-50`}
       >

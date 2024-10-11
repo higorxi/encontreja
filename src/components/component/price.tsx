@@ -12,7 +12,11 @@ interface PriceDetails {
   id: number
 }
 
-export function Price() {
+interface PriceProps {
+  onClose?: () => void; 
+}
+
+export function Price({onClose}: PriceProps) {
   const { isAuthenticated } = useAuth();
   const [selectedPlan, setSelectedPlan] = useState<PriceDetails>();
   const [showModal, setShowModal] = useState<'price' | 'login' | null>(null);
@@ -29,10 +33,13 @@ export function Price() {
   const closeModal = () => {
     setSelectedPlan(undefined);
     setShowModal(null);
+    if (onClose) {
+      onClose(); 
+    }
   };
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-24">
+    <section className="w-full py-12 md:py-24 lg:py-24 bg-white">
       <div className="flex flex-col items-center mb-10">
         <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
           E para você, profissional...

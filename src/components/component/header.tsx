@@ -12,7 +12,7 @@ export function Header() {
   const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [city, setCity] = useState('')
+  const [city, setCity] = useState('');
   const handlePostServiceClick = () => {
     setIsModalOpen(true);
   };
@@ -26,11 +26,11 @@ export function Header() {
   };
 
   useEffect(() => {
-    const city1 = localStorage.getItem('userCity')
-    if(city1){
-      setCity(city1)
+    const city1 = localStorage.getItem('userCity');
+    if (city1) {
+      setCity(city1);
     }
-  }, [])
+  }, []);
 
   return (
     <header className="relative bg-background">
@@ -59,26 +59,27 @@ export function Header() {
             >
               Planos
             </Link>
-            {isAuthenticated ? 
-            <Link
-              href="meu-servico"
-              className="text-sm font-medium text-muted-foreground hover:text-black transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-AzulProfundo after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
-              prefetch={false}
-            >
-              Meu(s) Anuncios
-            </Link>
-            : null}
+            {isAuthenticated ? (
+              <Link
+                href="meu-servico"
+                className="text-sm font-medium text-muted-foreground hover:text-black transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-AzulProfundo after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
+                prefetch={false}
+              >
+                Meu(s) Anuncios
+              </Link>
+            ) : null}
           </div>
           <Link href="/servicos" passHref>
             <Button className="flex items-center gap-1 px-4 py-2 text-sm font-medium bg-gray-50 text-AzulEscuro1 hover:bg-gray-5100 hover:text-AzulClaro2 rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105">
               Visualizar Serviços
-              <p>{city ? 'em': ''}</p>
-              <p className='font-bold'>
-              {city ? `${city}` : ''}
-              </p>
+              <p>{city ? 'em' : ''}</p>
+              <p className="font-bold">{city ? `${city}` : ''}</p>
             </Button>
           </Link>
-          <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105" onClick={handlePostServiceClick}>
+          <Button
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+            onClick={handlePostServiceClick}
+          >
             <LogoAlternative logoType={2} className="w-4 h-4" />
             {isAuthenticated ? 'Postar Serviço' : 'Login'}
           </Button>
@@ -114,8 +115,14 @@ export function Header() {
           <Link href="/#price" className="text-white text-lg hover:text-gray-400" onClick={toggleMenu}>
             Planos
           </Link>
+          <Link href="/meu-servico" className="text-white text-lg hover:text-gray-400" onClick={toggleMenu}>
+            Meu(s) Anuncios
+          </Link>
           <Link href="/servicos" passHref>
-            <Button className="px-4 py-2 text-black bg-white border border-white max-w-48 min-w-48" onClick={toggleMenu}>
+            <Button
+              className="px-4 py-2 text-black bg-white border border-white max-w-48 min-w-48"
+              onClick={toggleMenu}
+            >
               Visualizar Serviços
             </Button>
           </Link>

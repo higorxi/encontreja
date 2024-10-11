@@ -434,8 +434,23 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                   <div className="font-semibold">Total</div>
                   <div className="text-2xl font-semibold">R${plan.planPrice}</div>
                 </div>
-                <Button type="submit" className="w-full" onClick={nextStep} disabled={!isFormDataBillingValid}>
-                  Continuar
+                <Button
+                  type="submit"
+                  className={`w-full ${loading ? 'opacity-50' : ''}`}
+                  onClick={nextStep}
+                  disabled={!isFormDataBillingValid || loading}
+                >
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <span className="ml-2 flex items-center">
+                        <span className="dot-blink"></span>
+                        <span className="dot-blink"></span>
+                        <span className="dot-blink"></span>
+                      </span>
+                    </div>
+                  ) : (
+                    'Continuar'
+                  )}
                 </Button>
               </div>
             </form>

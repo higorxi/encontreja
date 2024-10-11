@@ -7,12 +7,14 @@ import { DetailsServiceProvider } from './details-service-provider';
 import usePageTitle from '@/Hooks/usePageTittle';
 import InfoIcon from './infoIcon';
 import { toast } from 'react-toastify';
+import { ModalServiceRegister } from './modal-service-register';
+import { Price } from './price';
 
 export function MyAdvertisement() {
   usePageTitle('Meu Serviço - EncontreJA');
-  const [cityModalOpen, setCityModalOpen] = useState(false);
   const servicoPostado = true;
-  const servicoPago = false;
+  const servicoPago = true;
+  const [activeModal, setActiveModal] = useState<string | null>(null);
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
@@ -33,10 +35,16 @@ export function MyAdvertisement() {
           <Button variant="default" onClick={() => toast.success(`A cidade que será exibido seus anuncios é: Minaçu`)}>
             Minaçu
           </Button>
-          <Button variant="default" onClick={() => toast.success(`O serviço que será exibido seus anuncios é: Eletricista`)}>
+          <Button
+            variant="default"
+            onClick={() => toast.success(`O serviço que será exibido seus anuncios é: Eletricista`)}
+          >
             Eletricista
           </Button>
-          <Button variant="default" onClick={() => toast.success(`A sua avaliação que será exibido em seus anuncios é: 5 estrelas`)}>
+          <Button
+            variant="default"
+            onClick={() => toast.success(`A sua avaliação que será exibido em seus anuncios é: 5 estrelas`)}
+          >
             5 estrelas
           </Button>
         </div>
@@ -47,7 +55,7 @@ export function MyAdvertisement() {
             // Caso o serviço tenha sido postado e pago
             <div
               className="bg-gray-100 p-2 rounded-lg shadow-sm overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105 max-w-md w-full sm:col-start-2"
-              onClick={() => console.log('Abrir modal do serviço')}
+              onClick={() => setActiveModal('user')}
             >
               <div className="aspect-square rounded-lg overflow-hidden">
                 <Image
@@ -81,70 +89,81 @@ export function MyAdvertisement() {
           ) : (
             // Caso o serviço tenha sido postado, mas não pago
             <>
-            <div
-              className="bg-gray-100 p-2 rounded-lg shadow-sm overflow-hidden cursor-not-allowed opacity-50 max-w-md w-full sm:col-start-2"
-              onClick={() => console.log('Abrir pagamento do anuncio')}
-            >
-              <div className="aspect-square rounded-lg overflow-hidden">
-                <Image
-                  src="/placeholder.svg"
-                  alt="Prestador de serviço"
-                  width={400}
-                  height={400}
-                  className="w-full h-full object-cover"
-                  style={{ aspectRatio: '400/400', objectFit: 'cover' }}
-                />
-              </div>
-              <div className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-lg font-semibold">Higor Giovane</div>
-                  <div className="flex items-center gap-1 text-sm text-primary">
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <StarIcon
-                        key={index}
-                        className={`w-4 h-4 ${
-                          index < Math.floor(5) ? 'fill-primary' : 'fill-muted stroke-muted-foreground'
-                        }`}
-                      />
-                    ))}
-                    <span>(5)</span>
-                  </div>
+              <div
+                className="bg-gray-100 p-2 rounded-lg shadow-sm overflow-hidden cursor-not-allowed opacity-50 max-w-md w-full sm:col-start-2"
+                onClick={() => console.log('Abrir pagamento do anuncio')}
+              >
+                <div className="aspect-square rounded-lg overflow-hidden">
+                  <Image
+                    src="/placeholder.svg"
+                    alt="Prestador de serviço"
+                    width={400}
+                    height={400}
+                    className="w-full h-full object-cover"
+                    style={{ aspectRatio: '400/400', objectFit: 'cover' }}
+                  />
                 </div>
-                <div className="text-muted-foreground mb-4">Minaçu, GO</div>
-                <p className="text-sm leading-relaxed">Eu sou o Higor </p>
-              </div>              
-            </div>
-            <div className="flex flex-col items-center justify-center sm:col-start-2 bg-gray-100 p-2 max-w-md w-full pt-4 pb-4">
-            <p className="text-center text-muted-foreground mb-4 p-2">Serviço cadastrado, selecione um plano para os usuários visualizarem seus serviços.</p>
-            <button
-              className="bg-LaranjaIndustrial text-white px-4 py-2 rounded-md"
-              onClick={() => console.log('Cadastre aqui um serviço')}
-            >
-              Escolha aqui um plano
-            </button>
-          </div>
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-lg font-semibold">Higor Giovane</div>
+                    <div className="flex items-center gap-1 text-sm text-primary">
+                      {Array.from({ length: 5 }, (_, index) => (
+                        <StarIcon
+                          key={index}
+                          className={`w-4 h-4 ${
+                            index < Math.floor(5) ? 'fill-primary' : 'fill-muted stroke-muted-foreground'
+                          }`}
+                        />
+                      ))}
+                      <span>(5)</span>
+                    </div>
+                  </div>
+                  <div className="text-muted-foreground mb-4">Minaçu, GO</div>
+                  <p className="text-sm leading-relaxed">Eu sou o Higor </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center justify-center sm:col-start-2 bg-gray-100 p-2 max-w-md w-full pt-4 pb-4">
+                <p className="text-center text-muted-foreground mb-4 p-2">
+                  Serviço cadastrado, selecione um plano para os usuários visualizarem seus serviços.
+                </p>
+                <button
+                  className="bg-LaranjaIndustrial text-white px-4 py-2 rounded-md"
+                  onClick={() => setActiveModal('plan')}
+                >
+                  Escolha aqui um plano
+                </button>
+              </div>
             </>
           )
         ) : (
           // Caso não tenha nenhum serviço postado
           <div className="flex flex-col items-center justify-center sm:col-start-2 BG">
             <p className="text-center text-muted-foreground mb-4">Nenhum serviço cadastrado ainda.</p>
-            <button
-              className="bg-primary text-white px-4 py-2 rounded-md"
-              onClick={() => console.log('Cadastre aqui um serviço')}
-            >
+            <button className="bg-primary text-white px-4 py-2 rounded-md" onClick={() => setActiveModal('register')}>
               Cadastre aqui um serviço
             </button>
           </div>
         )}
       </div>
 
-      {false && (
+      {activeModal === 'plan' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay">
+          <Price onClose={() => setActiveModal(null)} />
+        </div>
+      )}
+
+      {activeModal === 'user' && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay">
           <DetailsServiceProvider
             dataServiceProvider={() => console.log('teste')}
-            onClose={() => console.log('teste')}
+            onClose={() => setActiveModal(null)}
           />
+        </div>
+      )}
+
+      {activeModal === 'register' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay">
+          <ModalServiceRegister onClose={() => setActiveModal(null)} />
         </div>
       )}
     </div>
