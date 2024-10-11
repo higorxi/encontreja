@@ -31,6 +31,6 @@ export const deleteAnuncio = async (anuncioId: string) => {
   return await del(`/api/anuncios/${anuncioId}`);
 };
 
-export const listAnuncios = async (params?: any) => {
-  return await get('/api/anuncios', params);
+export const listServices = async () => {
+  return await get('/api/service-available');
 };

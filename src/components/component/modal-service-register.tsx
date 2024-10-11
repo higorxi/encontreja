@@ -5,20 +5,22 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlineReload } from 'react-icons/ai';
 import Image from 'next/image';
 import InputMask from 'react-input-mask';
-import { createAnuncio, updateAnuncioPhotosURL } from '@/service/advertisementService';
+import { createAnuncio, listServices, updateAnuncioPhotosURL } from '@/service/advertisementService';
 import { advertisementDetails } from '@/@types/advertisement';
 import { toast } from 'react-toastify';
 import InfoIcon from './infoIcon';
 import axios from 'axios';
+import { Service } from '@/@types/interfaces/Service';
 
 export function ModalServiceRegister({ onClose }: any) {
   const user = JSON.parse(localStorage.getItem('user') as string);
   const [images, setImages] = useState<(string | ArrayBuffer | null)[]>([null, null, null]);
-  const [selectedServices, setSelectedServices] = useState<string>('');
+  const [selectedService, setSelectedService] = useState<string>('');
+  const [services, setServices] = useState<Service[]>([]);
   const [hasServiceLocation, setHasServiceLocation] = useState(false);
   const [linkWebsitePortfolio, setLinkWebsitePortfolio] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
@@ -33,9 +35,23 @@ export function ModalServiceRegister({ onClose }: any) {
   const [title, setTitle] = useState('');
   const metadata = JSON.stringify({
     description: `Imagens do serviço de: ${user.name}`,
-    category: "servico",
-    tags: ["foto", "servico"]
+    category: 'servico',
+    tags: ['foto', 'servico'],
   });
+
+  async function fetchServices() {
+    try {
+      const response = await listServices();
+      setServices(response);
+    } catch (error) {
+      console.error('Erro ao buscar provedores de serviço:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
   const handleImageChange = (e: any, index: number) => {
     const file = e.target.files[0];
     if (file) {
@@ -94,30 +110,30 @@ export function ModalServiceRegister({ onClose }: any) {
   const handlePaymentMethodChange = (method: keyof typeof paymentMethods) => {
     setPaymentMethods((prev) => ({ ...prev, [method]: !prev[method] }));
   };
-  
+
   const handleUpload = async () => {
     if (!images || images.length === 0) {
       alert('Por favor, selecione pelo menos uma imagem antes de enviar.');
       return;
     }
-  
+
     const formData = new FormData();
-    
+
     images.forEach((image: any) => {
-      formData.append('files', image); 
+      formData.append('files', image);
     });
-  
+
     if (metadata) {
       formData.append('metadata', JSON.stringify(metadata));
     }
-  
+
     try {
       const response = await axios.post('/api/uploadImageAdvertisement', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      return response.data.result.variants[0]; 
+      return response.data.result.variants[0];
     } catch (error) {
       console.error('Erro ao enviar as imagens:', error);
     }
@@ -167,7 +183,7 @@ export function ModalServiceRegister({ onClose }: any) {
       <DialogContent className="max-w-full max-h-full sm:max-w-[1300px] sm:max-h-[550px] flex flex-col p-4 min-h-[550px]">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-2">
           <div>
-            <DialogTitle className='text-xl'>Registrar Seu Serviço</DialogTitle>
+            <DialogTitle className="text-xl">Registrar Seu Serviço</DialogTitle>
             <DialogDescription>Preencha o formulário abaixo para registrar seu serviço.</DialogDescription>
           </div>
         </div>
@@ -269,18 +285,20 @@ export function ModalServiceRegister({ onClose }: any) {
                       Serviço*
                     </Label>
                     <InfoIcon
-                      message="Você poderá informar mais de 1 tipo de serviço assinando os planos Mensais ou Anual."
+                      message="Você poderá atualizar com mais de 1 tipo de serviço assinando os planos Mensais ou Anual."
                       title="Serviços"
                     />
                   </div>
-                  <Select value={selectedServices} onValueChange={setSelectedServices}>
+                  <Select value={selectedService} onValueChange={setSelectedService}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o tipo de serviço" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="service1">Serviço 1</SelectItem>
-                      <SelectItem value="service2">Serviço 2</SelectItem>
-                      <SelectItem value="service3">Serviço 3</SelectItem>
+                      {services.map((service) => (
+                        <SelectItem key={service.id} value={service.id}>
+                          {service.description}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
