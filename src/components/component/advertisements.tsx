@@ -76,25 +76,16 @@ export function Advertisements() {
   async function fetchServiceProviders(city: string) {
     try {
       const response = await getAnuncios(city);
-      setServiceProviders(response);
+      setServiceProviders(response.content);
     } catch (error) {
       console.error('Erro ao buscar provedores de serviço:', error);
     }
   }
 
-  const filteredProviders = serviceProviders.filter((provider: any) => {
-    const locationMatch = locationFilter ? provider.user.city.toLowerCase().includes(locationFilter) : true;
-    //const typeMatch = typeFilter ? provider.servicesAvailable[0] === typeFilter : true;
-    //const ratingMatch = ratingFilter ? provider.rating >= parseFloat(ratingFilter) : true;
-
-    //return locationMatch && typeMatch && ratingMatch;
-    return locationMatch;
-  });
-
   const loadMore = () => {
     const newVisibleCount = visibleCount + 6;
 
-    if (newVisibleCount >= filteredProviders.length) {
+    if (newVisibleCount >= serviceProviders.length) {
       setHasMore(false);
     }
 
@@ -131,7 +122,7 @@ export function Advertisements() {
             Encontre o provedor de serviços perfeito
           </h1>
           <p className="text-muted-foreground text-center sm:text-left">
-            Browse our directory of trusted professionals in your area.
+          Navegue em nosso diretório de profissionais confiáveis ​​em sua área.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4 sm:mt-0">
@@ -171,7 +162,7 @@ export function Advertisements() {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-        {filteredProviders.slice(0, visibleCount).map((provider: any) => (
+        {serviceProviders.slice(0, visibleCount).map((provider: any) => (
           <div
             key={provider.name}
             className="bg-gray-100 p-2 rounded-lg shadow-sm overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
@@ -209,8 +200,8 @@ export function Advertisements() {
         ))}
       </div>
       <div className="flex flex-col items-center mt-8 sm:mt-10 lg:mt-12">
-        {hasMore && filteredProviders.length > 0 ? (
-          <Button variant="outline" onClick={loadMore} disabled={filteredProviders.length === 0}>
+        {hasMore && serviceProviders.length > 0 ? (
+          <Button variant="outline" onClick={loadMore} disabled={serviceProviders.length === 0}>
             Carregar Mais
           </Button>
         ) : (
