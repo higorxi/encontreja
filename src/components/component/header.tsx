@@ -65,7 +65,7 @@ export function Header() {
                 className="text-sm font-medium text-muted-foreground hover:text-black transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-AzulProfundo after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
                 prefetch={false}
               >
-                Meu(s) Anuncios
+                Meu Anuncio(s)
               </Link>
             ) : null}
           </div>
@@ -116,7 +116,7 @@ export function Header() {
             Planos
           </Link>
           <Link href="/meu-servico" className="text-white text-lg hover:text-gray-400" onClick={toggleMenu}>
-            Meu(s) Anuncios
+            Meu Anuncio(s)
           </Link>
           <Link href="/servicos" passHref>
             <Button
