@@ -6,7 +6,8 @@ interface User {
   id: string;
   email: string;
   document: string;
-  token: string
+  token: string;
+  name: string
 }
 
 interface Credentials {

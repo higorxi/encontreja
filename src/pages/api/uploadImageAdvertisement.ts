@@ -12,7 +12,7 @@ export const config = {
 
 const uploadImageAdvertisementHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const form = new IncomingForm();
+    const form = new IncomingForm(); 
 
     form.parse(req, async (err, fields, files) => {
       if (err) {
@@ -30,9 +30,9 @@ const uploadImageAdvertisementHandler = async (req: NextApiRequest, res: NextApi
       const apiToken = process.env.NEXT_PUBLIC_CLOUDFLARE_API_TOKEN;
 
       try {
-        const uploadPromises = imageFiles.map(async (imageFile) => {
-          if (!imageFile) {
-            throw new Error('Arquivo de imagem não definido');
+        const uploadPromises = imageFiles.map(async (imageFile: any) => {
+          if (!imageFile || !imageFile.filepath) {
+            throw new Error('Arquivo de imagem não definido ou caminho de arquivo ausente');
           }
 
           const formData = new FormData();
@@ -51,13 +51,13 @@ const uploadImageAdvertisementHandler = async (req: NextApiRequest, res: NextApi
               },
             }
           );
-          return response.data; 
+          return response.data;
         });
 
         const results = await Promise.all(uploadPromises);
-        res.status(200).json(results); 
+        res.status(200).json(results);
       } catch (error: any) {
-        console.error('Erro ao fazer upload das imagens:', error);
+        console.error('Erro ao fazer upload das imagens:', error.message);
         res.status(500).json({ message: 'Erro ao fazer upload das imagens', error: error.message });
       }
     });

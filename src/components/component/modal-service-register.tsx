@@ -15,10 +15,12 @@ import { toast } from 'react-toastify';
 import InfoIcon from './infoIcon';
 import axios from 'axios';
 import { Service } from '@/@types/interfaces/Service';
+import { useUser } from '@/contexts/AuthContext';
 
 export function ModalServiceRegister({ onClose }: any) {
-  const user = JSON.parse(localStorage.getItem('user') as string);
-  const [images, setImages] = useState<(string | ArrayBuffer | null)[]>([null, null, null]);
+  const user = useUser();
+  const [images, setImages] = useState<(File | null)[]>([null, null, null]);
+  const [imagePreviews, setImagePreviews] = useState<(string | null)[]>([null, null, null]);
   const [selectedService, setSelectedService] = useState<string>('');
   const [services, setServices] = useState<Service[]>([]);
   const [hasServiceLocation, setHasServiceLocation] = useState(false);
@@ -34,7 +36,7 @@ export function ModalServiceRegister({ onClose }: any) {
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const metadata = JSON.stringify({
-    description: `Imagens do serviço de: ${user.name}`,
+    description: `Imagens do serviço de: ${user?.name}`,
     category: 'servico',
     tags: ['foto', 'servico'],
   });
@@ -55,17 +57,17 @@ export function ModalServiceRegister({ onClose }: any) {
   const handleImageChange = (e: any, index: number) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setImages((prevImages) => {
-            const updatedImages = [...prevImages];
-            updatedImages[index] = reader.result;
-            return updatedImages;
-          });
-        }
-      };
-      reader.readAsDataURL(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImages((prevImages) => {
+        const updatedImages = [...prevImages];
+        updatedImages[index] = file;
+        return updatedImages;
+      });
+      setImagePreviews((prevPreviews) => {
+        const updatedPreviews = [...prevPreviews];
+        updatedPreviews[index] = imageUrl;
+        return updatedPreviews;
+      });
     }
   };
 
@@ -73,17 +75,17 @@ export function ModalServiceRegister({ onClose }: any) {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setImages((prevImages) => {
-            const updatedImages = [...prevImages];
-            updatedImages[index] = reader.result;
-            return updatedImages;
-          });
-        }
-      };
-      reader.readAsDataURL(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImages((prevImages) => {
+        const updatedImages = [...prevImages];
+        updatedImages[index] = file;
+        return updatedImages;
+      });
+      setImagePreviews((prevPreviews) => {
+        const updatedPreviews = [...prevPreviews];
+        updatedPreviews[index] = imageUrl;
+        return updatedPreviews;
+      });
     }
   };
 
@@ -93,14 +95,11 @@ export function ModalServiceRegister({ onClose }: any) {
       updatedImages[index] = null;
       return updatedImages;
     });
-  };
-
-  const handleSelectChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    setter: React.Dispatch<React.SetStateAction<string[]>>
-  ) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option: HTMLOptionElement) => option.value);
-    setter(selectedOptions);
+    setImagePreviews((prevPreviews) => {
+      const updatedPreviews = [...prevPreviews];
+      updatedPreviews[index] = null;
+      return updatedPreviews;
+    });
   };
 
   const handleServiceLocationChange = () => {
@@ -117,34 +116,38 @@ export function ModalServiceRegister({ onClose }: any) {
       return;
     }
 
-    const formData = new FormData();
+    const uploadPromises = images.map(async (image: any) => {
+      const formData = new FormData();
+      formData.append('file', image);
+      formData.append('metadata', metadata);
 
-    images.forEach((image: any) => {
-      formData.append('files', image);
+      try {
+        const response = await axios.post('/api/uploadImageAdvertisement', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        return response.data[0];
+      } catch (error) {
+        console.error('Erro ao enviar a imagem:', error);
+        throw error;
+      }
     });
 
-    if (metadata) {
-      formData.append('metadata', JSON.stringify(metadata));
-    }
-
     try {
-      const response = await axios.post('/api/uploadImageAdvertisement', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data.result.variants[0];
+      const results = await Promise.all(uploadPromises);
+      console.log('Todas as imagens foram enviadas com sucesso:', results);
     } catch (error) {
       console.error('Erro ao enviar as imagens:', error);
     }
   };
 
   const handleRegisterAD = async () => {
-    const urlImage = await handleUpload();
     setLoading(true);
     try {
       const data = {
-        user: { document: '06512743113' },
+        user: { document: user?.document },
         title,
         description,
         price: 1,
@@ -164,12 +167,14 @@ export function ModalServiceRegister({ onClose }: any) {
       };
       const response = await createAnuncio(data as advertisementDetails);
       if (response) {
-        const urlImage = await handleUpload();
-        await updateAnuncioPhotosURL('ID DO SERVIÇO', urlImage);
+        const urlImages = await handleUpload();
+        console.log("Images", urlImages)
+        //await updateAnuncioPhotosURL('ID DO SERVIÇO', urlImage);
         toast.success('Anuncio criado com sucesso');
         onClose();
       } else {
-        throw new Error('');
+        toast.success("Erro ao salvar imagens do serviço, atualize em 'Meu anuncio(s)' ");
+        throw new Error("Erro ao salvar imagens do serviço, atualize em 'Meu anuncio(s)'");
       }
     } catch (error) {
       toast.error('Erro ao criar anuncio, tente novamente!');
@@ -201,7 +206,7 @@ export function ModalServiceRegister({ onClose }: any) {
                     {image ? (
                       <>
                         <Image
-                          src={image as string}
+                          src={imagePreviews[index]!} // Exibe a prévia da imagem
                           alt={`Imagem do Serviço ${index + 1}`}
                           className="w-full h-full object-cover rounded-lg"
                           width={500}
@@ -221,7 +226,7 @@ export function ModalServiceRegister({ onClose }: any) {
                           <AiOutlineReload className="text-black" />
                           <input
                             id={`image-upload-${index}`}
-                            type="button"
+                            type="file"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, index)}
                             className="absolute inset-0 opacity-0 cursor-pointer"

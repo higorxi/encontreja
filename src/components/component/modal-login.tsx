@@ -178,11 +178,12 @@ export function ModalLogin({ onClose }: any) {
       const response = await registerUser(data as RegistrationDetails);
       if (response) {
         const urlImage = await handleUpload();
-        await updateUserProfilePhotoURL(cpf, urlImage)
+        //await updateUserProfilePhotoURL(cpf, urlImage)
         toast.success('Cadastro bem-sucedido!');
         onClose();
       } else {
-        throw new Error('');
+        toast.success('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
+        throw new Error('Erro ao salvar e/ou atualizar foto de perfil');
       }
     } catch (error) {
       toast.error('Erro ao fazer cadastro.');
