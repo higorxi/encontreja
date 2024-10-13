@@ -196,8 +196,6 @@ export function ModalLogin({ onClose }: any) {
 
   const isFormRegisterValid = name !== '' && email !== '' && gender !== '' && phone !== '' && cpf !== '' && city !== '' && password !== '' && image !== null;
 
-
-
   return (
     <>
       <Dialog defaultOpen onOpenChange={onClose}>

@@ -1,5 +1,6 @@
 import { Coments } from "@/components/component/coments";
 import { ContactSection } from "@/components/component/contact-section";
+import FirstTimeModal from "@/components/component/first-modal";
 import { Footer } from "@/components/component/footer";
 import { Header } from "@/components/component/header";
 import { InitialScreen } from "@/components/component/initial-screen";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <>
     <Header/>
+    <FirstTimeModal />
     <InitialScreen/>
     <Coments/>
     <section id="why">
