@@ -49,6 +49,7 @@ export function InputDateOfBirth({ showLabel = true, value, onChange }: InputDat
           className="pr-10"
           value={maskedValue}
           onChange={handleChange}
+          maxLength={10}
         />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
