@@ -172,27 +172,56 @@ export function ModalLogin({ onClose }: any) {
   };
 
   const handleRegister = async () => {
-    if (!isValidEmail || !isValidCPF) {
-      toast.error('CPF ou Email inválido, revise os dados');
-      return;
-    }
-    setLoading(true);
-    try {
-      const data = { name, email, gender: { id: Number(gender) }, phone, document: cpf, city, password };
-      const response = await registerUser(data as RegistrationDetails);
-      if (response) {
-        const urlImage = await handleUpload();
-        //await updateUserProfilePhotoURL(cpf, urlImage)
-        toast.success('Cadastro bem-sucedido!');
-        onClose();
-      } else {
-        toast.success('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
-        throw new Error('Erro ao salvar e/ou atualizar foto de perfil');
+    if (isFormRegisterValid) {
+      if (!isValidEmail || !isValidCPF) {
+        toast.error('CPF ou Email inválido, revise os dados');
+        return;
       }
-    } catch (error) {
-      toast.error('Erro ao fazer cadastro.');
-    } finally {
-      setLoading(false);
+      setLoading(true);
+      try {
+        const data = { name, email, gender: { id: Number(gender) }, phone, document: cpf, city, password };
+        const response = await registerUser(data as RegistrationDetails);
+        if (response) {
+          const urlImage = await handleUpload();
+          //await updateUserProfilePhotoURL(cpf, urlImage)
+          toast.success('Cadastro bem-sucedido!');
+          onClose();
+        } else {
+          toast.success('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
+          throw new Error('Erro ao salvar e/ou atualizar foto de perfil');
+        }
+      } catch (error) {
+        toast.error('Erro ao fazer cadastro.');
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const validateBirth = (dateString: string) => {
+    const [day, month, year] = dateString.split('/').map(Number);
+    const selectedDate = new Date(year, month - 1, day);
+
+    if (
+      selectedDate.getFullYear() !== year ||
+      selectedDate.getMonth() !== month - 1 ||
+      selectedDate.getDate() !== day
+    ) {
+      return false;
+    }
+
+    const today = new Date();
+    const age = today.getFullYear() - selectedDate.getFullYear();
+
+    if (
+      age < 18 ||
+      (age === 18 &&
+        (today.getMonth() < selectedDate.getMonth() ||
+          (today.getMonth() === selectedDate.getMonth() && today.getDate() < selectedDate.getDate())))
+    ) {
+      return false;
+    } else {
+      return true;
     }
   };
 
@@ -206,13 +235,15 @@ export function ModalLogin({ onClose }: any) {
     cpf !== '' &&
     city !== '' &&
     password !== '' &&
-    image !== null;
+    passwordsMatch &&
+    validateBirth(birthdate);
+  image !== null;
 
   return (
     <>
       <Dialog defaultOpen onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[855px] sm:min-h-[525px]">
-          <Tabs defaultValue="login" className="w-full">
+        <DialogContent className="max-w-[100%] sm:max-w-[855px] max-h-[80vh] min-h-[300px] sm:min-h-[525px] overflow-auto">
+          <Tabs defaultValue="login" className="w-full p-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="register">Registrar</TabsTrigger>
@@ -328,7 +359,9 @@ export function ModalLogin({ onClose }: any) {
                       onDrop={(e) => handleDrop(e)}
                       onDragOver={(e) => e.preventDefault()}
                     >
-                      <span className="text-gray-500 text-center">Arraste e solte sua imagem aqui</span>
+                      <span className="text-gray-500 text-center">
+                        Arraste e solte <br /> sua imagem aqui
+                      </span>
                       <label htmlFor="image-upload-0" className="mt-2 cursor-pointer text-blue-500">
                         Carregar imagem
                         <input
@@ -377,6 +410,42 @@ export function ModalLogin({ onClose }: any) {
                       onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
+
+                  <div className="space-y-2 relative">
+                    <Label htmlFor="password">Senha *</Label>
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="*******"
+                      value={password}
+                      className="pr-10"
+                      minLength={8}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <Button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-6 right-0 flex items-center px-3"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Repetir Senha *</Label>
+                    <Input
+                      id="confirmPassword"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="*******"
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                      required
+                    />
+                    {!passwordsMatch && <p className="text-red-600 text-sm">As senhas não coincidem.</p>}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="cpf">CPF *</Label>
                     <Input
@@ -388,27 +457,6 @@ export function ModalLogin({ onClose }: any) {
                       className={`pr-10 ${!isValidCPF ? 'border-red-500' : ''}`}
                     />
                   </div>
-                  <div className="space-y-2 relative">
-                      <Label htmlFor="password">Senha *</Label>
-                      <Input
-                        id="password"
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder="*******"
-                        value={password}
-                        className="pr-10"
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                      <Button
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                      className="absolute inset-y-6 right-0 flex items-center px-3"
-                    > 
-                      {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </Button>
-                    </div>
-                </div>
-
-                <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="gender">Gênero *</Label>
                     <Select value={gender} onValueChange={setGender}>
@@ -435,13 +483,13 @@ export function ModalLogin({ onClose }: any) {
                     <div className="grid gap-2 space-y-2">
                       <Label htmlFor="zipcode">CEP *</Label>
                       <div className="relative w-full">
-                        <Input
+                        <InputMask
+                          mask="99999-999"
                           id="zipcode"
-                          placeholder="12345-678"
+                          placeholder="00000-123"
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           value={cep}
-                          maxLength={9}
                           onChange={(e) => setCep(e.target.value)}
-                          className="w-full"
                         />
                         <Button
                           type="button"
@@ -452,14 +500,25 @@ export function ModalLogin({ onClose }: any) {
                           <SearchIcon className="w-4 h-4" />
                         </Button>
                       </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="city">Cidade</Label>
-                          <Input id="city" placeholder="Informe o CEP" value={city} readOnly className="w-full cursor-not-allowed" />
+                      <div className="space-y-2">
+                        <Label htmlFor="city">Cidade *</Label>
+                        <div className="flex space-x-2">
+                          <Input
+                            id="city"
+                            placeholder="Anápolis"
+                            value={city}
+                            readOnly
+                            className="w-full cursor-not-allowed"
+                          />
+                          <Input
+                            id="state"
+                            placeholder="GO"
+                            value={state}
+                            readOnly
+                            className="w-12 cursor-not-allowed"
+                          />
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="city">Estado</Label>
-                          <Input id="state" placeholder="Informe o CEP" value={state} readOnly className="w-full cursor-not-allowed" />
-                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

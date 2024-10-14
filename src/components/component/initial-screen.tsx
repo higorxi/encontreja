@@ -1,15 +1,145 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import ImageHome from '../../../public/HomeScreen/Encanador.svg'
-import Marquee from "react-fast-marquee";
-import { FaBroom, FaCut, FaDesktop, FaHammer, FaLaptop, FaLeaf, FaPaintBrush, FaPen, FaPencilAlt, FaPlug, FaShower, FaSoap, FaUserTie, FaWater, FaWrench } from 'react-icons/fa';
-
+import ImageHome from '../../../public/HomeScreen/Encanador.svg';
+import Marquee from 'react-fast-marquee';
+import {
+  FaBroom,
+  FaCut,
+  FaDesktop,
+  FaHammer,
+  FaLaptop,
+  FaLeaf,
+  FaPaintBrush,
+  FaPen,
+  FaPencilAlt,
+  FaPlug,
+  FaShower,
+  FaSoap,
+  FaUserTie,
+  FaWater,
+  FaWrench,
+} from 'react-icons/fa';
+import { CameraIcon, FlowerIcon, HomeIcon } from 'lucide-react';
 
 export function InitialScreen() {
+  const gif = (
+    <section className="w-full min-w-full pb-10">
+      <div className="container  min-w-full  mx-auto">
+        <Link href="/servicos">
+          <Marquee speed={50} className="w-full">
+            <div className="flex items-center space-x-6">
+              <FaWrench title="Eletricista" size={24} className="ml-6 text-primary-foreground" />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaLaptop title="Técnico" size={24} />
+              <FaCut title="Cabeleireiro" size={24} />
+              <FaLeaf title="Jardineiro" size={24} />
+              <FaHammer title="Carpinteiro" size={24} />
+              <FaShower title="Encanador" size={24} />
+              <FaPlug title="Eletricista" size={24} />
+              <FaPen title="Pintor" size={24} />
+              <FaSoap title="Faxineiro" size={24} />
+              <FaDesktop title="Técnico" size={24} />
+              <FaUserTie title="Consultor" size={24} />
+              <FaPencilAlt title="Designer" size={24} />
+              <FaWrench title="Eletricista" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaLaptop title="Técnico" size={24} />
+              <FaCut title="Cabeleireiro" size={24} />
+              <FaLeaf title="Jardineiro" size={24} />
+              <FaHammer title="Carpinteiro" size={24} />
+              <FaShower title="Encanador" size={24} />
+              <FaPlug title="Eletricista" size={24} />
+              <FaPen title="Pintor" size={24} />
+              <FaSoap title="Faxineiro" size={24} />
+              <FaDesktop title="Técnico" size={24} />
+              <FaUserTie title="Consultor" size={24} />
+              <FaPencilAlt title="Designer" size={24} />
+              <FaWrench title="Eletricista" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaLaptop title="Técnico" size={24} />
+              <FaCut title="Cabeleireiro" size={24} />
+              <FaLeaf title="Jardineiro" size={24} />
+              <FaHammer title="Carpinteiro" size={24} />
+              <FaShower title="Encanador" size={24} />
+              <FaPlug title="Eletricista" size={24} />
+              <FaPen title="Pintor" size={24} />
+              <FaSoap title="Faxineiro" size={24} />
+              <FaDesktop title="Técnico" size={24} />
+              <FaUserTie title="Consultor" size={24} />
+              <FaPencilAlt title="Designer" size={24} />
+              <FaWrench title="Eletricista" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaLaptop title="Técnico" size={24} />
+              <FaCut title="Cabeleireiro" size={24} />
+              <FaLeaf title="Jardineiro" size={24} />
+              <FaHammer title="Carpinteiro" size={24} />
+              <FaShower title="Encanador" size={24} />
+              <FaPlug title="Eletricista" size={24} />
+              <FaPen title="Pintor" size={24} />
+              <FaSoap title="Faxineiro" size={24} />
+              <FaDesktop title="Técnico" size={24} />
+              <FaUserTie title="Consultor" size={24} />
+              <FaPencilAlt title="Designer" size={24} />
+              <FaWrench title="Eletricista" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaLaptop title="Técnico" size={24} />
+              <FaCut title="Cabeleireiro" size={24} />
+              <FaLeaf title="Jardineiro" size={24} />
+              <FaHammer title="Carpinteiro" size={24} />
+              <FaShower title="Encanador" size={24} />
+              <FaPlug title="Eletricista" size={24} />
+              <FaPen title="Pintor" size={24} />
+              <FaSoap title="Faxineiro" size={24} />
+              <FaDesktop title="Técnico" size={24} />
+              <FaUserTie title="Consultor" size={24} />
+              <FaPencilAlt title="Designer" size={24} />
+              <FaWrench title="Eletricista" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaLaptop title="Técnico" size={24} />
+              <FaCut title="Cabeleireiro" size={24} />
+              <FaLeaf title="Jardineiro" size={24} />
+              <FaHammer title="Carpinteiro" size={24} />
+              <FaShower title="Encanador" size={24} />
+              <FaPlug title="Eletricista" size={24} />
+              <FaPen title="Pintor" size={24} />
+              <FaSoap title="Faxineiro" size={24} />
+              <FaDesktop title="Técnico" size={24} />
+              <FaUserTie title="Consultor" size={24} />
+              <FaPencilAlt title="Designer" size={24} />
+              <FaWrench title="Eletricista" size={24} />
+              <FaWater title="Encanador" size={24} />
+              <FaPaintBrush title="Pintor" size={24} />
+              <FaBroom title="Faxineiro" size={24} />
+              <FaLaptop title="Técnico" size={24} className="mr-4" />
+            </div>
+          </Marquee>
+        </Link>
+      </div>
+    </section>
+  );
+
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-14 lg:py-18 xl:py-22">
+        <section className="w-full py-12 md:py-14 lg:py-18 xl:py-22" style={{ paddingBottom: '0rem' }}>
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px] justify-center">
               <div className="flex flex-col justify-center space-y-8">
@@ -39,135 +169,22 @@ export function InitialScreen() {
                   width="600"
                   height="400"
                   alt="Hero"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:aspect-square"
+                  className="mx-auto overflow-hidden rounded-xl object-cover sm:w-full lg:aspect-square"
                 />
               </div>
             </div>
           </div>
         </section>
-
-         <section className="w-full min-w-full py-12 md:py-16 lg:py-22">
-          <div className="container  min-w-full  mx-auto">
-            <Link href="/servicos">
-                <Marquee speed={50} className='w-full'>
-                  <div className="flex items-center space-x-6">
-                    <FaWrench title="Eletricista" size={24} className='ml-6' />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaLaptop title="Técnico" size={24} />
-                    <FaCut title="Cabeleireiro" size={24} />
-                    <FaLeaf title="Jardineiro" size={24} />
-                    <FaHammer title="Carpinteiro" size={24} />
-                    <FaShower title="Encanador" size={24} />
-                    <FaPlug title="Eletricista" size={24} />
-                    <FaPen title="Pintor" size={24} />
-                    <FaSoap title="Faxineiro" size={24} />
-                    <FaDesktop title="Técnico" size={24} />
-                    <FaUserTie title="Consultor" size={24} />
-                    <FaPencilAlt title="Designer" size={24} />
-                    <FaWrench title="Eletricista" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaLaptop title="Técnico" size={24} />
-                    <FaCut title="Cabeleireiro" size={24} />
-                    <FaLeaf title="Jardineiro" size={24} />
-                    <FaHammer title="Carpinteiro" size={24} />
-                    <FaShower title="Encanador" size={24} />
-                    <FaPlug title="Eletricista" size={24} />
-                    <FaPen title="Pintor" size={24} />
-                    <FaSoap title="Faxineiro" size={24} />
-                    <FaDesktop title="Técnico" size={24} />
-                    <FaUserTie title="Consultor" size={24} />
-                    <FaPencilAlt title="Designer" size={24} />
-                    <FaWrench title="Eletricista" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaLaptop title="Técnico" size={24} />
-                    <FaCut title="Cabeleireiro" size={24} />
-                    <FaLeaf title="Jardineiro" size={24} />
-                    <FaHammer title="Carpinteiro" size={24} />
-                    <FaShower title="Encanador" size={24} />
-                    <FaPlug title="Eletricista" size={24} />
-                    <FaPen title="Pintor" size={24} />
-                    <FaSoap title="Faxineiro" size={24} />
-                    <FaDesktop title="Técnico" size={24} />
-                    <FaUserTie title="Consultor" size={24} />
-                    <FaPencilAlt title="Designer" size={24} />
-                    <FaWrench title="Eletricista" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaLaptop title="Técnico" size={24} />
-                    <FaCut title="Cabeleireiro" size={24} />
-                    <FaLeaf title="Jardineiro" size={24} />
-                    <FaHammer title="Carpinteiro" size={24} />
-                    <FaShower title="Encanador" size={24} />
-                    <FaPlug title="Eletricista" size={24} />
-                    <FaPen title="Pintor" size={24} />
-                    <FaSoap title="Faxineiro" size={24} />
-                    <FaDesktop title="Técnico" size={24} />
-                    <FaUserTie title="Consultor" size={24} />
-                    <FaPencilAlt title="Designer" size={24} />
-                    <FaWrench title="Eletricista" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaLaptop title="Técnico" size={24} />
-                    <FaCut title="Cabeleireiro" size={24} />
-                    <FaLeaf title="Jardineiro" size={24} />
-                    <FaHammer title="Carpinteiro" size={24} />
-                    <FaShower title="Encanador" size={24} />
-                    <FaPlug title="Eletricista" size={24} />
-                    <FaPen title="Pintor" size={24} />
-                    <FaSoap title="Faxineiro" size={24} />
-                    <FaDesktop title="Técnico" size={24} />
-                    <FaUserTie title="Consultor" size={24} />
-                    <FaPencilAlt title="Designer" size={24} />
-                    <FaWrench title="Eletricista" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaLaptop title="Técnico" size={24} />
-                    <FaCut title="Cabeleireiro" size={24} />
-                    <FaLeaf title="Jardineiro" size={24} />
-                    <FaHammer title="Carpinteiro" size={24} />
-                    <FaShower title="Encanador" size={24} />
-                    <FaPlug title="Eletricista" size={24} />
-                    <FaPen title="Pintor" size={24} />
-                    <FaSoap title="Faxineiro" size={24} />
-                    <FaDesktop title="Técnico" size={24} />
-                    <FaUserTie title="Consultor" size={24} />
-                    <FaPencilAlt title="Designer" size={24} />
-                    <FaWrench title="Eletricista" size={24} />
-                    <FaWater title="Encanador" size={24} />
-                    <FaPaintBrush title="Pintor" size={24} />
-                    <FaBroom title="Faxineiro" size={24} />
-                    <FaLaptop title="Técnico" size={24}  className='mr-4'/>
-                  </div>
-                </Marquee>
-            </Link>
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-16 lg:py-22 mb-10">
+        <section className="w-full py-12 md:py-16 lg:py-22 mb-10" style={{ paddingTop: '2rem' }}>
           <div className="container px-4 md:px-8 mx-auto">
-            <div className="grid gap-6 lg:grid-cols-3 lg:gap-8 justify-center">
+            <div className="grid gap-6 lg:grid-cols-3 lg:gap-16 justify-center">
               <div className="flex flex-col items-center gap-4">
-                <div className="bg-primary rounded-md p-3 flex items-center justify-center">
+                <div className="bg-orange-600 rounded-md p-3 flex items-center justify-center">
                   <BrushIcon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-center">Serviços de beleza</h3>
-                  <p className="text-muted-foreground text-center">
+                  <p className="text-muted-foreground text-justify">
                     Cuide de você com os melhores profissionais de beleza da sua região. Encontre cabeleireiros,
                     manicures, esteticistas e outros especialistas prontos para realçar sua beleza e bem-estar no
                     conforto da sua casa ou em estúdios locais.
@@ -175,12 +192,12 @@ export function InitialScreen() {
                 </div>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <div className="bg-primary rounded-md p-3 flex items-center justify-center">
+                <div className="bg-blue-500 rounded-md p-3 flex items-center justify-center">
                   <WrenchIcon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-center">Reparos domésticos</h3>
-                  <p className="text-muted-foreground text-center">
+                  <p className="text-muted-foreground text-justify">
                     Pequenos problemas podem se tornar grandes se não forem tratados a tempo. Encontre especialistas em
                     reparos domésticos, desde consertos de móveis e eletrodomésticos até reparos gerais na estrutura da
                     casa, garantindo que seu lar esteja sempre em perfeito estado.
@@ -188,21 +205,56 @@ export function InitialScreen() {
                 </div>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <div className="bg-primary rounded-md p-3 flex items-center justify-center">
+                <div className="bg-yellow-400 rounded-md p-3 flex items-center justify-center">
                   <LaptopIcon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-center">Suporte técnico</h3>
-                  <p className="text-muted-foreground text-center">
+                  <p className="text-muted-foreground text-justify">
                     Problemas com tecnologia? Conte com técnicos em informática e eletrônicos para solucionar falhas em
                     seus dispositivos, configurar redes, instalar softwares e garantir que tudo funcione perfeitamente,
                     seja em casa ou no escritório.
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-4"></div>
               <div className="flex flex-col items-center gap-4">
-                <h3 className="text-xl font-semibold text-center"> E muito mais...</h3>
+                <div className="bg-green-500 rounded-md p-3 flex items-center justify-center">
+                  <FaBroom className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-center">Serviços de Limpeza</h3>
+                  <p className="text-muted-foreground text-justify">
+                    Mantenha seu espaço limpo e organizado com a ajuda de profissionais especializados em serviços de
+                    limpeza. Encontre faxineiros e empresas de limpeza que oferecem serviços personalizados para sua
+                    casa ou escritório, garantindo um ambiente saudável e agradável.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-4">
+                <div className="bg-gray-400 rounded-md p-3 flex items-center justify-center">
+                  <HomeIcon className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-center">Design de Interiores</h3>
+                  <p className="text-muted-foreground text-justify">
+                    Transforme seu espaço com a ajuda de especialistas em design de interiores. Encontre profissionais
+                    criativos que podem ajudá-lo a criar ambientes bonitos e funcionais, adaptando cada detalhe ao seu
+                    gosto e estilo, seja em sua casa ou escritório.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-4">
+                <div className="bg-red-500 rounded-md p-3 flex items-center justify-center">
+                  <CameraIcon className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-center">Fotografia Profissional</h3>
+                  <p className="text-muted-foreground text-justify">
+                    Capture os melhores momentos da sua vida com fotógrafos profissionais. Encontre especialistas em
+                    fotografia para eventos, ensaios pessoais ou retratos familiares, garantindo que suas memórias sejam
+                    eternizadas com qualidade e arte.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

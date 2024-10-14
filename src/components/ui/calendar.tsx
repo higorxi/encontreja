@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { ptBR } from 'date-fns/locale';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -12,10 +13,18 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const today = new Date();
+  const eighteenYearsAgo = new Date(today);
+  eighteenYearsAgo.setFullYear(today.getFullYear() - 18);
+  
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
+      locale={ptBR}
+      defaultMonth={new Date(2000, 0)}
+      fromYear={1950}
+      toDate={eighteenYearsAgo}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",

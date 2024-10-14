@@ -15,10 +15,12 @@ export function InputDateOfBirth({ showLabel = true, value, onChange }: InputDat
   const [maskedValue, handleMaskedChange] = useMaskedInput(value);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Estado para mensagem de erro
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleMaskedChange(e);
     onChange(e);
+    validateDate(e.target.value); // Valida a data ao alterar
   };
 
   const handleDateSelect = (date: Date | undefined) => {
@@ -27,8 +29,28 @@ export function InputDateOfBirth({ showLabel = true, value, onChange }: InputDat
       setSelectedDate(date);
       handleChange({ target: { value: formattedDate } } as React.ChangeEvent<HTMLInputElement>);
       setOpen(false);
+      validateDate(formattedDate); // Valida a data ao selecionar
     }
   };
+
+  const validateDate = (dateString: string) => {
+    const [day, month, year] = dateString.split('/').map(Number);
+    const selectedDate = new Date(year, month - 1, day);
+    
+    if (selectedDate.getFullYear() !== year || selectedDate.getMonth() !== month - 1 || selectedDate.getDate() !== day) {
+        setError('Data inválida. Por favor, insira uma data correta.');
+        return;
+    }
+
+    const today = new Date();
+    const age = today.getFullYear() - selectedDate.getFullYear();
+
+    if ( age < 18 || (age === 18 && (today.getMonth() < selectedDate.getMonth() || (today.getMonth() === selectedDate.getMonth() && today.getDate() < selectedDate.getDate())))) {
+        setError('Você deve ter pelo menos 18 anos.');
+    } else {
+        setError(null); // Limpa a mensagem de erro se a data for válida
+    }
+};
 
   const formatDate = (date: Date) => {
     const day = String(date.getDate()).padStart(2, '0');
@@ -39,7 +61,7 @@ export function InputDateOfBirth({ showLabel = true, value, onChange }: InputDat
 
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5">
-      {showLabel && <Label htmlFor="dob">Date of Birth</Label>}
+      {showLabel && <Label htmlFor="dob">Data de Nascimento</Label>}
       <div className="relative">
         <Input
           id="dob"
@@ -71,6 +93,7 @@ export function InputDateOfBirth({ showLabel = true, value, onChange }: InputDat
           </PopoverContent>
         </Popover>
       </div>
+      {error && <span className="text-sm text-red-600">{error}</span>} {/* Mensagem de erro */}
     </div>
   );
 }
