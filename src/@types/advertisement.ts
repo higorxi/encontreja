@@ -12,10 +12,10 @@ export interface advertisementDetails {
     hasServiceLocation: boolean;
     serviceLocation?: string
     linkWebsitePortfolio?: string;
-    servicesAvailable: [{
-        id: number,
+    servicesAvailable: {
+        id: string,
         description: string
-    }]
+    }
   }
 
   export interface ServiceProviderAdvertisement {

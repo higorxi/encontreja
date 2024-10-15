@@ -21,7 +21,10 @@ export function ModalServiceRegister({ onClose }: any) {
   const user = useUser();
   const [images, setImages] = useState<(File | null)[]>([null, null, null]);
   const [imagePreviews, setImagePreviews] = useState<(string | null)[]>([null, null, null]);
-  const [selectedService, setSelectedService] = useState<string>('');
+  const [selectedService, setSelectedService] = useState({
+    id: '',
+    description: ''
+  });
   const [services, setServices] = useState<Service[]>([]);
   const [hasServiceLocation, setHasServiceLocation] = useState(false);
   const [linkWebsitePortfolio, setLinkWebsitePortfolio] = useState('');
@@ -158,28 +161,32 @@ export function ModalServiceRegister({ onClose }: any) {
         hasServiceLocation: hasServiceLocation,
         serviceLocation,
         linkWebsitePortfolio,
-        servicesAvailable: [
-          {
-            id: 6,
-            description: 'Jardineiros',
-          },
-        ],
+        servicesAvailable: selectedService
       };
       const response = await createAnuncio(data as advertisementDetails);
       if (response) {
         const urlImages = await handleUpload();
-        console.log("Images", urlImages)
-        //await updateAnuncioPhotosURL('ID DO SERVIÇO', urlImage);
+        //await updateAnuncioPhotosURL('ID DO SERVIÇO', urlImages);
         toast.success('Anuncio criado com sucesso');
         onClose();
       } else {
-        toast.success("Erro ao salvar imagens do serviço, atualize em 'Meu anuncio(s)' ");
+        toast.error("Erro ao salvar imagens do serviço, atualize em 'Meu anuncio(s)' ");
         throw new Error("Erro ao salvar imagens do serviço, atualize em 'Meu anuncio(s)'");
       }
     } catch (error) {
       toast.error('Erro ao criar anuncio, tente novamente!');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleServiceChange = (id: string) => {
+    const selected = services.find(service => service.id === id);
+    if (selected) {
+      setSelectedService({
+        id: selected.id,
+        description: selected.description
+      });
     }
   };
 
@@ -294,7 +301,7 @@ export function ModalServiceRegister({ onClose }: any) {
                       title="Serviços"
                     />
                   </div>
-                  <Select value={selectedService} onValueChange={setSelectedService}>
+                  <Select value={selectedService.id} onValueChange={handleServiceChange}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o tipo de serviço" />
                     </SelectTrigger>

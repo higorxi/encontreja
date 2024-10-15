@@ -162,6 +162,7 @@ export function ModalLogin({ onClose }: any) {
         toast.success('Login bem-sucedido!');
         onClose();
       } else {
+        toast.error('Erro ao fazer login, tente novamente');
         throw new Error('');
       }
     } catch (error) {
@@ -187,7 +188,7 @@ export function ModalLogin({ onClose }: any) {
           toast.success('Cadastro bem-sucedido!');
           onClose();
         } else {
-          toast.success('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
+          toast.error('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
           throw new Error('Erro ao salvar e/ou atualizar foto de perfil');
         }
       } catch (error) {

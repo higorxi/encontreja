@@ -1,19 +1,22 @@
 // src/services/userService.ts
 
-import { get, put, del } from './apiService';
+import { get, put, del, patch } from './apiService';
 
 export const getUserProfile = async (userId: string) => {
-  return await get(`/users/${userId}`);
+  return await get(`/api/users/${userId}`);
 };
 
 export const updateUserProfile = async (userId: string, data: any) => {
-  return await put(`/users/${userId}`, data);
+  return await put(`/api/users/${userId}`, data);
 };
 
-export const updateUserProfilePhotoURL = async (userId: string, data: any) => {
-  return await put(`/users/${userId}`, data);
+export const updateUserProfilePhotoURL = async (document: string, profilePhotoUrl: any) => {
+  const data = {
+    profilePhotoUrl
+  }
+  return await patch(`/api/users/${document}`, data);
 };
 
 export const deleteUser = async (userId: string) => {
-  return await del(`/users/${userId}`);
+  return await del(`/api/users/${userId}`);
 };
