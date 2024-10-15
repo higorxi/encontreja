@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '@/contexts/AuthContext';
 import { RegistrationDetails, useCadastro } from '@/contexts/SignupContext';
 import { SearchIcon } from 'lucide-react';
-import { formatCPF } from '@/utils/cpf';
+import { formatCPF, unformatCPF } from '@/utils/cpf';
 import { validateEmail } from '@/utils/email';
 import axios from 'axios';
 import { updateUserProfilePhotoURL } from '@/service/userService';
@@ -180,16 +180,16 @@ export function ModalLogin({ onClose }: any) {
       }
       setLoading(true);
       try {
-        const data = { name, email, gender: { id: Number(gender) }, phone, document: cpf, city, password };
+        const data = { name, email, gender: { id: Number(gender) }, phone, document: unformatCPF(cpf), city, password };
         const response = await registerUser(data as RegistrationDetails);
         if (response) {
           const urlImage = await handleUpload();
-          //await updateUserProfilePhotoURL(cpf, urlImage)
+          await updateUserProfilePhotoURL(unformatCPF(cpf), urlImage)
           toast.success('Cadastro bem-sucedido!');
           onClose();
         } else {
           toast.error('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
-          throw new Error('Erro ao salvar e/ou atualizar foto de perfil');
+          onClose();
         }
       } catch (error) {
         toast.error('Erro ao fazer cadastro.');
@@ -237,8 +237,8 @@ export function ModalLogin({ onClose }: any) {
     city !== '' &&
     password !== '' &&
     passwordsMatch &&
-    validateBirth(birthdate);
-  image !== null;
+    validateBirth(birthdate) &&
+   image !== null;
 
   return (
     <>

@@ -23,14 +23,14 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className}>
-        <CadastroProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <CadastroProvider>
             {children}
             <Analytics />
             <SpeedInsights />
             <ToastContainer />
-          </AuthProvider>
-        </CadastroProvider>
+          </CadastroProvider>
+        </AuthProvider>
       </body>
     </html>
   );

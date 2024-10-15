@@ -1,7 +1,8 @@
-"use client";
+'use client';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { register } from '@/service/registerService';
 import { Document, Email, Telephone } from '@/@types/userTypes';
+import { useAuth } from './AuthContext';
 
 interface User {
   id: string;
@@ -11,7 +12,7 @@ interface User {
 export interface RegistrationDetails {
   name: string;
   gender: {
-    id: 1
+    id: number;
   };
   email: Email;
   phone: Telephone;
@@ -21,34 +22,27 @@ export interface RegistrationDetails {
 }
 
 interface CadastroContextType {
-  user: User | null;
-  isRegistered: boolean;
   registerUser: (details: RegistrationDetails) => Promise<boolean>;
 }
 
 const CadastroContext = createContext<CadastroContextType | undefined>(undefined);
 
 export const CadastroProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
+  const { setUser, setIsAuthenticated } = useAuth();
 
   const registerUser = async (details: RegistrationDetails) => {
     try {
       const data = await register(details);
-      setUser(data);
-      setIsRegistered(true);
+      localStorage.setItem('user', JSON.stringify(data)); 
+      setUser(data); 
+      setIsAuthenticated(true); 
       return true;
     } catch (error) {
-      console.error('Falha no cadastro', error);
-      return false;
+      throw new Error('Falha no cadastro');
     }
   };
 
-  return (
-    <CadastroContext.Provider value={{ user, isRegistered, registerUser }}>
-      {children}
-    </CadastroContext.Provider>
-  );
+  return <CadastroContext.Provider value={{ registerUser }}>{children}</CadastroContext.Provider>;
 };
 
 export const useCadastro = () => {

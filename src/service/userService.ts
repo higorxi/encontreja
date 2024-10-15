@@ -3,20 +3,20 @@
 import { get, put, del, patch } from './apiService';
 
 export const getUserProfile = async (userId: string) => {
-  return await get(`/api/users/${userId}`);
+  return await get(`/api/user/${userId}`);
 };
 
 export const updateUserProfile = async (userId: string, data: any) => {
-  return await put(`/api/users/${userId}`, data);
+  return await put(`/api/user/${userId}`, data);
 };
 
 export const updateUserProfilePhotoURL = async (document: string, profilePhotoUrl: any) => {
   const data = {
     profilePhotoUrl
   }
-  return await patch(`/api/users/${document}`, data);
+  return await put(`/api/user/${document}`, data);
 };
 
 export const deleteUser = async (userId: string) => {
-  return await del(`/api/users/${userId}`);
+  return await del(`/api/user/${userId}`);
 };
