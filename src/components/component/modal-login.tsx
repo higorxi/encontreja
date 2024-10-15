@@ -23,7 +23,6 @@ import InputMask from 'react-input-mask';
 export function ModalLogin({ onClose }: any) {
   const { loginAuth } = useAuth();
   const { registerUser } = useCadastro();
-  const [showPassword, setShowPassword] = useState(false);
   const [inputValueLogin, setInputValueLogin] = useState('');
   const [inputValuePassword, setInputValuePassword] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -34,6 +33,9 @@ export function ModalLogin({ onClose }: any) {
   const [phone, setPhone] = useState('');
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [gender, setGender] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [cep, setCep] = useState('');
@@ -41,12 +43,18 @@ export function ModalLogin({ onClose }: any) {
   const [state, setState] = useState('');
   const [openRecoveryPassword, setOpenRecoveryPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const handleConfirmPasswordChange = (e: any) => {
+    setConfirmPassword(e.target.value);
+    setPasswordsMatch(password === e.target.value);
+  };
+
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const metadata = JSON.stringify({
     description: `Uma imagem de perfil do usuário: ${name}`,
-    category: "perfil",
-    tags: ["foto", "perfil"]
+    category: 'perfil',
+    tags: ['foto', 'perfil'],
   });
 
   useEffect(() => {
@@ -60,13 +68,11 @@ export function ModalLogin({ onClose }: any) {
     }
   }, [image]);
 
-
   useEffect(() => {
-    if(cep.length === 8){
-      handleSearch()
+    if (cep.length === 8) {
+      handleSearch();
     }
   }, [cep]);
-
 
   const handleSearch = async () => {
     if (cep.length === 8 || cep.length === 9) {
@@ -98,7 +104,6 @@ export function ModalLogin({ onClose }: any) {
     setIsValidCPF(onlyNumbers.length === 11);
   };
 
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -125,8 +130,8 @@ export function ModalLogin({ onClose }: any) {
     }
 
     const formData = new FormData();
-    formData.append('file', image); 
-    formData.append('metadata', metadata); 
+    formData.append('file', image);
+    formData.append('metadata', metadata);
 
     try {
       const response = await axios.post('/api/uploadImageProfile', formData, {
@@ -135,12 +140,11 @@ export function ModalLogin({ onClose }: any) {
         },
       });
       console.log('Imagem enviada com sucesso:', response.data);
-      return response.data.result.variants[0]
+      return response.data.result.variants[0];
     } catch (error) {
       console.error('Erro ao enviar a imagem:', error);
     }
   };
-  
 
   const handleLogin = async () => {
     if (!isValidEmail) {
@@ -169,39 +173,78 @@ export function ModalLogin({ onClose }: any) {
   };
 
   const handleRegister = async () => {
-    if (!isValidEmail || !isValidCPF) {
-      toast.error('CPF ou Email inválido, revise os dados');
-      return;
-    }
-    setLoading(true);
-    try {
-      const data = { name, email, gender: { id: Number(gender) }, phone, document: cpf, city, password };
-      const response = await registerUser(data as RegistrationDetails);
-      if (response) {
-        const urlImage = await handleUpload();
-        await updateUserProfilePhotoURL(cpf, urlImage)
-        toast.success('Cadastro bem-sucedido!');
-        onClose();
-      } else {
-        toast.error('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
-        throw new Error('Erro ao salvar e/ou atualizar foto de perfil');
+    if (isFormRegisterValid) {
+      if (!isValidEmail || !isValidCPF) {
+        toast.error('CPF ou Email inválido, revise os dados');
+        return;
       }
-    } catch (error) {
-      toast.error('Erro ao fazer cadastro.');
-    } finally {
-      setLoading(false);
+      setLoading(true);
+      try {
+        const data = { name, email, gender: { id: Number(gender) }, phone, document: cpf, city, password };
+        const response = await registerUser(data as RegistrationDetails);
+        if (response) {
+          const urlImage = await handleUpload();
+          //await updateUserProfilePhotoURL(cpf, urlImage)
+          toast.success('Cadastro bem-sucedido!');
+          onClose();
+        } else {
+          toast.error('Erro ao salvar foto de perfil, você poderá atualizar posteriormente nas configurações');
+          throw new Error('Erro ao salvar e/ou atualizar foto de perfil');
+        }
+      } catch (error) {
+        toast.error('Erro ao fazer cadastro.');
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const validateBirth = (dateString: string) => {
+    const [day, month, year] = dateString.split('/').map(Number);
+    const selectedDate = new Date(year, month - 1, day);
+
+    if (
+      selectedDate.getFullYear() !== year ||
+      selectedDate.getMonth() !== month - 1 ||
+      selectedDate.getDate() !== day
+    ) {
+      return false;
+    }
+
+    const today = new Date();
+    const age = today.getFullYear() - selectedDate.getFullYear();
+
+    if (
+      age < 18 ||
+      (age === 18 &&
+        (today.getMonth() < selectedDate.getMonth() ||
+          (today.getMonth() === selectedDate.getMonth() && today.getDate() < selectedDate.getDate())))
+    ) {
+      return false;
+    } else {
+      return true;
     }
   };
 
   const isFormLoginValid = inputValueLogin !== '' && inputValuePassword !== '';
 
-  const isFormRegisterValid = name !== '' && email !== '' && gender !== '' && phone !== '' && cpf !== '' && city !== '' && password !== '' && image !== null;
+  const isFormRegisterValid =
+    name !== '' &&
+    email !== '' &&
+    gender !== '' &&
+    phone !== '' &&
+    cpf !== '' &&
+    city !== '' &&
+    password !== '' &&
+    passwordsMatch &&
+    validateBirth(birthdate);
+  image !== null;
 
   return (
     <>
       <Dialog defaultOpen onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[855px] sm:min-h-[525px]">
-          <Tabs defaultValue="login" className="w-full">
+        <DialogContent className="max-w-[100%] sm:max-w-[855px] max-h-[80vh] min-h-[300px] sm:min-h-[525px] overflow-auto">
+          <Tabs defaultValue="login" className="w-full p-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="register">Registrar</TabsTrigger>
@@ -276,7 +319,7 @@ export function ModalLogin({ onClose }: any) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
                 <div className="flex flex-col items-center justify-center p-4 relative">
                   <Label htmlFor="profile-pic" className="mb-2">
-                    Foto do perfil*
+                    Foto do perfil *
                   </Label>
                   {image ? (
                     <>
@@ -317,7 +360,9 @@ export function ModalLogin({ onClose }: any) {
                       onDrop={(e) => handleDrop(e)}
                       onDragOver={(e) => e.preventDefault()}
                     >
-                      <span className="text-gray-500 text-center">Arraste e solte sua imagem aqui</span>
+                      <span className="text-gray-500 text-center">
+                        Arraste e solte <br /> sua imagem aqui
+                      </span>
                       <label htmlFor="image-upload-0" className="mt-2 cursor-pointer text-blue-500">
                         Carregar imagem
                         <input
@@ -335,7 +380,7 @@ export function ModalLogin({ onClose }: any) {
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nome Completo*</Label>
+                    <Label htmlFor="name">Nome Completo *</Label>
                     <Input
                       id="name"
                       placeholder="João Batista"
@@ -345,7 +390,7 @@ export function ModalLogin({ onClose }: any) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email*</Label>
+                    <Label htmlFor="email">Email *</Label>
                     <Input
                       id="email"
                       type="email"
@@ -355,19 +400,55 @@ export function ModalLogin({ onClose }: any) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Telefone*</Label>
+                    <Label htmlFor="phone">Telefone *</Label>
                     <InputMask
                       mask="(99) 99999-9999"
                       id="whatsapp"
                       type="tel"
                       placeholder="(11) 99999-9999"
-                      className="w-full p-2 border rounded"
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
+
+                  <div className="space-y-2 relative">
+                    <Label htmlFor="password">Senha *</Label>
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="*******"
+                      value={password}
+                      className="pr-10"
+                      minLength={8}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <Button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-6 right-0 flex items-center px-3"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </Button>
+                  </div>
                   <div className="space-y-2">
-                    <Label htmlFor="cpf">CPF*</Label>
+                    <Label htmlFor="confirmPassword">Repetir Senha *</Label>
+                    <Input
+                      id="confirmPassword"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="*******"
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                      required
+                    />
+                    {!passwordsMatch && <p className="text-red-600 text-sm">As senhas não coincidem.</p>}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="cpf">CPF *</Label>
                     <Input
                       id="cpf"
                       type="text"
@@ -378,20 +459,7 @@ export function ModalLogin({ onClose }: any) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Senha*</Label>
-                    <Input
-                      id="password"
-                      type="text"
-                      placeholder="*******"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="gender">Gênero*</Label>
+                    <Label htmlFor="gender">Gênero *</Label>
                     <Select value={gender} onValueChange={setGender}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o Gênero" />
@@ -404,7 +472,7 @@ export function ModalLogin({ onClose }: any) {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="birthdate">Data de nascimento*</Label>
+                    <Label htmlFor="birthdate">Data de nascimento *</Label>
                     <InputDateOfBirth
                       showLabel={false}
                       value={birthdate}
@@ -414,38 +482,45 @@ export function ModalLogin({ onClose }: any) {
 
                   <div className="space-y-2 grid gap-4">
                     <div className="grid gap-2 space-y-2">
-                      <Label htmlFor="zipcode">CEP*</Label>
+                      <Label htmlFor="zipcode">CEP *</Label>
                       <div className="relative w-full">
-                        <Input
+                        <InputMask
+                          mask="99999-999"
                           id="zipcode"
-                          placeholder="12345-678"
+                          placeholder="00000-123"
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           value={cep}
-                          maxLength={9}
                           onChange={(e) => setCep(e.target.value)}
-                          className="w-full"
                         />
                         <Button
                           type="button"
                           size="icon"
-                          className="absolute right-2 top-1/2 -translate-y-1/2"
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
                           onClick={handleSearch}
                         >
                           <SearchIcon className="w-4 h-4" />
                         </Button>
                       </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="city">Cidade *</Label>
+                        <div className="flex space-x-2">
+                          <Input
+                            id="city"
+                            placeholder="Anápolis"
+                            value={city}
+                            readOnly
+                            className="w-full cursor-not-allowed"
+                          />
+                          <Input
+                            id="state"
+                            placeholder="GO"
+                            value={state}
+                            readOnly
+                            className="w-12 cursor-not-allowed"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    {city && (
-                      <>
-                        <div className="grid gap-2">
-                          <Label htmlFor="city">Cidade*</Label>
-                          <Input id="city" placeholder="Anápolis" value={city} readOnly className="w-full" />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label htmlFor="city">Estado*</Label>
-                          <Input id="state" placeholder="Goiás" value={state} readOnly className="w-full" />
-                        </div>
-                      </>
-                    )}
                   </div>
                 </div>
               </div>

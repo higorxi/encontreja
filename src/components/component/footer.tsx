@@ -19,13 +19,13 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <MapPinIcon className="w-4 h-4" />
-                <span>Anápolis, Goiás BRA</span>
+                <span>Anápolis, Goiás, Brasil</span>
               </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-6 md:gap-12">
             <div className="grid gap-2">
-              <h4 className="text-lg font-medium">Companhia</h4>
+              <h4 className="text-lg font-extrabold">Companhia</h4>
               <Link href="#" className="hover:underline hover:text-blue-300" prefetch={false}>
                 Sobre
               </Link>
@@ -40,7 +40,7 @@ export function Footer() {
               </Link>
             </div>
             <div className="grid gap-2">
-              <h4 className="text-lg font-medium">Recursos</h4>
+              <h4 className="text-lg font-extrabold">Recursos</h4>
               <Link href="/faq" className="hover:underline hover:text-blue-300" prefetch={false}>
                 FAQ
               </Link>
@@ -56,7 +56,7 @@ export function Footer() {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <h4 className="text-lg font-medium">Redes sociais</h4>
+            <h4 className="text-lg font-extrabold">Redes sociais</h4>
             <div className="flex gap-4">
               <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
                 <TwitterIcon className="w-6 h-6 hover:text-blue-200" />
@@ -64,7 +64,7 @@ export function Footer() {
               <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
                 <FacebookIcon className="w-6 h-6 hover:text-blue-600" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+              <Link href="https://www.instagram.com/useencontreja" className="text-muted-foreground hover:text-primary" prefetch={false}>
                 <InstagramIcon className="w-6 h-6 hover:text-orange-500" />
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>

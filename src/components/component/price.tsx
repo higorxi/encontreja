@@ -41,8 +41,10 @@ export function Price({onClose}: PriceProps) {
   return (
     <section className="w-full py-12 md:py-24 lg:py-24 bg-white">
       <div className="flex flex-col items-center mb-10">
-        <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-          E para você, profissional...
+        <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-center">
+        🌟
+        <br/>
+        E para você, profissional... 
         </p>
         <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center">
           Prepare-se para transformar seu negócio com o EncontreJá!

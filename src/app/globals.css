@@ -146,3 +146,21 @@
     font-family: 'DM Sans', sans-serif;
   }
 }
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+.no-bullets {
+  list-style-type: none;
+  padding-left: 0;
+}
