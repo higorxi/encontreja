@@ -1,19 +1,21 @@
-import Link from "next/link";
-import { FaApple, FaGooglePlay } from "react-icons/fa";
-import { BiWorld } from "react-icons/bi";
-import ImagePlataform from "../../../public/HomeScreen/WallpaperHome (10).svg";
-import Image from "next/image";
+import Link from 'next/link';
+import { FaApple, FaGooglePlay } from 'react-icons/fa';
+import { BiWorld } from 'react-icons/bi';
+import ImagePlataform from '../../../public/HomeScreen/WallpaperHome (10).svg';
+import Image from 'next/image';
 
 export function PresentPlatforms() {
   return (
-    <section className="relative w-full min-w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-50 to-blue-100 overflow-hidden">
-
+    <section className="relative w-full min-w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-orange-50 to-blue-100 overflow-hidden">
       <div className="container mx-auto flex flex-col items-center justify-center gap-8 px-4 md:px-6 lg:flex-row lg:justify-between lg:gap-12">
         <div className="space-y-6 text-center lg:text-left lg:space-y-8">
-          <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight md:text-5xl">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl mb-1">
             Esteja 100% conectado com nossos serviços
           </h2>
-          <p className="text-lg text-gray-700 max-w-xl mx-auto lg:mx-0 lg:text-base">
+          <p
+            className="text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mb-12"
+            style={{ marginTop: '1rem' }}
+          >
             Baixe nosso aplicativo e tenha acesso a todos os nossos serviços de forma rápida e prática.
           </p>
           <div className="flex flex-col items-center gap-4 lg:items-center lg:gap-6">
@@ -43,10 +45,9 @@ export function PresentPlatforms() {
           height={400}
           alt="Imagem de conexão"
           className="w-full max-w-xl"
-          style={{ aspectRatio: "3 / 2", objectFit: "cover" }}
+          style={{ aspectRatio: '3 / 2', objectFit: 'cover' }}
         />
       </div>
-
     </section>
   );
 }

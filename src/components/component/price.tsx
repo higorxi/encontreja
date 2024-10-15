@@ -2,21 +2,21 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ModalFlatServiceProvider } from './modal-flat-service-provider';
-import { ModalLogin } from './modal-login'; 
+import { ModalLogin } from './modal-login';
 import { useAuth } from '@/contexts/AuthContext';
 import { createPaymentCreditCard } from '@/service/paymentService';
 
 interface PriceDetails {
   planName: string;
   planPrice: number;
-  id: number
+  id: number;
 }
 
 interface PriceProps {
-  onClose?: () => void; 
+  onClose?: () => void;
 }
 
-export function Price({onClose}: PriceProps) {
+export function Price({ onClose }: PriceProps) {
   const { isAuthenticated } = useAuth();
   const [selectedPlan, setSelectedPlan] = useState<PriceDetails>();
   const [showModal, setShowModal] = useState<'price' | 'login' | null>(null);
@@ -34,19 +34,18 @@ export function Price({onClose}: PriceProps) {
     setSelectedPlan(undefined);
     setShowModal(null);
     if (onClose) {
-      onClose(); 
+      onClose();
     }
   };
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-24 bg-white">
+    <section className="w-full py-12 md:py-24 lg:py-24 bg-white" style={{ paddingTop: '2rem' }}>
       <div className="flex flex-col items-center mb-10">
         <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-center">
-        🌟
-        <br/>
-        E para você, profissional... 
+          🌟
+          <br />E para você, profissional...
         </p>
-        <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-center">
+        <h2 className="text-3xl font-bold text-center  tracking-tighter sm:text-5xl mb-2">
           Prepare-se para transformar seu negócio com o EncontreJá!
         </h2>
       </div>
@@ -55,7 +54,7 @@ export function Price({onClose}: PriceProps) {
           className="bg-blue-100 rounded-lg p-6 flex flex-col gap-4 mx-auto transform transition-transform duration-300 hover:scale-105 cursor-pointer shadow-md hover:shadow-lg"
           onClick={() => openModal('Semanal', 4.99, 1)}
         >
-          <div className="space-y-2">
+          <div className="space-y-2 mt-2">
             <h3 className="text-2xl font-bold text-gray-800">Plano Semanal</h3>
             <p className="text-gray-600">Acesso temporário para visibilidade rápida e econômica.</p>
           </div>
@@ -92,7 +91,7 @@ export function Price({onClose}: PriceProps) {
           className="bg-LaranjaIndustrial bg-opacity-55 rounded-lg p-6 flex flex-col gap-4 text-gray-800 shadow-md mx-auto transform transition-transform duration-300 hover:scale-110 cursor-pointer relative"
           onClick={() => openModal('Mensal', 19.99, 2)}
         >
-          <div className="space-y-2">
+          <div className="space-y-2 mt-2">
             <h3 className="text-2xl font-bold">Plano Mensal</h3>
             <p className="text-gray-800">Presença contínua na plataforma durante um mês.</p>
           </div>
@@ -107,7 +106,7 @@ export function Price({onClose}: PriceProps) {
             </li>
             <li>
               <CheckIcon className="mr-2 inline-block h-4 w-4 text-orange-800" />
-              Disponibilidade de seleção de três serviços.
+              Disponibilidade de seleção de até três serviços.
             </li>
             <li>
               <CheckIcon className="mr-2 inline-block h-4 w-4 text-orange-800" />
@@ -130,7 +129,9 @@ export function Price({onClose}: PriceProps) {
           onClick={() => openModal('Anual', 199.99, 3)}
         >
           <div className="space-y-2">
-            <div className="absolute top-0 right-0 bg-yellow-200 text-gray-800 py-1 px-3 rounded-bl-lg">Melhor Opção</div>
+            <div className="absolute top-0 right-0 bg-yellow-200 text-gray-800 py-1 px-3 rounded-bl-lg">
+              Melhor Opção
+            </div>
             <h3 className="text-2xl font-bold text-gray-800">Plano Anual</h3>
             <p className="text-gray-800">Máxima visibilidade e suporte completo durante o ano.</p>
           </div>
@@ -165,9 +166,7 @@ export function Price({onClose}: PriceProps) {
         </div>
       </div>
 
-      {showModal === 'price' && selectedPlan && (
-        <ModalFlatServiceProvider onClose={closeModal} plan={selectedPlan}/>
-      )}
+      {showModal === 'price' && selectedPlan && <ModalFlatServiceProvider onClose={closeModal} plan={selectedPlan} />}
       {showModal === 'login' && <ModalLogin onClose={closeModal} />}
     </section>
   );

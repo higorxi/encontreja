@@ -14,11 +14,11 @@ export default function Home() {
     <Header/>
     <FirstTimeModal />
     <InitialScreen/>
-    <Coments/>
     <section id="why">
     <WhyIsEncontreJA/>
     </section>
     <PresentPlatforms/>
+    <Coments/>
     <section id="price">
     <Price/>
     </section>

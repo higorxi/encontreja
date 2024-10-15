@@ -3,81 +3,98 @@ import Logo from '../ui/logo';
 
 export function Footer() {
   return (
-    <footer className="bg-black text-white py-12 border-t">
-      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="flex flex-col items-start gap-4">
-            <Logo/>
-            <div className="flex flex-col gap-2 text-sm">
-              <div className="flex items-center gap-2">
-                <PhoneIcon className="w-4 h-4" />
-                <span>+55 (62) 98519-4415</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MailIcon className="w-4 h-4" />
-                <span>suporte@useencontreja.com.br</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPinIcon className="w-4 h-4" />
-                <span>Anápolis, Goiás, Brasil</span>
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-6 md:gap-12">
-            <div className="grid gap-2">
-              <h4 className="text-lg font-extrabold">Companhia</h4>
-              <Link href="#" className="hover:underline hover:text-blue-300" prefetch={false}>
-                Sobre
-              </Link>
-              <Link href="/#why" className="hover:underline hover:text-blue-300" prefetch={false}>
-                Serviços
-              </Link>
-              <Link href="/#price" className="hover:underline hover:text-blue-300" prefetch={false}>
-                Preços
-              </Link>
-              <Link href="/#contact" className="hover:underline hover:text-blue-300" prefetch={false}>
-                Contate-nos
-              </Link>
-            </div>
-            <div className="grid gap-2">
-              <h4 className="text-lg font-extrabold">Recursos</h4>
-              <Link href="/faq" className="hover:underline hover:text-blue-300" prefetch={false}>
-                FAQ
-              </Link>
-              <Link href="/parceiros" className="hover:underline hover:text-blue-300" prefetch={false}>
-                Parceiros
-              </Link>
-              <Link href="/termos-de-uso" className="hover:underline hover:text-blue-300" prefetch={false}>
-                Termos de Uso
-              </Link>
-              <Link href="/politica-de-privacidade" className="hover:underline hover:text-blue-300" prefetch={false}>
-                Política de Privacidade
-              </Link>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <h4 className="text-lg font-extrabold">Redes sociais</h4>
-            <div className="flex gap-4">
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <TwitterIcon className="w-6 h-6 hover:text-blue-200" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <FacebookIcon className="w-6 h-6 hover:text-blue-600" />
-              </Link>
-              <Link href="https://www.instagram.com/useencontreja" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <InstagramIcon className="w-6 h-6 hover:text-orange-500" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                <LinkedinIcon className="w-6 h-6 hover:text-blue-600" />
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="mt-12 text-center text-sm">
-          <p>&copy; 2024 EncontreJá. Todos os direitos reservados.</p>
-        </div>
-      </div>
-    </footer>
+    <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs text-gray-500">© 2024 EncontreJá. Todos os direitos reservados.</p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <a className="text-xs hover:underline underline-offset-4" href="/faq">
+          FAQ
+          </a>
+          <a className="text-xs hover:underline underline-offset-4" href="/parceiros">
+          Parceiros
+          </a>
+          <a className="text-xs hover:underline underline-offset-4" href="/termos-de-uso">
+          Termos de Uso
+          </a>
+          <a className="text-xs hover:underline underline-offset-4" href="/politica-de-privacidade">
+          Política de Privacidade
+          </a>
+        </nav>
+      </footer>
+    // <footer className="bg-black text-white py-12 border-t">
+    //   <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+    //     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+    //       <div className="flex flex-col items-start gap-4">
+    //         <Logo/>
+    //         <div className="flex flex-col gap-2 text-sm">
+    //           <div className="flex items-center gap-2">
+    //             <PhoneIcon className="w-4 h-4" />
+    //             <span>+55 (62) 98519-4415</span>
+    //           </div>
+    //           <div className="flex items-center gap-2">
+    //             <MailIcon className="w-4 h-4" />
+    //             <span>suporte@useencontreja.com.br</span>
+    //           </div>
+    //           <div className="flex items-center gap-2">
+    //             <MapPinIcon className="w-4 h-4" />
+    //             <span>Anápolis, Goiás, Brasil</span>
+    //           </div>
+    //         </div>
+    //       </div>
+    //       <div className="grid grid-cols-2 gap-6 md:gap-12">
+    //         <div className="grid gap-2">
+    //           <h4 className="text-lg font-extrabold">Companhia</h4>
+    //           <Link href="#" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             Sobre
+    //           </Link>
+    //           <Link href="/#why" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             Serviços
+    //           </Link>
+    //           <Link href="/#price" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             Preços
+    //           </Link>
+    //           <Link href="/#contact" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             Contate-nos
+    //           </Link>
+    //         </div>
+    //         <div className="grid gap-2">
+    //           <h4 className="text-lg font-extrabold">Recursos</h4>
+    //           <Link href="/faq" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             FAQ
+    //           </Link>
+    //           <Link href="/parceiros" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             Parceiros
+    //           </Link>
+    //           <Link href="/termos-de-uso" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             Termos de Uso
+    //           </Link>
+    //           <Link href="/politica-de-privacidade" className="hover:underline hover:text-blue-300" prefetch={false}>
+    //             Política de Privacidade
+    //           </Link>
+    //         </div>
+    //       </div>
+    //       <div className="flex flex-col gap-4">
+    //         <h4 className="text-lg font-extrabold">Redes sociais</h4>
+    //         <div className="flex gap-4">
+    //           <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+    //             <TwitterIcon className="w-6 h-6 hover:text-blue-200" />
+    //           </Link>
+    //           <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+    //             <FacebookIcon className="w-6 h-6 hover:text-blue-600" />
+    //           </Link>
+    //           <Link href="https://www.instagram.com/useencontreja" className="text-muted-foreground hover:text-primary" prefetch={false}>
+    //             <InstagramIcon className="w-6 h-6 hover:text-orange-500" />
+    //           </Link>
+    //           <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+    //             <LinkedinIcon className="w-6 h-6 hover:text-blue-600" />
+    //           </Link>
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <div className="mt-12 text-center text-sm">
+    //       <p>&copy; 2024 EncontreJá. Todos os direitos reservados.</p>
+    //     </div>
+    //   </div>
+    // </footer>
   );
 }
 

@@ -104,7 +104,7 @@ export function ModernFaq() {
         </div>
         <Accordion type="single" collapsible className="max-w-2xl mx-auto space-y-4">
           {filteredFaqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`} className="bg-white dark:bg-blue-200 rounded-lg">
+            <AccordionItem key={index} value={`item-${index}`} className="bg-white dark:bg-LaranjaIndustrial rounded-lg">
               <AccordionTrigger className="px-6 py-4 text-left text-orange-900 dark:text-white">
                 {faq.question}
               </AccordionTrigger>

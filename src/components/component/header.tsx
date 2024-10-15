@@ -43,7 +43,7 @@ export function Header() {
               className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-AzulProfundo after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
               prefetch={false}
             >
-              Home
+              Pagina inicial
             </Link>
             <Link
               href="/#why"
