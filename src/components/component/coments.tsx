@@ -5,34 +5,34 @@ import Link from 'next/link';
 
 export function Coments() {
   return (
-    <div className="flex flex-col lg:flex-row container container px-4 md:px-8 mx-auto min-h-[600px] ">
-      <div className="w-full lg:w-3/5 bg-blue-500 text-white p-10 rounded-tr-4xl rounded-br-4xl flex flex-col items-center justify-center shadow-lg">
+    <div className="flex flex-col lg:flex-row container px-4 md:px-8 mx-auto min-h-[600px] ">
+      <div className="w-full lg:w-3/5 bg-AzulProfundo text-white p-10 rounded-tr-4xl rounded-br-4xl flex flex-col items-center justify-center shadow-lg">
         <div className="flex flex-col items-center justify-center text-center gap-6">
           <h2 className="text-4xl font-extrabold mb-6 animate-pulse text-AmareloGastronômica">Vantagens do Nosso Serviço</h2>
 
           <ul className="list-none mb-4 text-justify text-lg leading-relaxed">
             <li>
-              <b>Atendimento Rápido e Eficiente:</b> Sabemos que seu tempo é precioso. Por isso, garantimos respostas
+              <b className='text-AmareloGastronômica'>Atendimento Rápido e Eficiente:</b> Sabemos que seu tempo é precioso. Por isso, garantimos respostas
               rápidas e soluções eficazes para suas necessidades.
             </li>
             <br />
             <li>
-              <b>Preços Justos:</b> Oferecemos preços competitivos, sem surpresas. Você sempre saberá o que esperar
+              <b className='text-AmareloGastronômica' >Preços Justos:</b> Oferecemos preços competitivos, sem surpresas. Você sempre saberá o que esperar
               antes de contratar um serviço.
             </li>
             <br />
             <li>
-              <b>Serviços na Sua Região:</b> Conectamos você com profissionais próximos, garantindo rapidez e eficiência
+              <b className='text-AmareloGastronômica'>Serviços na Sua Região:</b> Conectamos você com profissionais próximos, garantindo rapidez e eficiência
               no atendimento.
             </li>
             <br />
             <li>
-              <b>Feedback e Avaliações</b>: Veja o que outros clientes estão dizendo sobre os prestadores de serviços,
+              <b className='text-AmareloGastronômica'>Feedback e Avaliações</b>: Veja o que outros clientes estão dizendo sobre os prestadores de serviços,
               ajudando você a tomar decisões informadas.
             </li>
             <br />
             <li>
-              <b>Segurança e Confiabilidade</b>: Trabalhamos com transparência e responsabilidade, assegurando que você
+              <b className='text-AmareloGastronômica'>Segurança e Confiabilidade</b>: Trabalhamos com transparência e responsabilidade, assegurando que você
               se sinta seguro ao contratar nossos serviços.
             </li>
           </ul>

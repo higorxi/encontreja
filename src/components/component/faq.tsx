@@ -2,8 +2,8 @@ import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/component
 
 export function FAQ() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 md:px-6">
+    <section className="w-full min-w-full py-10">
+      <div className="container px-4 md:px-6 mx-auto">
         <div className="mx-auto max-w-3xl space-y-6 text-center">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Perguntas Frequentes</h2>
           <p className="text-muted-foreground md:text-xl">

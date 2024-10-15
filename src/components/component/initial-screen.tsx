@@ -24,7 +24,7 @@ import { CameraIcon, FlowerIcon, HomeIcon } from 'lucide-react';
 export function InitialScreen() {
   const gif = (
     <section className="w-full min-w-full pb-10">
-      <div className="container  min-w-full  mx-auto">
+      <div className="container min-w-full mx-auto">
         <Link href="/servicos">
           <Marquee speed={50} className="w-full">
             <div className="flex items-center space-x-6">
@@ -192,7 +192,7 @@ export function InitialScreen() {
                 </div>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <div className="bg-blue-500 rounded-md p-3 flex items-center justify-center">
+                <div className="bg-AzulProfundo rounded-md p-3 flex items-center justify-center">
                   <WrenchIcon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
