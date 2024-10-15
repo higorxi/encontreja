@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { DetailsServiceProvider } from './details-service-provider';
 import usePageTitle from '@/Hooks/usePageTittle';
@@ -9,12 +9,43 @@ import InfoIcon from './infoIcon';
 import { toast } from 'react-toastify';
 import { ModalServiceRegister } from './modal-service-register';
 import { Price } from './price';
+import { getStatusForMyAdvertisement } from '@/service/advertisementService';
+import { useUser } from '@/contexts/AuthContext';
 
 export function MyAdvertisement() {
   usePageTitle('Meu Serviço - EncontreJA');
-  const servicoPostado = true;
-  const servicoPago = true;
+  const user = useUser();
+  const [servicoPostado, setServicoPostado] = useState<boolean>(false);
+  const [servicoPago, setServicoPago] = useState<boolean | null>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [data, setData] = useState({
+    id: "",
+    description: "",
+    descriptionLastPlan: "",
+    user: {
+        name: "",
+        city: ""
+    },
+    paid: Boolean
+})
+  useEffect(() => {
+    const fetchServiceStatus = async () => {
+      if (!user) {
+        console.log('Usuário não autenticado ou ainda não carregado');
+        return;
+      }
+      try {
+        const response = await getStatusForMyAdvertisement('06512743113');
+        setServicoPostado(!!response.id); 
+        setServicoPago(response.paid); 
+        setData(response)
+      } catch (error) {
+        console.error('Erro ao buscar status do serviço:', error);
+      }
+    };
+
+    fetchServiceStatus();
+  }, [user]);
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
@@ -32,8 +63,8 @@ export function MyAdvertisement() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4 sm:mt-0">
-          <Button variant="default" onClick={() => toast.success(`A cidade que será exibido seus anuncios é: Minaçu`)}>
-            Minaçu
+          <Button variant="default" onClick={() => toast.success(`A cidade que será exibido seus anuncios é: ${data.user.city}`)}>
+          {data.user.city}
           </Button>
           <Button
             variant="default"
@@ -52,7 +83,6 @@ export function MyAdvertisement() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 justify-items-center">
         {servicoPostado ? (
           servicoPago ? (
-            // Caso o serviço tenha sido postado e pago
             <div
               className="bg-gray-100 p-2 rounded-lg shadow-sm overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105 max-w-md w-full sm:col-start-2"
               onClick={() => setActiveModal('user')}
@@ -69,7 +99,7 @@ export function MyAdvertisement() {
               </div>
               <div className="p-4 sm:p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="text-lg font-semibold">Higor Giovane</div>
+                  <div className="text-lg font-semibold">{data.user.name}</div>
                   <div className="flex items-center gap-1 text-sm text-primary">
                     {Array.from({ length: 5 }, (_, index) => (
                       <StarIcon
@@ -82,8 +112,8 @@ export function MyAdvertisement() {
                     <span>(5)</span>
                   </div>
                 </div>
-                <div className="text-muted-foreground mb-4">Minaçu, GO</div>
-                <p className="text-sm leading-relaxed">Eu sou o Higor </p>
+                <div className="text-muted-foreground mb-4">{data.user.city}</div>
+                <p className="text-sm leading-relaxed">{data.description}</p>
               </div>
             </div>
           ) : (
@@ -105,7 +135,7 @@ export function MyAdvertisement() {
                 </div>
                 <div className="p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="text-lg font-semibold">Higor Giovane</div>
+                    <div className="text-lg font-semibold">{data.user.name}</div>
                     <div className="flex items-center gap-1 text-sm text-primary">
                       {Array.from({ length: 5 }, (_, index) => (
                         <StarIcon
@@ -118,8 +148,8 @@ export function MyAdvertisement() {
                       <span>(5)</span>
                     </div>
                   </div>
-                  <div className="text-muted-foreground mb-4">Minaçu, GO</div>
-                  <p className="text-sm leading-relaxed">Eu sou o Higor </p>
+                  <div className="text-muted-foreground mb-4">{data.user.city}</div>
+                  <p className="text-sm leading-relaxed">{data.description}</p>
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center sm:col-start-2 bg-gray-100 p-2 max-w-md w-full pt-4 pb-4">
@@ -155,7 +185,7 @@ export function MyAdvertisement() {
       {activeModal === 'user' && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay">
           <DetailsServiceProvider
-            dataServiceProvider={() => console.log('teste')}
+            dataServiceProvider={data}
             onClose={() => setActiveModal(null)}
           />
         </div>

@@ -9,6 +9,7 @@ import { FaPhoneFlip } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { getAnuncio } from "@/service/advertisementService";
 import { Loading } from "./loading";
+import { formatPhoneNumber } from "@/utils/phone";
 
 interface DetailsServiceProviderProps {
   dataServiceProvider: any;
@@ -64,7 +65,7 @@ export function DetailsServiceProvider({
     imgSrc: "https://via.placeholder.com/80",
     name: "Nome do Prestador",
     location: "Localização",
-    rating: 4.5,
+    rating: 5,
     phone: "(11) 99999-9999",
     email: "exemplo@email.com",
     whatsapp: "(11) 99999-9999",
@@ -118,15 +119,11 @@ export function DetailsServiceProvider({
         <div className="flex flex-col text-muted-foreground">
           <div className="flex items-center gap-1 mb-1">
             <FaPhoneFlip className="w-4 h-4" />
-            <span className="truncate">{defaultProvider.phone} <strong>PRECISA RESOLVER</strong></span>
+            <span className="truncate">{formatPhoneNumber(serviceProvider.whatsappNumber)}</span>
           </div>
           <div className="flex items-center gap-1 mb-1">
             <CiMail className="w-4 h-4" />
             <span className="truncate">{defaultProvider.email} <strong>PRECISA RESOLVER</strong></span>
-          </div>
-          <div className="flex items-center gap-1">
-            <BsWhatsapp className="w-4 h-4" />
-            <span className="truncate">{provider.whatsappNumber}</span>
           </div>
         </div>
       </div>
@@ -137,7 +134,7 @@ export function DetailsServiceProvider({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Detalhes do Serviço */}
               <div className="grid gap-2">
-                <h3 className="text-lg font-semibold">Detalhes do Serviço</h3>
+                <h3 className="text-lg font-semibold">{serviceProvider.title}</h3>
                 <div className="grid gap-1 text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <BriefcaseIcon className="w-4 h-4" />
@@ -175,7 +172,7 @@ export function DetailsServiceProvider({
             </div>
             <Separator className='mt-2'/>
             <div className="grid gap-2 mt-2">
-              <h3 className="text-lg font-semibold">Sobre</h3>
+              <h3 className="text-lg font-semibold">Detalhes do serviço</h3>
               <p className="text-muted-foreground">{serviceProvider.description}</p>
             </div>
           </div>
