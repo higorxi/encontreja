@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import { BiWorld } from 'react-icons/bi';
-import ImagePlataform from '../../../public/HomeScreen/WallpaperHome (10).svg';
+import ImagePlataform from '../../../public/HomeScreen/Construcao.svg';
 import Image from 'next/image';
 
 export function PresentPlatforms() {
