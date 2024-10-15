@@ -8,8 +8,12 @@ export const getAnuncios = async (city: string) => {
 };
 
 export const getAnuncio = async (id: string) => {
-  return await get(`api/advertisement/${id}`);
+  return await get(`/api/advertisement/${id}`);
 };
+
+export const getStatusForMyAdvertisement = async (document: string) => {
+  return await get(`/api/advertisement/document/${document}`)
+}
 
 export const createAnuncio = async (data: advertisementDetails) => {
   return await post('/api/advertisement', data);

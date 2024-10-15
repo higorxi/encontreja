@@ -21,7 +21,7 @@ export const createPaymentPIX = async (userDocument: string, plan: any, dataBill
 };
 
 export const getStatusPaymentPIX = async (paymentId: string) => {
-    return await get(`/api/payments/pix/${paymentId}`);
+    return await get(`/api/payments/transaction/${paymentId}`);
   };
 
 export const createPaymentCreditCard = async (userDocument: string, plan: any, dataBilling: object) => {
@@ -35,4 +35,6 @@ export const createPaymentCreditCard = async (userDocument: string, plan: any, d
     const response = await post('/api/payments/', data);
     return response;
 };
+
+
 

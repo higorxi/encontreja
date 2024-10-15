@@ -14,6 +14,7 @@ import { useUser } from '@/contexts/AuthContext';
 import { AxiosError } from 'axios';
 import { FaRegCopy } from 'react-icons/fa';
 import React from 'react';
+import { unformatCPF } from '@/utils/cpf';
 interface FetchClientSecretResponse {
   success: boolean;
   error: string | null;
@@ -220,7 +221,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
     if (paymentMethod === 'pix') {
       setLoading(true);
       try {
-        const response = await createPaymentPIX(user?.document as string, plan, dataBilling);
+        const response = await createPaymentPIX(unformatCPF(dataBilling.document), plan, dataBilling);
         if (response) {
           setDataPix({
             base64image: response.base64image,
@@ -485,7 +486,10 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
               </div>
               {timer > 0 && (
                 <div className="text-center mt-4">
-                  <p className="text-red-600">
+                  <p className="text-gray-800">
+                    Deve ser pago em até 24 horas e seu pagamento será confirmado logo em seguida.
+                  </p>
+                  <p className="text-gray-800">
                     Tempo restante: {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}
                   </p>
                 </div>
@@ -509,7 +513,7 @@ export function ModalFlatServiceProvider({ onClose, plan }: any) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {confirmButtonDisabled ? 'Aguardando pagamento...' : 'Continuar'}
+                  {confirmButtonDisabled ? 'Aguardando pagamento...' : 'Já Paguei'}
                 </Button>
               </div>
             </div>
