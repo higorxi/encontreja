@@ -65,7 +65,7 @@ export function HeaderAlternative() {
                 <ProfileIcon className="h-4 w-4" />
               </Button>
               {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-20">
+                <div className="absolute right-0 top-8 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-20">
                   <button
                     className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                     onClick={() => setProfileModalOpen(true)}

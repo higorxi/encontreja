@@ -11,8 +11,8 @@ export const getAnuncio = async (id: string) => {
   return await get(`/api/advertisement/${id}`);
 };
 
-export const getStatusForMyAdvertisement = async (document: string) => {
-  return await get(`/api/advertisement/document/${document}`)
+export const getStatusForMyAdvertisement = async () => {
+  return await get(`/api/advertisement/document/authenticated`)
 }
 
 export const createAnuncio = async (data: advertisementDetails) => {

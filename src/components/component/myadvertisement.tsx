@@ -14,7 +14,6 @@ import { useUser } from '@/contexts/AuthContext';
 
 export function MyAdvertisement() {
   usePageTitle('Meu Serviço - EncontreJA');
-  const user = useUser();
   const [servicoPostado, setServicoPostado] = useState<boolean>(false);
   const [servicoPago, setServicoPago] = useState<boolean | null>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
@@ -30,12 +29,8 @@ export function MyAdvertisement() {
 })
   useEffect(() => {
     const fetchServiceStatus = async () => {
-      if (!user) {
-        console.log('Usuário não autenticado ou ainda não carregado');
-        return;
-      }
       try {
-        const response = await getStatusForMyAdvertisement('06512743113');
+        const response = await getStatusForMyAdvertisement();
         setServicoPostado(!!response.id); 
         setServicoPago(response.paid); 
         setData(response)
@@ -45,7 +40,7 @@ export function MyAdvertisement() {
     };
 
     fetchServiceStatus();
-  }, [user]);
+  }, []);
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
@@ -54,7 +49,8 @@ export function MyAdvertisement() {
           <h1 className="text-2xl sm:text-3xl font-bold text-center sm:text-left">Visualize seu anuncio(s) aqui</h1>
           <div className="flex justify-between items-center">
             <p className="text-muted-foreground text-center sm:text-left">
-              Aqui você poderá ver como seu anuncio é exibido <br /> exatamente para os usuários finais
+              Aqui você poderá ver como seu anuncio é exibido <br /> exatamente para os usuários finais.
+              E poderá editar os dados de seu anuncio.
             </p>
             <InfoIcon
               message="Você poderá cadastrar mais anuncios caso detenha de um plano Mensal ou Anual."
@@ -64,13 +60,13 @@ export function MyAdvertisement() {
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4 sm:mt-0">
           <Button variant="default" onClick={() => toast.success(`A cidade que será exibido seus anuncios é: ${data.user.city}`)}>
-          {data.user.city}
+          {data.user.city || 'São Paulo'}
           </Button>
           <Button
             variant="default"
             onClick={() => toast.success(`O serviço que será exibido seus anuncios é: Eletricista`)}
           >
-            Eletricista
+            {data.user.city || 'Eletricista'}
           </Button>
           <Button
             variant="default"

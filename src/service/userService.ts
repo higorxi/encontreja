@@ -10,11 +10,11 @@ export const updateUserProfile = async (userId: string, data: any) => {
   return await put(`/api/user/${userId}`, data);
 };
 
-export const updateUserProfilePhotoURL = async (document: string, profilePhotoUrl: any) => {
+export const updateUserProfilePhotoURL = async (profilePhotoUrl: any) => {
   const data = {
     profilePhotoUrl
   }
-  return await put(`/api/user/${document}`, data);
+  return await put(`/api/user`, data);
 };
 
 export const deleteUser = async (userId: string) => {

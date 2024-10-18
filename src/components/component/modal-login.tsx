@@ -184,7 +184,7 @@ export function ModalLogin({ onClose }: any) {
         const response = await registerUser(data as RegistrationDetails);
         if (response) {
           const urlImage = await handleUpload();
-          await updateUserProfilePhotoURL(unformatCPF(cpf), urlImage)
+          await updateUserProfilePhotoURL(urlImage)
           toast.success('Cadastro bem-sucedido!');
           onClose();
         } else {
